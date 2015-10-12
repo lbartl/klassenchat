@@ -13,7 +13,6 @@ Um den Chat selbst zu kompilieren empfehle ich:
   3. Um anzugeben wieviele Aufgaben gleichzeitig erledigt werden dürfen einfach "<optionen> --jobs=<zahl>" verwenden (Standard: 4)
   4. Ausführbare Dateien liegen unter ./bin/<platform>
   5. Um alles neu zu kompilieren, einfach "<optionen> --neu" verwenden
-  
   6. Beispiele:
     "./compile --win32 --jobs=6"       Kompiliert für Windows, 6 Sachen gleichzeitig
     "./compile --all --clang --jobs=8" Kompiliert für Windows und Unix neu, 8 Sachen gleichzeitig (jeweils 4), für Unix außerdem mit clang
