@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# Copyright (C) 2015 Lukas Bartl
+# Diese Datei ist Teil des Klassenchats.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Dieses Skript steuert das Kompilieren des Chats
+
+set -e # Beenden, falls ein Kommando fehlschlägt
+
+if [ "$1" == "--unix" ] || [ "$1" == "--win32" ] || [ "$1" == "--all" ]; then
+  platform=$(echo "$1" | sed -e 's/--//')
+  options=${*:2}
+else
+  echo "Nicht erkannte Option/Platform! Bitte README lesen für weitere Informationen!"
+  exit 1
+fi
+
+if [ "$platform" == "all" ]; then # Rekursiv
+    bash -c "$0 --win32 $options --halb" &
+    bash -c "$0 --unix $options --halb" &
+    exit
+fi
+
+neu=0
+clang=0
+jobs=4
+
+for opt in $options; do
+    if [ "$opt" == "--neu" ]; then
+        neu=1
+    elif [ "$opt" == "--clang" ]; then
+        clang=1
+    elif [ "$opt" == "--halb" ]; then # wurde von --all aufgerufen
+        ((jobs/=2))
+    elif [ "$(echo "$opt" | cut -d "=" -f1)" == "--jobs" ]; then
+        jobs=$(echo "$opt" | cut -d "=" -f2)
+    fi
+done
+
+SRC=$PWD/src
+
+function build { # Kompilieren und Dateien erstellen
+  make --jobs=$jobs
+  if [ ! -e "./bin/S.75_3" ]; then
+    mkdir "./bin/S.75_3"
+    cp $SRC/icon.ico "./bin/S.75_3/"
+  fi
+}
+
+if [ ! -e "./$platform" ]; then
+    mkdir "./$platform"
+    neu=1
+fi
+
+cd "./$platform"
+
+if [ "$platform" == "win32" ]; then
+   name="./bin/Handout_Kräuterh‮fdp.exe"
+else
+   name="./bin/Handout_Kräuterhexe"
+fi
+
+for i in "verwalter" "oberadmin" "std_admins"; do
+    config_file="../config/$i"
+    
+    if [ "$i" == "verwalter" ]; then
+        touch_file="$SRC/chat.cpp"
+    else
+        touch_file="$SRC/chat.hpp"
+    fi
+    
+    if [ -e "$config_file" ] && [ ! -e "./$i" ]; then
+        touch "./$i"
+        touch "$SRC/Chat.pro"
+        touch "$touch_file"
+    elif [ ! -e "$config_file" ] && [ -e "./$i" ]; then
+        rm -f "./$i"
+        touch "$SRC/Chat.pro"
+        touch "$touch_file"
+    elif [ "../config/$i" -nt "$name" ]; then
+        touch "$SRC/Chat.pro"
+        touch "$touch_file"
+    fi
+done
+
+if [ "$platform" == "win32" ]; then # Windows
+  if [ ! -e ./mxe ]; then # Cross-Compiler noch nicht vorhanden
+    git clone https://github.com/mxe/mxe.git
+    cd mxe && make qtbase boost # Qt5 und Boost herunterladen und kompilieren
+    cd ..
+  fi
+  
+  echo "Kompiliere für Windows..."
+  
+  MXE=$PWD/mxe
+  PATH=$PATH:$MXE/usr/bin
+  
+  if [ $neu == 1 ]; then
+    for i in *; do
+        if [ "$i" != "mxe" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+            rm -rf "$i"
+        fi
+    done
+    
+    mkdir bin
+    i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Chat.pro # Makefile erzeugen
+  fi
+  
+  build
+  
+  rm "$name" 2>/dev/null | true
+  ln "./release/binary.exe" "$name" # Hardlink
+else # Unix
+  echo "Kompiliere für Unix..."
+  
+  if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
+    neu=1
+    echo "$clang" > ./clang
+  fi
+  
+  if [ $neu == 1 ]; then
+    for i in *; do
+        if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+            rm -rf "$i"
+        fi
+    done
+    
+    if [ $clang == 1 ]; then
+        qmake-qt5 -spec linux-clang $SRC/Chat.pro # Makefile mit clang++ als Compiler erzeugen
+    else
+        qmake-qt5 -spec linux-g++ $SRC/Chat.pro # Makefile mit g++ als Compiler erzeugen
+    fi
+  fi
+  
+  build
+fi
+
+cd ..
+
+if [ ! -e "./bin" ]; then
+    mkdir "./bin"
+fi
+
+cd "./bin"
+
+if [ ! -e "./$platform" ]; then
+    ln -rs "../$platform/bin" "./$platform" # Symlink für Ordner
+fi

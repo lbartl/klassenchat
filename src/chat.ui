@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Chat</class>
+ <widget class="QMainWindow" name="Chat">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Handout Kräuterhexe</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.ico</normaloff>icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="MainStackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="Start_seite">
+       <layout class="QGridLayout" name="layoutStart">
+        <item row="0" column="0" rowspan="2" colspan="3">
+         <widget class="QLabel" name="Copyright">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QStackedWidget" name="LineStackedWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="benutzername_seite">
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="Label1">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Benutzername: </string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="NutzernameA"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="Ok1">
+              <property name="text">
+               <string>Ok</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="passwort_seite">
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="Label2">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="PasswortA">
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="Ok2">
+              <property name="text">
+               <string>Ok</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="Chat_seite">
+       <layout class="QGridLayout" name="layoutMain">
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="NachrichtB"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="Label3">
+          <property name="text">
+           <string>Nachricht: </string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="Senden">
+          <property name="text">
+           <string>Senden</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="3">
+         <widget class="QTextBrowser" name="BrowseA">
+          <property name="openExternalLinks">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuProgramm">
+    <property name="title">
+     <string>P&amp;rogramm</string>
+    </property>
+    <addaction name="actionHilfe"/>
+    <addaction name="actionImmer_im_Vordergrund"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuAdmin">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>Ad&amp;min</string>
+    </property>
+    <addaction name="action_berall_den_Chat_beenden"/>
+    <addaction name="actionEinen_Nutzer_entfernen"/>
+    <addaction name="actionInformation_an_Nutzer_senden"/>
+    <addaction name="actionWarnung_senden"/>
+    <addaction name="actionChatverlauf_l_schen"/>
+    <addaction name="actionWer_ist_alles_im_Chat"/>
+    <addaction name="actionVerbotene_Benutzernamen"/>
+    <addaction name="actionNeues_Admin_Passwort"/>
+    <addaction name="actionIn_den_Plum_Chat_wechseln"/>
+   </widget>
+   <widget class="QMenu" name="menuChats">
+    <property name="title">
+     <string>&amp;Chats</string>
+    </property>
+    <addaction name="actionKlassenchat"/>
+    <addaction name="separator"/>
+    <addaction name="actionNeuer_Chat"/>
+    <addaction name="actionNeue_Gruppe"/>
+   </widget>
+   <addaction name="menuProgramm"/>
+   <addaction name="menuChats"/>
+   <addaction name="menuAdmin"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Beenden</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_berall_den_Chat_beenden">
+   <property name="text">
+    <string>&amp;Überall den Chat beenden</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionEinen_Nutzer_entfernen">
+   <property name="text">
+    <string>&amp;Einen Nutzer entfernen...</string>
+   </property>
+  </action>
+  <action name="actionChatverlauf_l_schen">
+   <property name="text">
+    <string>&amp;Chatverlauf löschen</string>
+   </property>
+  </action>
+  <action name="actionWarnung_senden">
+   <property name="text">
+    <string>&amp;Warnung senden</string>
+   </property>
+  </action>
+  <action name="actionWer_ist_alles_im_Chat">
+   <property name="text">
+    <string>Wer ist &amp;alles im Chat?</string>
+   </property>
+  </action>
+  <action name="actionHilfe">
+   <property name="text">
+    <string>&amp;Hilfe...</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionIn_den_Plum_Chat_wechseln">
+   <property name="text">
+    <string>&amp;In den Plum Chat wechseln</string>
+   </property>
+  </action>
+  <action name="actionImmer_im_Vordergrund">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Immer im Vordergrund</string>
+   </property>
+  </action>
+  <action name="actionNeuer_Chat">
+   <property name="text">
+    <string>&amp;Neuer Privatchat...</string>
+   </property>
+  </action>
+  <action name="actionKlassenchat">
+   <property name="text">
+    <string>&amp;Klassenchat</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="actionInformation_an_Nutzer_senden">
+   <property name="text">
+    <string>Information an &amp;Nutzer senden...</string>
+   </property>
+  </action>
+  <action name="actionVerbotene_Benutzernamen">
+   <property name="text">
+    <string>&amp;Verbotene Benutzernamen...</string>
+   </property>
+  </action>
+  <action name="actionNeues_Admin_Passwort">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Neues Admin-&amp;Passwort...</string>
+   </property>
+  </action>
+  <action name="actionNeue_Gruppe">
+   <property name="text">
+    <string>Neue &amp;Gruppe...</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Chat: Klassen-Elemente - Funktionen</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Chat
+   &#160;<span id="projectnumber">1.3</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="namespaces.html"><span>Namensbereiche</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Suchen" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Auflistung&#160;der&#160;Klassen</span></a></li>
+      <li><a href="classes.html"><span>Klassen-Verzeichnis</span></a></li>
+      <li><a href="inherits.html"><span>Klassenhierarchie</span></a></li>
+      <li class="current"><a href="functions.html"><span>Klassen-Elemente</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow3" class="tabs2">
+    <ul class="tablist">
+      <li><a href="functions.html"><span>Alle</span></a></li>
+      <li class="current"><a href="functions_func.html"><span>Funktionen</span></a></li>
+      <li><a href="functions_vars.html"><span>Variablen</span></a></li>
+      <li><a href="functions_enum.html"><span>Aufzählungen</span></a></li>
+      <li><a href="functions_eval.html"><span>Aufzählungswerte</span></a></li>
+      <li><a href="functions_rela.html"><span>Verwandte&#160;Funktionen</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow4" class="tabs3">
+    <ul class="tablist">
+      <li><a href="#index_a"><span>a</span></a></li>
+      <li><a href="#index_b"><span>b</span></a></li>
+      <li><a href="#index_c"><span>c</span></a></li>
+      <li><a href="#index_d"><span>d</span></a></li>
+      <li><a href="#index_e"><span>e</span></a></li>
+      <li><a href="#index_f"><span>f</span></a></li>
+      <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
+      <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_k"><span>k</span></a></li>
+      <li><a href="#index_l"><span>l</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
+      <li><a href="#index_n"><span>n</span></a></li>
+      <li><a href="#index_o"><span>o</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
+      <li><a href="#index_r"><span>r</span></a></li>
+      <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
+      <li><a href="#index_v"><span>v</span></a></li>
+      <li><a href="#index_w"><span>w</span></a></li>
+      <li class="current"><a href="#index_~"><span>~</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>Admin()
+: <a class="el" href="classAdmin.html#aaa363bb0d887be99b5b07fe32f3cae9d">Admin</a>
+</li>
+<li>AdminPass()
+: <a class="el" href="classAdminPass.html#a4b9342ec31e54bf7a89f51fd45c2a49d">AdminPass</a>
+</li>
+<li>aktualisieren()
+: <a class="el" href="classAdminPass.html#afa546d81f7962444b6cd70429062f239">AdminPass</a>
+, <a class="el" href="classHineinschreiben.html#a685462cb1a7c906dc4c63342ce6aa8b4">Hineinschreiben</a>
+, <a class="el" href="classVerboten.html#adf732cf0c3a9734bafae3cdfdba9a57c">Verboten</a>
+</li>
+<li>allt()
+: <a class="el" href="classChat.html#a23b1cbba7b2a6690ac7fd4266be4b19c">Chat</a>
+</li>
+<li>anzahl()
+: <a class="el" href="classHineinschreiben.html#afcab890cf5a6c6b929a7be642054f38a">Hineinschreiben</a>
+</li>
+<li>append()
+: <a class="el" href="classCryptfile.html#aa78bea059eb8e89438449cade30c0776">Cryptfile</a>
+, <a class="el" href="classDatei.html#a7ce842bbb6050c80b2a19dc11a01d07e">Datei</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
+<li>begin()
+: <a class="el" href="classHineinschreiben.html#a2f09f7e328ee3fcff08a0f5b6de027f4">Hineinschreiben</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>ch_chat()
+: <a class="el" href="classChat.html#a49a26baac301fc5180cf0b57f19649e0">Chat</a>
+</li>
+<li>Chat()
+: <a class="el" href="classChat.html#af77ee414cdd966e22597767bf5deac0b">Chat</a>
+</li>
+<li>Chataction()
+: <a class="el" href="structChat_1_1Chataction.html#a701ed650cc14f9d634daa1226ca1bc85">Chat::Chataction</a>
+</li>
+<li>check_all_chats()
+: <a class="el" href="classChat.html#a03c9cca2825f30d97e4c8a8b69b75ca9">Chat</a>
+</li>
+<li>closeEvent()
+: <a class="el" href="classChat.html#aaf8682dee6b17a1633c774aba3de1762">Chat</a>
+, <a class="el" href="classLockfile.html#aba147be99cec341f9a9607bb1db455ae">Lockfile</a>
+</li>
+<li>create()
+: <a class="el" href="structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60">Ordner</a>
+</li>
+<li>create_itemneu()
+: <a class="el" href="classVerboten.html#ab9a4942c4c69b7023143765e632aa4ad">Verboten</a>
+</li>
+<li>Cryptfile()
+: <a class="el" href="classCryptfile.html#a4b882344c2e0574fc062eb1c5a6ff2ac">Cryptfile</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
+<li>Datei()
+: <a class="el" href="classDatei.html#ac8ea3766ec5976e89681a505b5c98a9a">Datei</a>
+</li>
+<li>Datei_Mutex()
+: <a class="el" href="structDatei__Mutex.html#a2f274f40d3fbca82c16cadd77ffa1a87">Datei_Mutex</a>
+</li>
+<li>decrypt()
+: <a class="el" href="classCryptfile.html#a658493035ac1c3051deb686f61f3b368">Cryptfile</a>
+</li>
+<li>destruct()
+: <a class="el" href="classChat_1_1UiThing.html#a528a21b616bf70a5e8ec41130c31aa3d">Chat::UiThing</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>eingegeben()
+: <a class="el" href="classPasswort.html#a0eb9a49cd5ffecf6f461df389d5887d8">Passwort</a>
+</li>
+<li>encrypt()
+: <a class="el" href="classCryptfile.html#a68903801aaa714fb1e0be09583844ecc">Cryptfile</a>
+</li>
+<li>end()
+: <a class="el" href="classHineinschreiben.html#a8c92fd2245da49681df2104a3a78fce7">Hineinschreiben</a>
+</li>
+<li>entfernen()
+: <a class="el" href="classChat.html#a7c65534ace10e9c1def2e18784e99903">Chat</a>
+</li>
+<li>Entfernen()
+: <a class="el" href="classEntfernen.html#a44b05f7818f5773c2b7ca78e3e09dc1c">Entfernen</a>
+</li>
+<li>exist()
+: <a class="el" href="classCryptfile.html#a719034c3810f4c95a88b6793bb53e179">Cryptfile</a>
+, <a class="el" href="classDatei.html#a340ead54bdc85acf25098355882f1127">Datei</a>
+</li>
+<li>exist_chat()
+: <a class="el" href="classChat.html#ab246870bb6ad17f6e4f5ea351a1c6bca">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
+<li>first()
+: <a class="el" href="classChat_1_1UiThing.html#a3d682d1646ba6816e3f5025d96da685f">Chat::UiThing</a>
+</li>
+<li>fromFile()
+: <a class="el" href="classAdminPass.html#a8dd945c4985761cdf5309b1e6b1ad62a">AdminPass</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
+<li>get_namen()
+: <a class="el" href="classHineinschreiben.html#a8e509dab6cc02a922cadb2f3fd4e2f9a">Hineinschreiben</a>
+</li>
+<li>getpass()
+: <a class="el" href="classAdminPass.html#af4479bdc3e177674b0b83f0175dad5b5">AdminPass</a>
+, <a class="el" href="classPasswort.html#ad58be9dfed3c50426a9260f216238088">Passwort</a>
+</li>
+<li>getpath()
+: <a class="el" href="classDatei.html#a8845f13eb5de3df95e17a8e488a1365d">Datei</a>
+, <a class="el" href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">Ordner</a>
+</li>
+<li>getTyp()
+: <a class="el" href="classChat_1_1UiThing.html#aea573cbd69b28f66ff029c9ae244959c">Chat::UiThing</a>
+</li>
+<li>group_open()
+: <a class="el" href="classChat.html#a832323d2f2d8bad6d331b4a4d0bbbc80">Chat</a>
+</li>
+<li>GroupOpen()
+: <a class="el" href="classGroupOpen.html#ae1f5cb4fc9e22bdfa3837ea2bafeedb0">GroupOpen</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>herausnehmen()
+: <a class="el" href="classHineinschreiben.html#a362034653cd5751f740848898879bbb8">Hineinschreiben</a>
+</li>
+<li>hilfe_anz()
+: <a class="el" href="classChat.html#a85de2a720239ac6376a86852f7d3f99b">Chat</a>
+</li>
+<li>hineingeschrieben()
+: <a class="el" href="classHineinschreiben.html#adea7558f358b2a8bb1289ed2ce49a25d">Hineinschreiben</a>
+</li>
+<li>Hineinschreiben()
+: <a class="el" href="classHineinschreiben.html#aba43ebf21e47f898c646c09fc9314620">Hineinschreiben</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
+<li>info_open()
+: <a class="el" href="classChat.html#a5e0c35e843c672591acf042756f64d00">Chat</a>
+</li>
+<li>InfoOpen()
+: <a class="el" href="classInfoOpen.html#a2c6f349e4708a231969998a220814986">InfoOpen</a>
+</li>
+<li>istream()
+: <a class="el" href="classDatei.html#a1556d610995d476c573fbe43b0de2914">Datei</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_k"></a>- k -</h3><ul>
+<li>klassenchat()
+: <a class="el" href="classChat.html#a5c4097a344ea975eef6e5f88c1b75650">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>Lockfile()
+: <a class="el" href="classLockfile.html#aebeab38d4a97e3a4060442ee6e8957af">Lockfile</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>main_thread()
+: <a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38">Chat</a>
+</li>
+<li>make_chat()
+: <a class="el" href="classChat.html#a17c8a4553ce376fdf0162aa0b22a185f">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_n"></a>- n -</h3><ul>
+<li>namen_meinchat()
+: <a class="el" href="classHineinschreiben.html#a61d26613eedaba9089ec0fb9adb01692">Hineinschreiben</a>
+</li>
+<li>new_chat()
+: <a class="el" href="classChat.html#a87d43829253003531f23edf17e37f58e">Chat</a>
+</li>
+<li>newTyp()
+: <a class="el" href="classChat_1_1UiThing.html#a2fe347ac4e0d13990a62279c4c4b7089">Chat::UiThing</a>
+</li>
+<li>Nutzer()
+: <a class="el" href="classNutzer.html#a1113ff93a2d08d5c8ab5317760fdbcf2">Nutzer</a>
+</li>
+<li>nutzer_anz()
+: <a class="el" href="classChat.html#ae89df92801e0552f186dee3737d0fd34">Chat</a>
+</li>
+<li>nutzer_thread()
+: <a class="el" href="classChat.html#a07ab60adaa8e95b1e61c71d3c342b8a2">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>open_chat()
+: <a class="el" href="classChat.html#a1492bc3cce8b7ccd84cdcf529b27b6e8">Chat</a>
+</li>
+<li>openAdminPass()
+: <a class="el" href="classChat.html#a605becfd7af64b66d201fe8f4460d946">Chat</a>
+</li>
+<li>operator()()
+: <a class="el" href="structcaseInsEqualFunc.html#ae9fabbc5547f4cc1d6e3da731760598b">caseInsEqualFunc</a>
+</li>
+<li>operator+=()
+: <a class="el" href="classDatei.html#ade5a1f1d844ac91b70f823be575531ee">Datei</a>
+</li>
+<li>operator=()
+: <a class="el" href="classDatei.html#abf3cd1309b682bbc32d8f76e64099431">Datei</a>
+, <a class="el" href="structDatei__Mutex.html#a1e22620e873f83afe08e3238aeee7014">Datei_Mutex</a>
+</li>
+<li>Ordner()
+: <a class="el" href="structOrdner.html#a938d85c3e66944c5fd5a2a08bdab1ba4">Ordner</a>
+</li>
+<li>ostream()
+: <a class="el" href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">Datei</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>passwort()
+: <a class="el" href="classChat.html#a39c245dc999d053576861c8cf1287acf">Chat</a>
+</li>
+<li>Passwort()
+: <a class="el" href="classPasswort.html#aa6692f3cacea84fd8b23eead2ea07ee0">Passwort</a>
+</li>
+<li>personal_op()
+: <a class="el" href="classChat.html#ac54e4d82b127dd45e91739f8dcba68bc">Chat</a>
+</li>
+<li>PersonalO()
+: <a class="el" href="classPersonalO.html#a0b888999c7523325e30f4f7919ecb919">PersonalO</a>
+</li>
+<li>plum_chat()
+: <a class="el" href="classChat.html#a3ffe50ba9d257fb1d91e96a6cfa1bf63">Chat</a>
+</li>
+<li>pruefen_main()
+: <a class="el" href="classChat.html#a57fb0b7c684bcddfaa108c3399086dea">Chat</a>
+</li>
+<li>pruefen_thread()
+: <a class="el" href="classChat.html#abf5addf46b2606200ed062b3201627e7">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>readAll()
+: <a class="el" href="classDatei.html#af62bffa0ebf602c5407e663f853ff8a4">Datei</a>
+</li>
+<li>readChar()
+: <a class="el" href="classDatei.html#ab868ac76a64ec4acb62cec0b9f4077ea">Datei</a>
+</li>
+<li>readLine()
+: <a class="el" href="classDatei.html#a9394814f5cff2f4cdb914c0215ddfc97">Datei</a>
+</li>
+<li>reinschreiben()
+: <a class="el" href="classHineinschreiben.html#a7d20b70191fe01b1f94fc5725b372d30">Hineinschreiben</a>
+</li>
+<li>remove()
+: <a class="el" href="classCryptfile.html#a2ecc94aa8caf3fb241e907da5193dafe">Cryptfile</a>
+, <a class="el" href="classDatei.html#a5830f413fed9d7ce5ea57331719ed946">Datei</a>
+, <a class="el" href="structOrdner.html#a5647b8fef433932ae17d9b6711d5ca3e">Ordner</a>
+</li>
+<li>removeInhalt()
+: <a class="el" href="structOrdner.html#aaf1e6133637b8fd64e2e948b419e7175">Ordner</a>
+</li>
+<li>reset()
+: <a class="el" href="classCryptfile.html#a5350c973fcc1e2662e45f94169aa2dd7">Cryptfile</a>
+, <a class="el" href="classDatei.html#a2457c6c07a36a012bb9314336f196563">Datei</a>
+</li>
+<li>resetcv()
+: <a class="el" href="classChat.html#a2a357f9cedf158960a7dc6fbd161edf6">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>second()
+: <a class="el" href="classChat_1_1UiThing.html#a5d5dc11c59bf0422f488cccaf2be0b1e">Chat::UiThing</a>
+</li>
+<li>senden_pruef()
+: <a class="el" href="classChat.html#a47dc82a961085f1cfb8916d676e54a98">Chat</a>
+</li>
+<li>set_pass()
+: <a class="el" href="classChat.html#a0f349034adc097cedc96af982b189249">Chat</a>
+</li>
+<li>setfiles()
+: <a class="el" href="classChat.html#a2c2ddf3b3dd9b0e2ca71f1ea84cb0a41">Chat</a>
+</li>
+<li>setpass()
+: <a class="el" href="classAdminPass.html#a1e2ca2345f42cf9c97a7a43e61ac2676">AdminPass</a>
+</li>
+<li>setText()
+: <a class="el" href="classPasswort.html#a4841cb91d801cd794b5f2823ee759057">Passwort</a>
+</li>
+<li>setzen()
+: <a class="el" href="classPasswort.html#a9f1501310f6cbe768c53b95799098cf7">Passwort</a>
+</li>
+<li>SimpleDialog()
+: <a class="el" href="classSimpleDialog.html#a270e8ba0482c10e3b8d61deb71ccd595">SimpleDialog</a>
+</li>
+<li>start()
+: <a class="el" href="classChat.html#aae86ebef2cb3275a1d016ab6c7a876f7">Chat</a>
+, <a class="el" href="classGroupOpen.html#aa289bb2192cd6013bc8e51df7b534b28">GroupOpen</a>
+</li>
+<li>start2()
+: <a class="el" href="classChat.html#ad3ef22e26a6f6abf7628801e3d86b193">Chat</a>
+</li>
+<li>start_threads()
+: <a class="el" href="classChat.html#ab182340ac30ca972d96a81db1cc511ae">Chat</a>
+</li>
+<li>stop()
+: <a class="el" href="classChat.html#a362676d5bb88786133e4c30ef0bc0214">Chat</a>
+</li>
+<li>stop_threads()
+: <a class="el" href="classChat.html#a3de9bc9a73c178fb730e465fd155e78a">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>toFile()
+: <a class="el" href="classAdminPass.html#aec72e3952279e11ea9af721707b1061e">AdminPass</a>
+</li>
+<li>touch()
+: <a class="el" href="classCryptfile.html#af7c2eb007a27efbba11ab9d20c07046d">Cryptfile</a>
+, <a class="el" href="classDatei.html#a03480aedeba4847932b0f485fe1addd8">Datei</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
+<li>ver_open()
+: <a class="el" href="classChat.html#afbdd89e407928959eade9b505f379129">Chat</a>
+</li>
+<li>Verboten()
+: <a class="el" href="classVerboten.html#ae8491a4cf2101dd0633be30f953b3883">Verboten</a>
+</li>
+<li>vergeben()
+: <a class="el" href="classChat.html#a7e73188158aaa12e7fe8242a8029ab1a">Chat</a>
+</li>
+<li>verlauf_up()
+: <a class="el" href="classChat.html#a18b94ded417d6d58bdb2594ea022cee4">Chat</a>
+</li>
+<li>vordergrund()
+: <a class="el" href="classChat.html#a3a0c08edf7aaf05969cdc59a5c86a6b2">Chat</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
+<li>warnung_send()
+: <a class="el" href="classChat.html#ada19f0bb6a20933372ef3d3e9487146e">Chat</a>
+</li>
+<li>write()
+: <a class="el" href="classDatei.html#ac86b8b18b503245dfeec18b99c92c6d1">Datei</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_~"></a>- ~ -</h3><ul>
+<li>~UiThing()
+: <a class="el" href="classChat_1_1UiThing.html#a80c949f3808b46c85361ee338c6472bc">Chat::UiThing</a>
+</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<map id="Grafische Darstellung der Klassenhierarchie" name="Grafische Darstellung der Klassenhierarchie">
+<area shape="rect" id="node2" href="$classAdmin.html" title="Dieser Dialog ist nur für den Chat::oberadmin. " alt="" coords="143,5,201,32"/>
+<area shape="rect" id="node3" href="$classEntfernen.html" title="Mit diesem Dialog kann ein Admin einen Nutzer entfernen. " alt="" coords="133,56,211,83"/>
+<area shape="rect" id="node4" href="$classGroupOpen.html" title="Undocumented. " alt="" coords="128,107,216,133"/>
+<area shape="rect" id="node5" href="$classInfoOpen.html" title="Mit diesem Dialog kann ein Admin Informationen versenden. " alt="" coords="135,157,209,184"/>
+<area shape="rect" id="node6" href="$classLockfile.html" title="Dieser Dialog zeigt eine Meldung an, dass kein Admin im Chat ist, und bietet einen Button zum Beenden..." alt="" coords="139,208,205,235"/>
+<area shape="rect" id="node7" href="$classNutzer.html" title="Dieser Dialog zeigt alle Nutzer mit ihrem Benutzernamen_str an. Bei Admins wird ein &quot; (Admin)&quot; angehä..." alt="" coords="141,259,203,285"/>
+<area shape="rect" id="node8" href="$classPasswort.html" title="Mit der Klasse Passwort kann ein Passwort&#45;Dialog erzeugt werden. " alt="" coords="133,309,211,336"/>
+<area shape="rect" id="node9" href="$classPersonalO.html" title="Mit diesem Dialog kann man einen neuen Privatchat starten. Es wird Chat::make_chat() mit dem ausgewäh..." alt="" coords="131,360,213,387"/>
+<area shape="rect" id="node10" href="$classSimpleDialog.html" title="Mit der Klasse SimpleDialog können einfache Dialoge erstellt werden. " alt="" coords="123,411,221,437"/>
+<area shape="rect" id="node11" href="$classVerboten.html" title="Dieser Dialog zeigt alle verbotenen Benutzernamen an. " alt="" coords="135,461,209,488"/>
+</map>
