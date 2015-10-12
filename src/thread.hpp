@@ -16,16 +16,16 @@
  */
 
 ///\file
-// Bindet die Thread-Header ein <thread>, <mutex>, <condition_variable> und <atomic> ein
+// Bindet die Thread-Header <thread>, <mutex>, <condition_variable> und <atomic> ein
 
 #ifndef THREAD_HPP
 #define THREAD_HPP
 
 #ifdef WIN32
-# include "mingw-std-threads-master/mingw.thread.h"
+# include "mingw-std-threads/mingw.thread.h"
 # include <mutex>
-# include "mingw-std-threads-master/mingw.mutex.h"
-# include "mingw-std-threads-master/mingw.condition_variable.h" // bindet <atomic> ein
+# include "mingw-std-threads/mingw.mutex.h"
+# include "mingw-std-threads/mingw.condition_variable.h" // bindet <atomic> ein
 #else
 # include <thread>
 # include <condition_variable> // bindet <mutex> ein

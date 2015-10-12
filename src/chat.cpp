@@ -29,7 +29,7 @@
 
 // Versions Makros
 #define VERSION "1.5.0" // Versions-Nummer
-#define BUILD   "0051"  // Build-Nummer
+#define BUILD   "0052"  // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren
@@ -67,10 +67,15 @@ Chat::Chat( bool plum, QWidget* parent ) :
 
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
-        ui.Copyright -> setText( "Copyright (C) 2015 Lukas Bartl\n\n"
-                                 "Wenn jemand den Quellcode dieses Programms haben will, soll er sich bei " VERWALTER " melden!\n"
-                                 "Wenn jemand Verbesserungsvorschläge hat, kann er sich auch bei " VERWALTER " melden!\n\n"
+        ui.Copyright -> setText( "Copyright (C) 2015 Lukas Bartl\n"
+                                 "Lizenz GPLv3+: GNU GPL Version 3 oder höher <http://gnu.org/licenses/gpl.html>\n"
+                                 "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.\n"
+                                 "Es gibt keinerlei Garantien.\n\n"
+                                 "Den Quellcode gibt es auf https://github.com/hanswurst862/klassenchat\n\n"
+                                 "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!\n\n"
                                  "Version: " VERSION "-" BUILD " " TYPE );
+
+    ui.Copyright -> setTextInteractionFlags( Qt::TextSelectableByMouse ); // Text kann von Nutzer ausgewählt werden
 
     connect( ui.NutzernameA, &QLineEdit::returnPressed, ui.Ok1,    &QPushButton::click );
     connect( ui.PasswortA,   &QLineEdit::returnPressed, ui.Ok2,    &QPushButton::click );
