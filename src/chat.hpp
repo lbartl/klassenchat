@@ -84,8 +84,6 @@ private:
     // statische Member in chat.cpp definiert
     static Datei const chatfile_norm, chatfile_plum, lockfile_norm, lockfile_plum;
 
-    bool x_plum; ///< Zeigt an ob man im Plum-Chat oder im normalen %Chat ist
-
     /// Enumerator für #flags.
     enum {
         locked, ///< Zeigt für #oberadmin an, ob Admins ihn entfernen dürfen
@@ -101,18 +99,16 @@ private:
     };
 
     std::bitset <COUNT> flags {}; ///< Flags des Chats
+    bool x_plum; ///< Zeigt an ob man im Plum-Chat oder im normalen %Chat ist
     Ui::Chat ui {}; ///< UI des Chats
     QAction* ui_sep {}; ///< Ein Seperator um "Neuer Privatchat..." von den Privatchats zu trennen
-    std::string nutzername {}; ///< Mein Benutzername
+    std::string nutzername {}, ///< Mein Benutzername
+                inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
     QString nutzername_str {}; ///< Mein Benutzername_str, siehe toBenutzername_str()
-
     Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in setfiles())
           infofile {}; ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in setfiles())
-
     Datei const *chatfile_all, ///< Zeiger auf Klassenchat-Datei (entweder #chatfile_norm oder #chatfile_plum)
-                *lockfile,     ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
-                *chatfile {};  ///< Zeiger auf aktuelle Chatdatei (Privatchat oder Klassenchat)
-
+                *lockfile;     ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
     std::unique_ptr <Hineinschreiben> nutzer_h {}; ///< Alle aktuell angemeldeten %Nutzer (zugewiesen in setfiles())
     std::unique_ptr <Hineinschreiben> admins_h {}; ///< Alle aktuell angemeldeten Admins (zugewiesen in setfiles())
 
@@ -122,6 +118,23 @@ private:
       * wenn ich kein #std_admin bin ist #passwords ein nullptr.
       */
     std::unique_ptr <AdminPass> passwords {};
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++" // sonst Warnung wegen falschem Rückgabetyp bei Zuweisungs-Operator
+    struct : public std::atomic <Datei const*> {
+        ///\cond
+        Datei const* operator -> () {
+            return *this;
+        }
+
+        std::atomic <Datei const*>& operator = ( Datei const*const other ) {
+            this -> store( other );
+            return *this;
+        }
+        ///\endcond
+    } chatfile {}; ///< Zeiger auf aktuelle Chatdatei (Privatchat oder Klassenchat)
+#pragma GCC diagnostic pop
+
 
     /// Mit dem struct Chataction können Aktionen für Privatchats verwaltet werden.
     struct Chataction {
@@ -156,6 +169,7 @@ private:
         /// Zeigt was geschehen soll.
         enum Typ : uint_fast8_t {
             nichts, ///< Nichts soll geschehen
+            aktualisieren, ///< Der Chatverlauf soll aktualisiert werden, mit first()=Position in #inhalt (size_t)
             terminate, ///< Den %Chat beenden
             entfernt, ///< Ich wurde entfernt, nötige Informationen in #chatfile_all schreiben, first()=Entferner (std::string)
             Warnung, ///< Eine Warnung soll angezeigt werden
@@ -218,7 +232,7 @@ private:
             typ = neuer_typ;
         }
 
-        /// Ruft newTyp() auf mit neu angelegtem unique_lock (initialisiert mit #mtx).
+        /// Ruft newTyp() auf mit neu angelegtem #unique_lock (initialisiert mit #mtx).
         void newTyp( Typ const neuer_typ ) {
             unique_lock lock ( mtx );
             newTyp( lock, neuer_typ );
@@ -260,7 +274,7 @@ private:
                 chatfile_all_mtx { *chatfile_all }; ///< Datei_Mutex, die das Schreiben von #chatfile_all kontrolliert
 
     // aktualisieren.cpp
-    void verlauf_up();
+    void verlauf_up( size_t pos );
     void main_thread();
 
     // dialog.cpp
@@ -304,6 +318,7 @@ private:
     // threads.cpp
     void start_threads();
     void stop_threads();
+    void aktualisieren_thread();
     void nutzer_thread();
     void pruefen_thread();
 

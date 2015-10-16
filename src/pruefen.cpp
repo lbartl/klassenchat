@@ -54,7 +54,7 @@ bool Chat::vergeben() {
         return false;
 }
 
-/// Aktionen, die von pruefen_thread() in #nextUiThing festgelegt wurden, ausführen.
+/// Aktionen, die von Threads in #nextUiThing festgelegt wurden, ausführen.
 /**
  * @returns true, wenn %Chat beendet oder neugestartet werden soll, sonst false.
  *
@@ -74,9 +74,17 @@ bool Chat::pruefen_main() {
     // nextUiThing überprüfen (weitere Erklärungen bei der Definition von UiThing, chat.hpp)
     lock_guard lock ( nextUiThing.mtx );
 
+    if ( flags[x_reload] && nextUiThing.getTyp() == UiThing::nichts ) { // Chatverlauf manuell aktualisieren
+        verlauf_up( 0 );
+        flags.reset( x_reload );
+    }
+
     switch ( nextUiThing.getTyp() ) {
     case UiThing::nichts: // Nichts tun
         return false;
+    case UiThing::aktualisieren: // Chatverlauf aktualisieren
+        verlauf_up( *nextUiThing.first <size_t>() );
+        break;
     case UiThing::terminate: // Chat beenden
         return true;
     case UiThing::entfernt: // Ich wurde entfernt

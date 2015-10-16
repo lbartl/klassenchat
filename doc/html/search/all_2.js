@@ -8,7 +8,7 @@ var searchData=
   ['chataction',['Chataction',['../structChat_1_1Chataction.html',1,'Chat']]],
   ['chataction',['Chataction',['../structChat_1_1Chataction.html#a701ed650cc14f9d634daa1226ca1bc85',1,'Chat::Chataction']]],
   ['chatall',['chatall',['../classChat.html#a29632dbc516e47c3e8d9dcd0464b8783a85ea6e75df64686d60954212d5d0b46d',1,'Chat']]],
-  ['chatfile',['chatfile',['../classChat.html#a96cde27c857089927c42c4b97b2f653f',1,'Chat']]],
+  ['chatfile',['chatfile',['../classChat.html#a59cf4f34e874d460b9a8130cc9828203',1,'Chat']]],
   ['chatfile_5fall',['chatfile_all',['../classChat.html#a0ddd742d40d31b38e49c0e91c46a7cc5',1,'Chat']]],
   ['chatfile_5fall_5fmtx',['chatfile_all_mtx',['../classChat.html#a307c9543cf9a9512462227f4ef017713',1,'Chat']]],
   ['chatfile_5fnorm',['chatfile_norm',['../classChat.html#a972d48e14dc795003627d0d44e113f4f',1,'Chat']]],

@@ -89,93 +89,84 @@ inline bool toNextLine( const_it& str_pos, const_it& line_end, const_it const st
     return line_end != str_end;
 }
 
-/// Chatverlauf aktualisieren.
+/// #inhalt anzeigen.
 /**
- * verlauf_up() ist die Hauptfunktion der Klasse Chat.
- * Sie aktualisiert den Chatverlauf, indem sie #chatfile einliest, und ruft dabei alle 0,1 Sekunden pruefen_main() auf.
+ * @param pos Position in #inhalt, bei 0 wird alles neu angezeigt, bei 1 wird alles neu angezeigt, die Scrollbar allerdings an die alte Stelle zurückgesetzt.
  *
- * Wenn pruefen_main() true zurückgibt, wird stop() aufgerufen.
+ * Diese Funktion zeigt #inhalt an, indem es Zeile für Zeile durchgegangen wird:\n
+ * Wenn die Zeile keinen Doppelpunkt enthält, wird sie grün ausgegeben.\n
+ * Wenn die Zeile vor dem Doppelpunkt #nutzername stehen hat, wird #nutzername durch "Ich" ersetzt und die Zeile blau ausgegeben.\n
+ * Wenn die Zeile vor dem Doppelpunkt #oberadmin stehen hat, wird sie rot ausgegeben.\n
+ * Wenn die Zeile einen anderen Benutzernamen vor dem Doppelpunkt stehen hat, wird sie schwarz ausgegeben.
  *
- * Wenn #x_reload gesetzt ist, wird der ganze Chatverlauf neu geladen.
+ * Wenn die Zeile keinen Doppelpunkt enthält, wird sie zentriert platziert, sonst linksbündig.
  */
-void Chat::verlauf_up() {
-    static std::string inhalt_old; // In dieser Variable ist immer das gespeichert, was vor 0,1 Sekunden in der Chatdatei war
-    static uint_fast16_t index = 0; // Alle 100 Sekunden (jedes 1000. Mal) wird der gesamte Chatverlauf aktualisiert (x_neu), da manchmal Fehler auftreten
+void Chat::verlauf_up( size_t pos ) {
+#ifdef _DEBUG
+    if ( pos > 1 )
+        klog("Veränderungen anzeigen...");
+    else
+        klog("Chatdatei neu anzeigen...");
+#endif
 
-    bool const x_neu = ++index == 1000;
-    bool const neu = x_neu || flags[x_reload]; // x_reload für auch nach unten scrollen, x_neu nicht
+    if ( pos == 0 ) ui.BrowseA -> setText(""); // Bisherigen Text löschen
 
-    if ( neu ) {
-        flags.reset( x_reload );
-        index = 0;
-    }
+    int const scrollval = ui.BrowseA -> verticalScrollBar() -> value();
+    bool const mitscroll = scrollval == ui.BrowseA -> verticalScrollBar() -> maximum(); // Wenn Scrollbar am Ende ist true, sonst false
 
-    std::string inhalt_new = chatfile -> readAll(); // ohne Datei_Mutex, da sowieso nach 0,1 Sekunden erneut eingelesen und gegebenenfalls aktualisiert wird.
+    if ( pos == 1 ) ui.BrowseA -> setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
 
-    if ( neu || inhalt_new != inhalt_old ) { // prüfen, ob sich Datei in 0,1 Sekunden geändert hat
-        const_it str_pos;
+    Qt::Alignment alignvorher = ui.BrowseA -> alignment(); // wie letzte Zeile alignt ist
 
-        if ( ! neu && std::equal( inhalt_old.begin(), inhalt_old.end(), inhalt_new.begin() ) ) { // Der Rest des Chatverlaufs ist gleichgeblieben
-            klog("Veränderungen anzeigen...");
-            str_pos = inhalt_new.begin() + inhalt_old.length(); // Ab Veränderung
-        } else {
-            klog("Chatdatei neu anzeigen...");
-            str_pos = inhalt_new.begin(); // Von vorne
-            if ( ! x_neu ) ui.BrowseA -> setText(""); // Bisherigen Text löschen
+    const_it const str_end = inhalt.cend();
+    const_it str_pos = pos > 1 ? inhalt.cbegin() + pos : inhalt.cbegin(),
+             line_end = std::find( str_pos, str_end, '\n' ),
+             block_begin; // Anfang des Buffers
+
+    Typ typvorher = Typ::nichts;
+
+    do { // Wenn Ende von inhalt_new erreicht Schleife beenden
+        const_it const doppos = std::find( str_pos, line_end, ':' ); // Position des Doppelpunkts
+        Typ currtyp;
+
+        if ( doppos == line_end ) // Wenn kein Doppelpunkt vorhanden ist, ist es eine Info
+            currtyp = Typ::info;
+        else if ( std::equal( str_pos, doppos, nutzername.begin(), nutzername.end() ) ) // Nachricht stammt von mir selber
+            currtyp = Typ::von_mir;
+        else if ( ! x_plum && flags[chatall] && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
+            currtyp = Typ::von_oberadmin;
+        else // Nachricht stammt von jemand anders
+            currtyp = Typ::von_anders;
+
+        if ( currtyp != typvorher ) { // Neuer Typ, Buffer ausgeben
+            flushBuffer( typvorher, alignvorher, block_begin, str_pos - 1, ui.BrowseA );
+            typvorher = currtyp;
+            block_begin = str_pos;
         }
 
-        int const scrollval = ui.BrowseA -> verticalScrollBar() -> value();
-        bool const mitscroll = scrollval == ui.BrowseA -> verticalScrollBar() -> maximum(); // Wenn Scrollbar am Ende ist true, sonst false
+        if ( currtyp == Typ::von_mir ) { // Zeile stammt von mir, muss sofort ausgegeben werden
+            flushIch( alignvorher, doppos, line_end, ui.BrowseA );
+            typvorher = Typ::nichts;
+        }
+    } while ( toNextLine( str_pos, line_end, str_end ) );
 
-        if ( x_neu ) ui.BrowseA -> setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
+    flushBuffer( typvorher, alignvorher, block_begin, str_end - 1, ui.BrowseA ); // Rest aus dem Buffer ausgeben
 
-        Qt::Alignment alignvorher = ui.BrowseA -> alignment(); // wie letzte Zeile alignt ist
-
-        const_it const str_end = inhalt_new.cend();
-        const_it line_end = std::find( str_pos, str_end, '\n' );
-
-        const_it block_begin; // Anfang des Buffers
-        Typ typvorher = Typ::nichts;
-
-        do { // Wenn Ende von inhalt_new erreicht Schleife beenden
-            const_it const doppos = std::find( str_pos, line_end, ':' ); // Position des Doppelpunkts
-            Typ currtyp;
-
-            if ( doppos == line_end ) // Wenn kein Doppelpunkt vorhanden ist, ist es eine Info
-                currtyp = Typ::info;
-            else if ( std::equal( str_pos, doppos, nutzername.begin(), nutzername.end() ) ) // Nachricht stammt von mir selber
-                currtyp = Typ::von_mir;
-            else if ( ! x_plum && flags[chatall] && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
-                currtyp = Typ::von_oberadmin;
-            else // Nachricht stammt von jemand anders
-                currtyp = Typ::von_anders;
-
-            if ( currtyp != typvorher ) { // Neuer Typ, Buffer ausgeben
-                flushBuffer( typvorher, alignvorher, block_begin, str_pos - 1, ui.BrowseA );
-                typvorher = currtyp;
-                block_begin = str_pos;
-            }
-
-            if ( currtyp == Typ::von_mir ) { // Zeile stammt von mir, muss sofort ausgegeben werden
-                flushIch( alignvorher, doppos, line_end, ui.BrowseA );
-                typvorher = Typ::nichts;
-            }
-        } while ( toNextLine( str_pos, line_end, str_end ) );
-
-        flushBuffer( typvorher, alignvorher, block_begin, str_end - 1, ui.BrowseA ); // Rest aus dem Buffer ausgeben
-
-        ui.BrowseA -> verticalScrollBar() -> setValue( mitscroll ? ui.BrowseA -> verticalScrollBar() -> maximum() : scrollval ); // Ans Ende scrollen bzw. zurück an den Punkt scrollen, wo man vorher war
-
-        inhalt_old.swap( inhalt_new ); // inhalt_new wird nicht mehr benötigt, inhalt_old den Wert zuweisen
-    }
+    ui.BrowseA -> verticalScrollBar() -> setValue( mitscroll ? ui.BrowseA -> verticalScrollBar() -> maximum() : scrollval ); // Ans Ende scrollen bzw. zurück an den Punkt scrollen, wo man vorher war
 }
 
-/// Undocumented.
+/// Dies ist die Hauptfunktion des Chats.
+/**
+ * main_thread() führt den Main-Thread aus.
+ * Er ruft pruefen_main() auf.
+ * Falls diese Funkion true zurückgibt, wird stop() aufgerufen.
+ * Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, indem wiederum main_thread() aufgerufen wird.
+ *
+ * main_thread() ruft sich also so lange selbst auf, bis pruefen_main() true zurückgibt.
+ */
 void Chat::main_thread() {
     if ( pruefen_main() )
         QTimer::singleShot( 0, [this] () { stop(); } ); // start.cpp
-    else {
-        verlauf_up();
+    else
         QTimer::singleShot( 100, [this] () { main_thread(); } ); // sich selbst in 0,1 Sekunden wieder aufrufen
-    }
 }

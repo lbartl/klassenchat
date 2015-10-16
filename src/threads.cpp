@@ -29,6 +29,7 @@ namespace {
 void Chat::start_threads() {
     threads_stop = 0;
 
+    std::thread( [this] () { aktualisieren_thread(); } ).detach();
     std::thread( [this] () { nutzer_thread(); } ).detach();
     std::thread( [this] () { pruefen_thread(); } ).detach();
 
@@ -39,13 +40,48 @@ void Chat::start_threads() {
 void Chat::stop_threads() {
     ++threads_stop;
 
-    while( threads_stop != 3 ) // warten bis sich alle Threads beendet haben
+    while( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
         this_thread::sleep_for( 0.1s );
 
     klog("Threads beendet!");
 }
 
 #define UNTIL_STOP while( this_thread::sleep_for( 0.1s ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
+
+/// Aktualisiert den Chatverlauf.
+/**
+ * Alle 0,1 Sekunden wird #chatfile eingelesen und mit #inhalt verglichen.
+ * Wenn #inhalt identisch mit dem ersten Teil von #chatfile is, wird inhalt.length() in #nextUiThing geschrieben.
+ * Andernfalls wird 0 in #nextUiThing geschrieben.
+ *
+ * Alle 100 Sekunden wird 1 in #nextUiThing geschrieben.
+ */
+void Chat::aktualisieren_thread() {
+    uint_fast16_t i = 0; // Alle 100 Sekunden (jedes 1000. Mal) wird der gesamte Chatverlauf aktualisiert (x_neu), da manchmal Fehler auftreten
+
+    UNTIL_STOP
+        if ( ++i == 1000 ) {
+            unique_lock lock ( nextUiThing.mtx );
+            nextUiThing.newTyp( lock, UiThing::aktualisieren );
+
+            new ( nextUiThing.first() ) size_t { 1 };
+
+            i = 0;
+        } else {
+            std::string inhalt_new = chatfile -> readAll(); // Datei einlesen
+
+            if ( inhalt_new != inhalt ) { // Chatverlauf hat sich verändert
+                unique_lock lock ( nextUiThing.mtx );
+                nextUiThing.newTyp( lock, UiThing::aktualisieren );
+
+                new ( nextUiThing.first() ) size_t { std::equal( inhalt.begin(), inhalt.end(), inhalt_new.begin() ) ? inhalt.length() : 0 };
+
+                inhalt.swap( inhalt_new );
+            }
+        }
+
+    ++threads_stop;
+}
 
 /// Aktualisiert die Nutzerverwaltung.
 /**
