@@ -113,7 +113,7 @@ bool Chat::pruefen_main() {
         ui.action_berall_den_Chat_beenden -> setEnabled( false );
         break;
     case UiThing::Dialog: // Dialog anzeigen
-        createDialog( *nextUiThing.first <QString>(), *nextUiThing.first <QString>(), this );
+        createDialog( *nextUiThing.first <QString>(), *nextUiThing.second <QString>(), this );
         break;
     case UiThing::Privatchat: // neue Chataction erstellen
         new_chat( std::move( *nextUiThing.first <Datei>() ), std::move( *nextUiThing.second <std::string>() ) );

@@ -119,22 +119,18 @@ private:
       */
     std::unique_ptr <AdminPass> passwords {};
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++" // sonst Warnung wegen falschem Rückgabetyp bei Zuweisungs-Operator
     struct : public std::atomic <Datei const*> {
         ///\cond
         Datei const* operator -> () {
             return *this;
         }
 
-        std::atomic <Datei const*>& operator = ( Datei const*const other ) {
+        auto& operator = ( Datei const*const other ) {
             this -> store( other );
             return *this;
         }
         ///\endcond
     } chatfile {}; ///< Zeiger auf aktuelle Chatdatei (Privatchat oder Klassenchat)
-#pragma GCC diagnostic pop
-
 
     /// Mit dem struct Chataction können Aktionen für Privatchats verwaltet werden.
     struct Chataction {
