@@ -18,6 +18,7 @@
 // Diese Datei definiert die Memberfunktion Datei::readAll() und die Konstanten von filesystem.hpp
 
 #include "filesystem.hpp"
+#include "klog.hpp"
 #include <iostream>
 
 /**
@@ -37,6 +38,9 @@ std::string Datei::readAll() const try {
 } catch ( fstream_exc const& exc ) {
     ifstreamExcAusgabe( exc, *this );
     return ""; // leerer String für die meisten Fälle gut
+} catch (...) {
+    klog("fail");
+    return "";
 }
 
 namespace static_paths {

@@ -99,7 +99,7 @@ done
 if [ "$platform" == "win32" ]; then # Windows
   if [ ! -e ./mxe ]; then # Cross-Compiler noch nicht vorhanden
     git clone https://github.com/mxe/mxe.git
-    cd mxe && make qtbase boost # Qt5 und Boost herunterladen und kompilieren
+    cd mxe && make qtbase boost --jobs=2 # Qt5 und Boost herunterladen und kompilieren
     cd ..
   fi
   

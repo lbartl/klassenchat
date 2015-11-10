@@ -29,7 +29,7 @@
 
 /// Wichtigste Klasse des Chats.
 /**
- * Beim Aufruf des Programms wird nach dem Passwort-Dialog ein Objekt der Klasse Chat erzeugt, das die ganze Verwaltung des Chats übernimmt.
+ * Beim Aufruf des Programms wird, nach dem Passwort-Dialog, ein Objekt der Klasse Chat erzeugt, das die ganze Verwaltung des Chats übernimmt.
  * Dieses stellt gleichzeitig auch das Haupt-Fenster da.
  */
 class Chat final : public QMainWindow
