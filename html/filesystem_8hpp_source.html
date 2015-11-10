@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.9.1"/>
+<title>Chat: /home/lukas/Programmieren/C++/Qt/Chat/src/filesystem.hpp Quellcode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Chat
+   &#160;<span id="projectnumber">1.3</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.9.1 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="namespaces.html"><span>Namensbereiche</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li class="current"><a href="files.html"><span>Dateien</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Suchen" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Auflistung&#160;der&#160;Dateien</span></a></li>
+      <li><a href="globals.html"><span>Datei-Elemente</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">filesystem.hpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="filesystem_8hpp.html">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright (C) 2015 Lukas Bartl</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Diese Datei ist Teil des Klassenchats.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * This program is free software: you can redistribute it and/or modify</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * the Free Software Foundation, either version 3 of the License, or</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * (at your option) any later version.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * GNU General Public License for more details.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Dieser Header deklariert und definiert die Klasse Ordner und die Funktion chDir(), mit der Ordner verwaltet werden können und definiert Funktionen zum Ausgeben von Datei-Exceptions</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef FILESYSTEM_HPP</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define FILESYSTEM_HPP</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="datei_8hpp.html">datei.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structOrdner.html">   31</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structOrdner.html">Ordner</a> : <span class="keyword">public</span> fs::path</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structOrdner.html#a938d85c3e66944c5fd5a2a08bdab1ba4">   34</a></span>&#160;    <a class="code" href="structOrdner.html#a938d85c3e66944c5fd5a2a08bdab1ba4">Ordner</a>( <span class="keywordtype">char</span> <span class="keyword">const</span>*<span class="keyword">const</span> pfad = <span class="stringliteral">&quot;&quot;</span> ) :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        fs::path( pfad ) {}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structOrdner.html#aa3001692e15a500d3c699f730873f17f">   38</a></span>&#160;    <a class="code" href="structOrdner.html#aa3001692e15a500d3c699f730873f17f">Ordner</a>( fs::path <span class="keyword">const</span>&amp; pfad ) :</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        fs::path( pfad ) {}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structOrdner.html#ae2d93a793c5b516e521b490e336ab98f">   42</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="structOrdner.html#ae2d93a793c5b516e521b490e336ab98f">Ordner</a>( std::string <span class="keyword">const</span>&amp; pfad ) :</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        fs::path( pfad ) {}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">   46</a></span>&#160;    <span class="keywordtype">char</span> <span class="keyword">const</span>* <a class="code" href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">getpath</a>() const noexcept {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> string().c_str();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structOrdner.html#a5647b8fef433932ae17d9b6711d5ca3e">   51</a></span>&#160;    <span class="keywordtype">void</span> <span class="keyword">remove</span>() <span class="keyword">const</span> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        fs::remove_all( *<span class="keyword">this</span> );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60">   56</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60">create</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        fs::create_directories( *<span class="keyword">this</span> );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="structOrdner.html#aaf1e6133637b8fd64e2e948b419e7175">   61</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="structOrdner.html#aaf1e6133637b8fd64e2e948b419e7175">removeInhalt</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">remove</span>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60">create</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40">   71</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40">chDir</a>( <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span>&amp; ordner ) { <span class="comment">// In ordner wechseln</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    fs::current_path( ordner );</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacestatic__paths.html">static_paths</a> { <span class="comment">// definiert in definitions.cpp</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">   77</a></span>&#160;    <span class="keyword">extern</span> <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span> <a class="code" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">terminatedir</a>, <a class="code" href="namespacestatic__paths.html#a61e2ee53c7f17fe9f1700b27510e0987">senddir</a>, <a class="code" href="namespacestatic__paths.html#a430026e8b56c49d1f7b215a14ced44b2">infodir</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">   78</a></span>&#160;    <span class="keyword">extern</span> <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span> <a class="code" href="namespacestatic__paths.html#ae204f90e5572fe2068544d1a1c3e0067">alltfile</a>, <a class="code" href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">warnfile</a>, <a class="code" href="namespacestatic__paths.html#a263c8ee2aa15159bc158ca9f87e7ba3b">nutzerfile</a>, <a class="code" href="namespacestatic__paths.html#a89a905faa7aa66108cad4eef086f8a5d">adminfile</a>, <a class="code" href="namespacestatic__paths.html#ad9444bba59f7c92afc680997356fb47e">verbotenfile</a>, <a class="code" href="namespacestatic__paths.html#acc19cded7bc6d310564c68aaa5932b00">passfile</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">   90</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classDatei.html">Datei</a> <a class="code" href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a>( <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span>&amp; folder, <span class="keywordtype">bool</span> <span class="keyword">const</span> plum, std::string <span class="keyword">const</span>&amp; benutzername ) {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> folder / benutzername + ( plum ? <span class="stringliteral">&quot;_1&quot;</span> : <span class="stringliteral">&quot;_0&quot;</span> );</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a8686229791c9b87bd789a8ff31ce58dd">   95</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="classDatei.html">Datei</a> <a class="code" href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a>( <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span>&amp; folder, std::pair &lt;bool, std::string&gt; <span class="keyword">const</span>&amp; paar ) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a>( folder, paar.first, paar.second );</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// Exceptions</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">  109</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a>( <a class="code" href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a> <span class="keyword">const</span>&amp; exc, <span class="keywordtype">char</span> <span class="keyword">const</span>*<span class="keyword">const</span> msg ) { <span class="comment">// Information zu einer fstream_exc ausgeben</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    std::cerr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot;!\n&quot;</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                 <span class="stringliteral">&quot;what(): &quot;</span> &lt;&lt; exc.what() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                 <span class="stringliteral">&quot;Error-Code: &quot;</span> &lt;&lt; errno &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                 <span class="stringliteral">&quot;Bedeutung: &quot;</span> &lt;&lt; strerror( errno ) &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    std::cerr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a4c620881a14cd56e3b1b2068f38d038e">  120</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a>( <a class="code" href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a> <span class="keyword">const</span>&amp; exc, std::string <span class="keyword">const</span>&amp; msg ) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a>( exc, msg.c_str() );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a23e198852183763f1340ddbb59164bc3">  128</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="filesystem_8hpp.html#a23e198852183763f1340ddbb59164bc3">ofstreamExcAusgabe</a>( <a class="code" href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a> <span class="keyword">const</span>&amp; exc, <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file ) {</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a>( exc, <span class="stringliteral">&quot;Fehler beim Schreiben in Datei &quot;</span> + file );</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="filesystem_8hpp.html#a8474ef885e6b5bd5843691d7b07daba1">  136</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="filesystem_8hpp.html#a8474ef885e6b5bd5843691d7b07daba1">ifstreamExcAusgabe</a>( <a class="code" href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a> <span class="keyword">const</span>&amp; exc, <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file ) {</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a>( exc, <span class="stringliteral">&quot;Fehler beim Lesen der Datei &quot;</span> + file );</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#endif // FILESYSTEM_HPP</span></div>
+<div class="ttc" id="classDatei_html"><div class="ttname"><a href="classDatei.html">Datei</a></div><div class="ttdoc">Mit der Klasse Datei können Dateien verwaltet werden. </div><div class="ttdef"><b>Definition:</b> datei.hpp:40</div></div>
+<div class="ttc" id="namespacestatic__paths_html"><div class="ttname"><a href="namespacestatic__paths.html">static_paths</a></div><div class="ttdoc">Statische Dateien und Ordner. </div><div class="ttdef"><b>Definition:</b> definitions.cpp:46</div></div>
+<div class="ttc" id="datei_8hpp_html"><div class="ttname"><a href="datei_8hpp.html">datei.hpp</a></div></div>
+<div class="ttc" id="structOrdner_html"><div class="ttname"><a href="structOrdner.html">Ordner</a></div><div class="ttdoc">Mit der Klasse Ordner können Verzeichnisse verwaltet werden. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:31</div></div>
+<div class="ttc" id="filesystem_8hpp_html_a23e198852183763f1340ddbb59164bc3"><div class="ttname"><a href="filesystem_8hpp.html#a23e198852183763f1340ddbb59164bc3">ofstreamExcAusgabe</a></div><div class="ttdeci">void ofstreamExcAusgabe(fstream_exc const &amp;exc, Datei const &amp;file)</div><div class="ttdoc">Gibt Informationen zu einem ofstream-Fehler aus. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:128</div></div>
+<div class="ttc" id="structOrdner_html_ae2d93a793c5b516e521b490e336ab98f"><div class="ttname"><a href="structOrdner.html#ae2d93a793c5b516e521b490e336ab98f">Ordner::Ordner</a></div><div class="ttdeci">Ordner(std::string const &amp;pfad)</div><div class="ttdoc">Expliziter Konstruktor mit Pfad als std::string. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:42</div></div>
+<div class="ttc" id="namespacestatic__paths_html_ae204f90e5572fe2068544d1a1c3e0067"><div class="ttname"><a href="namespacestatic__paths.html#ae204f90e5572fe2068544d1a1c3e0067">static_paths::alltfile</a></div><div class="ttdeci">Datei const alltfile</div><div class="ttdoc">Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der Chat geschlossen werden soll...</div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+<div class="ttc" id="namespacestatic__paths_html_acc19cded7bc6d310564c68aaa5932b00"><div class="ttname"><a href="namespacestatic__paths.html#acc19cded7bc6d310564c68aaa5932b00">static_paths::passfile</a></div><div class="ttdeci">Datei const passfile</div><div class="ttdoc">Datei, in der alle Passwörter der std_admins gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+<div class="ttc" id="filesystem_8hpp_html_a8474ef885e6b5bd5843691d7b07daba1"><div class="ttname"><a href="filesystem_8hpp.html#a8474ef885e6b5bd5843691d7b07daba1">ifstreamExcAusgabe</a></div><div class="ttdeci">void ifstreamExcAusgabe(fstream_exc const &amp;exc, Datei const &amp;file)</div><div class="ttdoc">Gibt Informationen zu einem ifstream-Fehler aus. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:136</div></div>
+<div class="ttc" id="structOrdner_html_a938d85c3e66944c5fd5a2a08bdab1ba4"><div class="ttname"><a href="structOrdner.html#a938d85c3e66944c5fd5a2a08bdab1ba4">Ordner::Ordner</a></div><div class="ttdeci">Ordner(char const *const pfad=&quot;&quot;)</div><div class="ttdoc">Konstruktor mit Pfad als C-String. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:34</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a9e2791292565ad2b667dda2018dd407e"><div class="ttname"><a href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">static_paths::terminatedir</a></div><div class="ttdeci">Ordner const terminatedir</div><div class="ttdoc">Ordner, in dem eine Datei mit Benutzernamen liegt, falls der Admin ihn rausgeschmissen hat...</div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
+<div class="ttc" id="structOrdner_html_ab2f296ec59e24f85ce9a3ab78b839903"><div class="ttname"><a href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">Ordner::getpath</a></div><div class="ttdeci">char const * getpath() const noexcept</div><div class="ttdoc">Pfad als C-String zurückgeben. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:46</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a6169130960b6b357a719a5c9a2d19a11"><div class="ttname"><a href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">static_paths::warnfile</a></div><div class="ttdeci">Datei const warnfile</div><div class="ttdoc">Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine Warnung erscheinen soll...</div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+<div class="ttc" id="filesystem_8hpp_html_a7fc5bfdb4549fef2976088a3eea50b40"><div class="ttname"><a href="filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40">chDir</a></div><div class="ttdeci">void chDir(Ordner const &amp;ordner)</div><div class="ttdoc">Aktuelles Verzeichnis wechseln. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:71</div></div>
+<div class="ttc" id="filesystem_8hpp_html_a762460314be262b16ecbac23c09ae395"><div class="ttname"><a href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a></div><div class="ttdeci">Datei makeToNutzerDatei(Ordner const &amp;folder, bool const plum, std::string const &amp;benutzername)</div><div class="ttdoc">Erstellt eine Datei für einen Nutzer. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:90</div></div>
+<div class="ttc" id="structOrdner_html_aaf1e6133637b8fd64e2e948b419e7175"><div class="ttname"><a href="structOrdner.html#aaf1e6133637b8fd64e2e948b419e7175">Ordner::removeInhalt</a></div><div class="ttdeci">void removeInhalt() const </div><div class="ttdoc">Alle Dateien des Ordners entfernen. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:61</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a61e2ee53c7f17fe9f1700b27510e0987"><div class="ttname"><a href="namespacestatic__paths.html#a61e2ee53c7f17fe9f1700b27510e0987">static_paths::senddir</a></div><div class="ttdeci">Ordner const senddir</div><div class="ttdoc">Ordner, in dem Privatchats gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
+<div class="ttc" id="filesystem_8hpp_html_a07ebaa26f91ac115f8f26f0fb04c5abb"><div class="ttname"><a href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a></div><div class="ttdeci">void fstreamExcAusgabe(fstream_exc const &amp;exc, char const *const msg)</div><div class="ttdoc">Gibt Informationen zu einem fstream-Fehler aus. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:109</div></div>
+<div class="ttc" id="namespacestatic__paths_html_ad9444bba59f7c92afc680997356fb47e"><div class="ttname"><a href="namespacestatic__paths.html#ad9444bba59f7c92afc680997356fb47e">static_paths::verbotenfile</a></div><div class="ttdeci">Datei const verbotenfile</div><div class="ttdoc">Datei, in der alle verbotenen Benuternamen gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a430026e8b56c49d1f7b215a14ced44b2"><div class="ttname"><a href="namespacestatic__paths.html#a430026e8b56c49d1f7b215a14ced44b2">static_paths::infodir</a></div><div class="ttdeci">Ordner const infodir</div><div class="ttdoc">Ordner, in dem Infos an Benutzernamen gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
+<div class="ttc" id="structOrdner_html_a56af0a4ee53e4ff9a8b9a67da9443d60"><div class="ttname"><a href="structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60">Ordner::create</a></div><div class="ttdeci">void create() const </div><div class="ttdoc">Ordner erstellen. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:56</div></div>
+<div class="ttc" id="datei_8hpp_html_ab1037d806c99eb8714dec825edb210df"><div class="ttname"><a href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a></div><div class="ttdeci">std::ios_base::failure fstream_exc</div><div class="ttdoc">auf Windows wegen einem Fehler in mingw std::exception, sonst std::ios_base::failure ...</div><div class="ttdef"><b>Definition:</b> datei.hpp:33</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a263c8ee2aa15159bc158ca9f87e7ba3b"><div class="ttname"><a href="namespacestatic__paths.html#a263c8ee2aa15159bc158ca9f87e7ba3b">static_paths::nutzerfile</a></div><div class="ttdeci">Datei const nutzerfile</div><div class="ttdoc">Datei, in der alle angemeldeten Benutzernamen gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+<div class="ttc" id="structOrdner_html_aa3001692e15a500d3c699f730873f17f"><div class="ttname"><a href="structOrdner.html#aa3001692e15a500d3c699f730873f17f">Ordner::Ordner</a></div><div class="ttdeci">Ordner(fs::path const &amp;pfad)</div><div class="ttdoc">Konstruktor mit Pfad als boost::filesystem::path. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:38</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a89a905faa7aa66108cad4eef086f8a5d"><div class="ttname"><a href="namespacestatic__paths.html#a89a905faa7aa66108cad4eef086f8a5d">static_paths::adminfile</a></div><div class="ttdeci">Datei const adminfile</div><div class="ttdoc">Datei, in der alle angemeldeten Admins gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.9.1
+</small></address>
+</body>
+</html>
