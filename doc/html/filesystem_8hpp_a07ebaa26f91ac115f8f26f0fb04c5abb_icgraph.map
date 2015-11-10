@@ -1,5 +1,0 @@
-<map id="fstreamExcAusgabe" name="fstreamExcAusgabe">
-<area shape="rect" id="node2" href="$filesystem_8hpp.html#a4c620881a14cd56e3b1b2068f38d038e" title="Kurzform für fstreamExcAusgabe( exc, msg.c_str() ) " alt="" coords="197,5,337,32"/>
-<area shape="rect" id="node3" href="$filesystem_8hpp.html#a23e198852183763f1340ddbb59164bc3" title="Gibt Informationen zu einem ofstream&#45;Fehler aus. " alt="" coords="193,56,340,83"/>
-<area shape="rect" id="node4" href="$filesystem_8hpp.html#a8474ef885e6b5bd5843691d7b07daba1" title="Gibt Informationen zu einem ifstream&#45;Fehler aus. " alt="" coords="195,107,338,133"/>
-</map>

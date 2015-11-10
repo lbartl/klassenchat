@@ -1,6 +1,0 @@
-<map id="Chat::make_chat" name="Chat::make_chat">
-<area shape="rect" id="node2" href="$classChat.html#ab246870bb6ad17f6e4f5ea351a1c6bca" title="Prüfen, ob ein Privatchat mit einem bestimmten Chatpartner existiert. " alt="" coords="186,5,305,32"/>
-<area shape="rect" id="node3" href="$classDatei.html#a663a8c60f01ba7fe1f3bffee33616164" title="Einen std::ofstream der Datei zurückgeben. " alt="" coords="191,56,299,83"/>
-<area shape="rect" id="node4" href="$filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395" title="Erstellt eine Datei für einen Nutzer. " alt="" coords="176,107,315,133"/>
-<area shape="rect" id="node5" href="$classChat.html#a87d43829253003531f23edf17e37f58e" title="Eine neue Chataction erstellen. Aufgerufen von make_chat() und pruefen2() " alt="" coords="188,157,303,184"/>
-</map>
