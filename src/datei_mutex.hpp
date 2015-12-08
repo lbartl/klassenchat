@@ -21,7 +21,7 @@
 #ifndef DATEI_MUTEX_HPP
 #define DATEI_MUTEX_HPP
 
-#ifdef THREAD_HPP // muss vor thread.hpp eingebunden werden, eigentlich nur für Windows, aber damit der Fehler schnell erkannt wird, auch für Unix
+#ifdef THREAD_HPP // muss vor thread.hpp eingebunden werden, eigentlich nur für Windows, aber, damit der Fehler schnell erkannt wird, auch für Unix
 # error datei_mutex.hpp muss vor thread.hpp eingebunden werden!
 #else
 

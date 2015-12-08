@@ -35,11 +35,15 @@ using sep = boost::char_separator <char>;
 void Chat::senden_pruef() {
     ui.NachrichtB -> setFocus(); // Fokus zurück auf Input
     string const nachricht = ui.NachrichtB -> text().toStdString(); // Eingegebener Text
+
+    if ( nachricht.find_first_not_of(' ') == nachricht.npos ) {// Keine Zeichen oder nur Leerzeichen eingegeben
+        qWarning("Keine Nachricht eingegeben!");
+        return;
+    }
+
     ui.NachrichtB -> setText("");
 
-    if ( nachricht.find_first_not_of(' ') == nachricht.npos ) // Keine Zeichen oder nur Leerzeichen eingegeben
-        qWarning("Keine Nachricht eingegeben!");
-    else if ( nachricht[0] == '/' ) { // Kommando
+    if ( nachricht[0] == '/' ) { // Kommando
         boost::tokenizer <sep> tokens ( nachricht, sep(" ") );
 
         auto tok_it = tokens.begin();
