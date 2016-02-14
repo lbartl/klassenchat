@@ -20,8 +20,8 @@
 
 set -e # Beenden, falls ein Kommando fehlschlägt
 
-if [ "$1" == "--unix" ] || [ "$1" == "--win32" ] || [ "$1" == "--all" ]; then
-  platform=$(echo "$1" | sed -e 's/--//')
+if [ "$1" == "unix" ] || [ "$1" == "win32" ] || [ "$1" == "all" ]; then
+  platform=$1
   options=${*:2}
 else
   echo "Nicht erkannte Option/Platform! Bitte README lesen für weitere Informationen!"

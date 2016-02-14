@@ -12,10 +12,14 @@ Herunterladen des Quellcodes:
 
 Um für Windows zu kompilieren:
 
-    ./compile --win32
+    ./compile win32
 
 Dabei wird zuerst der Cross-Compiler heruntergeladen und kompiliert (in ~/bin/mxe). Anschließend wird der Chat kompiliert
 
 Um für Unix zu kompilieren:
 
-    ./compile --unix
+    ./compile unix
+    
+Um für beides gleichzeitig zu kompilieren:
+    
+    ./compile all
