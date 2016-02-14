@@ -118,6 +118,7 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
     } else if ( ! darf && ! lock ) { // kein Admin, Dialog um den Chat zu beenden
         klog("Kein Admin im Chat!");
         Lockfile( this ).exec();
+        return;
     }
 
     setfiles();

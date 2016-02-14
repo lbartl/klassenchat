@@ -122,14 +122,14 @@ exists("../config/std_admins") { # Standard-Admins, chat.hpp
 
 # Kompilieren
 QMAKE_CXXFLAGS += -std=c++14 # C++14-Standard
-QMAKE_CXXFLAGS_RELEASE -= -g -O2 # Kein Debugging für Release-Versionen
+QMAKE_CXXFLAGS_RELEASE -= -g -O2 -pipe -Wall # Kein Debugging für Release-Versionen
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization # Warnungen
 
 linux-clang { # Clang/LLVM
     QMAKE_CXXFLAGS_RELEASE += -O3 # Höchste Optimierung für clang
 } else { # GCC
     QMAKE_CXXFLAGS_RELEASE += -Ofast # Optimieren für Schnelligkeit
-    QMAKE_CXXFLAGS_DEBUG   += -Og # Optimieren für Debugging
+    QMAKE_CXXFLAGS_DEBUG   += -ggdb -Og # Optimieren für Debugging
 }
 
 CONFIG(debug, debug|release) {
