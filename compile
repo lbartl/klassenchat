@@ -29,8 +29,8 @@ else
 fi
 
 if [ "$platform" == "all" ]; then # Rekursiv
-    bash -c "$0 --win32 $options --halb" &
-    bash -c "$0 --unix $options --halb" &
+    bash -c "$0 win32 $options --halb" &
+    bash -c "$0 unix $options --halb" &
     exit
 fi
 
