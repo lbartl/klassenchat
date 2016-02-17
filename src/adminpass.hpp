@@ -21,6 +21,7 @@
 #define ADMINPASS_HPP
 
 #include "cryptfile.hpp"
+#include "datei_mutex.hpp"
 #include <unordered_map>
 
 /// Mit der Klasse AdminPass können die Passwörter der #Chat::std_admins verwaltet werden. Einziges Objekt ist #Chat::passwords.

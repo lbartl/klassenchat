@@ -266,7 +266,7 @@ private:
                nutzer_h_mtx {}, ///< Mutex für die Synchronisation von #nutzer_h
                admins_h_mtx {}; ///< Mutex für die Synchronisation von #admins_h
 
-    Datei_Mutex lockfile_mtx {"./.embedded"}, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
+    Datei_Mutex lockfile_mtx { *lockfile }, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
                 chatfile_all_mtx { *chatfile_all }; ///< Datei_Mutex, die das Schreiben von #chatfile_all kontrolliert
 
     // aktualisieren.cpp

@@ -45,7 +45,6 @@ inline bool lockfile_exist( Datei const& lockfile ) {
  */
 void Chat::start() {
     nutzername = ui.NutzernameA -> text().toStdString(); // mein Benutzername
-    nutzername_str = toBenutzername_str( x_plum, nutzername );
 
     if ( lockfile_exist( *lockfile ) && vergeben() ) { // Es ist bereits jemand mit diesem Benutzernamen angemeldet (pruefen.cpp)
         klog("Nochmal Benutzername eingeben...");
@@ -53,6 +52,7 @@ void Chat::start() {
         return;
     }
 
+    nutzername_str = toBenutzername_str( x_plum, nutzername );
     bool const is_oberadmin = ! x_plum && nutzername == oberadmin;
     bool const is_std_admin = is_oberadmin || ( ! x_plum && enthaelt( std_admins.begin(), std_admins.end(), nutzername ) );
     flags[x_oberadmin] = is_oberadmin; // Oberadmin

@@ -37,9 +37,9 @@
 struct Datei_Mutex : public boost::interprocess::file_lock {
     Datei_Mutex() = default; ///< Standard-Konstruktor.
 
-    /// Allgemeiner Konstruktor mit Datei als Argument. Falls die %Datei nicht existiert, wird sie erstellt.
+    /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>.lock" angelegt und als Lock genutzt
     Datei_Mutex( Datei const& file ) :
-        boost::interprocess::file_lock( [&file] () { if ( ! file.exist() ) file.touch(); return file.getpath(); } () ) // Datei muss existieren
+        boost::interprocess::file_lock( [datei = file + ".lock"] () { if ( ! datei.exist() ) datei.touch(); return datei.getpath(); } () ) // Datei erstellen
     {}
 
     Datei_Mutex( Datei_Mutex&& ) = default; ///< Move-Konstruktor
@@ -53,15 +53,10 @@ using namespace std::literals;
 
 /// Undocumented.
 template <typename T>
-void Datei_append( Datei const& file, Datei_Mutex& file_mtx, T const& anhang ) try {
+void Datei_append( Datei const& file, Datei_Mutex& file_mtx, T const& anhang ) {
     std::ofstream os = file.ostream( true );
     file_mtx_lock f_lock ( file_mtx );
     os << anhang << std::endl;
-} catch ( std::exception const& exc ) {
-    Datei file1("./failbaum");
-    file1.append( "Exception!\n"
-                  "what(): "s + exc.what() + '\n'
-                + "errno:" + strerror( errno ) );
 }
 
 /// Undocumented.

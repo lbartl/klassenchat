@@ -42,7 +42,7 @@ bool Chat::vergeben() {
     if ( ! verbotenfile.exist() )
         verbotenfile.write("Ich"); // "Ich" ist immer verboten
 
-    if ( Hineinschreiben( nutzername_str, nutzerfile ).hineingeschrieben() ) { // Prüfen ob Benutzername vergeben ist
+    if ( Hineinschreiben( toBenutzername_str( x_plum, nutzername ), nutzerfile ).hineingeschrieben() ) { // Prüfen ob Benutzername vergeben ist
         klog("Nutzername vergeben!");
         createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
         return true;

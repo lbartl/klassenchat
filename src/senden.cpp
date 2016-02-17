@@ -97,8 +97,8 @@ void Chat::senden_pruef() {
         bool first = true;
 
         std::ofstream chatdatei = chatfile -> ostream( true );
-        Datei_Mutex chatfile_mtx ( *chatfile );
-        file_mtx_lock lock ( chatfile_mtx );
+
+        if ( flags[chatall] ) chatfile_all_mtx.lock();
 
         do { // Nachricht Zeile für Zeile in Datei schreiben
             if ( first )
@@ -119,11 +119,16 @@ void Chat::senden_pruef() {
             chatdatei.put('\n');
         } while ( line_end != str_end );
 
-        chatdatei.flush();
+        if ( flags[chatall] ) {
+            chatdatei.flush();
+            chatfile_all_mtx.unlock();
+        }
     } catch ( fstream_exc const& exc ) {
         ofstreamExcAusgabe( exc, *chatfile );
         klog("Erstelle Chatdatei neu...");
         chatfile -> remove();
         chatfile -> touch();
+
+        if ( flags[chatall] ) chatfile_all_mtx.unlock();
     }
 }

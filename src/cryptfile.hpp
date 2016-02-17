@@ -20,7 +20,7 @@
 #ifndef CRYPTFILE_HPP
 #define CRYPTFILE_HPP
 
-#include "datei_mutex.hpp"
+#include "datei.hpp"
 
 /// Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden.
 /**
