@@ -1,0 +1,5 @@
+.gitignore
+bin/
+win32/
+unix/
+config/
