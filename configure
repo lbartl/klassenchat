@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Copyright (C) 2015 Lukas Bartl
+# Diese Datei ist Teil des Klassenchats.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Bereitet das Verzeichnis für das Kompilieren vor
+
+set -e # Beenden wenn fehlschägt
+
+cores=$(nproc) # Anzahl der CPU-Kerne
+
+# Ordner erstellen
+
+for i in unix win32; do
+    if [ ! -e $i ]; then
+        mkdir $i
+        mkdir $i/bin
+    fi
+done
+
+if [ ! -e bin ]; then
+    mkdir bin
+    ln -rs unix/bin bin/unix
+    ln -rs win32/bin bin/win32
+fi
+
+# MXE
+cd win32
+if [ ! -e mxe ]; then
+    git clone https://github.com/mxe/mxe.git
+fi
+cd mxe
+
+# MXE-Config
+cat << EOF > settings.mk
+JOBS := $cores
+MXE_TMP := /tmp
+MXE_TARGETS := i686-w64-mingw32.static
+MXE_PLUGIN_DIRS := plugins/gcc5
+LOCAL_PKG_LIST := boost qtbase
+.DEFAULT local-pkg-list:
+EOF
+echo 'local-pkg-list: $(LOCAL_PKG_LIST)' >> settings.mk
+
+# MXE Kompilieren
+make --jobs=2
+cd ../..
+
+# Config
+
+oberadmin=' '
+until [[ "$oberadmin" != *' '* ]]; do # keine Leerzeichen
+    echo
+    echo -n "Oberadmin (leer für \"LukasB\"): "
+    read oberadmin
+done
+
+echo -n "Verwalter (leer für \"Lukas Bartl\"): "
+read verwalter
+
+echo "Standard-Admins, getrennt durch Whitespaces (leer für \"Oberlusche\", \"Patiboy\" und \"Jaguar\"): "
+read std_admins
+
+if [ ! -e config ]; then
+    mkdir config
+fi
+
+cd config
+
+echo "$oberadmin" > oberadmin
+echo "$verwalter" > verwalter
+echo "$std_admins" > std_admins
+
+cd ..
+
+until [ "$compile" == "j" ] || [ "$compile" == "n" ]; do
+    echo -n "Kompilieren? (j|n) "
+    read -n1 compile
+    echo
+done
+
+if [ "$compile" == "j" ]; then
+    ./compile all --neu
+fi
