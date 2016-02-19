@@ -36,7 +36,7 @@ fi
 
 neu=0
 clang=0
-jobs=4
+jobs=$(($(nproc)*2))
 
 for opt in $options; do
     if [ "$opt" == "--neu" ]; then
@@ -59,11 +59,6 @@ function build { # Kompilieren und Dateien erstellen
     cp $SRC/icon.ico "./bin/S.75_3/"
   fi
 }
-
-if [ ! -e "./$platform" ]; then
-    mkdir "./$platform"
-    neu=1
-fi
 
 cd "./$platform"
 
@@ -97,16 +92,15 @@ for i in "verwalter" "oberadmin" "std_admins"; do
 done
 
 if [ "$platform" == "win32" ]; then # Windows
-  if [ ! -e ./mxe ]; then # Cross-Compiler noch nicht vorhanden
-    git clone https://github.com/mxe/mxe.git
-    cd mxe && make qtbase boost --jobs=2 # Qt5 und Boost herunterladen und kompilieren
-    cd ..
-  fi
-  
   echo "Kompiliere für Windows..."
   
   MXE=$PWD/mxe
   PATH=$PATH:$MXE/usr/bin
+  
+  cd mxe
+  git pull | true
+  make --jobs=2
+  cd ..
   
   if [ $neu == 1 ]; then
     for i in *; do
@@ -146,16 +140,4 @@ else # Unix
   fi
   
   build
-fi
-
-cd ..
-
-if [ ! -e "./bin" ]; then
-    mkdir "./bin"
-fi
-
-cd "./bin"
-
-if [ ! -e "./$platform" ]; then
-    ln -rs "../$platform/bin" "./$platform" # Symlink für Ordner
 fi

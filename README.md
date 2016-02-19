@@ -9,6 +9,10 @@ Herunterladen des Quellcodes:
 
     git clone https://github.com/hanswurst862/klassenchat
     cd klassenchat
+    
+Zum Einrichten:
+
+    ./configure
 
 Um für Windows zu kompilieren:
 
