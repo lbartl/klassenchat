@@ -10,15 +10,13 @@ Herunterladen des Quellcodes:
     git clone https://github.com/hanswurst862/klassenchat
     cd klassenchat
     
-Zum Einrichten:
+Zum Einrichten (inklusive Installieren des Cross-Compilers MXE):
 
     ./configure
 
 Um für Windows zu kompilieren:
 
     ./compile win32
-
-Dabei wird zuerst der Cross-Compiler heruntergeladen und kompiliert (in ~/bin/mxe). Anschließend wird der Chat kompiliert
 
 Um für Unix zu kompilieren:
 
