@@ -80,9 +80,15 @@ fi
 
 cd config
 
-echo "$oberadmin" > oberadmin
-echo "$verwalter" > verwalter
-echo "$std_admins" > std_admins
+if [ "$oberadmin" != "" ]; then
+    echo "$oberadmin" > oberadmin
+fi
+if [ "$verwalter" != "" ]; then
+    echo "$verwalter" > verwalter
+fi
+if [ "$std_admins" != "" ]; then
+    echo "$std_admins" > std_admins
+fi
 
 cd ..
 
