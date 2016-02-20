@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -76,6 +76,8 @@ Hineinschreiben& Hineinschreiben::aktualisieren() {
 void Hineinschreiben::reinschreiben() {
     if ( nutzername_str == "$$$" )
         throw std::logic_error("Keinen Nutzernamen gesetzt!");
+    else if ( hineingeschrieben() ) // Bereits hineingeschrieben
+        return;
 
     Datei_append( file, file_mtx, nutzername_str.toStdString() );
     namen.push_back( nutzername_str );
@@ -84,6 +86,8 @@ void Hineinschreiben::reinschreiben() {
 void Hineinschreiben::herausnehmen() {
     if ( nutzername_str == "$$$" )
         throw std::logic_error("Keinen Nutzernamen gesetzt!");
+    else if ( ! hineingeschrieben() ) // Gar nicht hineingeschrieben
+        return;
 
     aktualisieren();
 

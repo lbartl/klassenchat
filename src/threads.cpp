@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -181,6 +181,9 @@ void Chat::pruefen_thread() {
             new ( nextUiThing.first() ) string( terminatefile.readLine() ); // wer mich entfernt hat
 
             terminatefile.remove();
+        } else if ( checkfile.exist() ) { // Zeigen, dass ich noch im Chat bin, indem die Datei entfernt wird
+            klog("Lösche checkfile...");
+            checkfile.remove();
         } else if ( ! x_plum && warnfile.exist() ) { // Warnung
             Hineinschreiben warn1 ( nutzername_str, warnfile );
 

@@ -43,9 +43,21 @@ bool Chat::vergeben() {
         verbotenfile.write("Ich"); // "Ich" ist immer verboten
 
     if ( Hineinschreiben( toBenutzername_str( x_plum, nutzername ), nutzerfile ).hineingeschrieben() ) { // Prüfen ob Benutzername vergeben ist
-        klog("Nutzername vergeben!");
-        createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
-        return true;
+        checkfile.touch();
+        this_thread::sleep_for( 0.5s ); // Warten bis die Datei von dem Nutzer gelöscht wird
+
+        if ( checkfile.exist() ) { // Bei diesem Nutzer ist der Chat abgestürzt
+            checkfile.remove();
+            Hineinschreiben( toBenutzername_str( x_plum, nutzername ), adminfile ).herausnehmen(); // Falls der Nutzer ein Admin war, aber kein std_admin
+            lockfile_mtx.lock();
+                lockfile -> remove();
+            lockfile_mtx.unlock();
+            return false;
+        } else {
+            klog("Nutzername vergeben!");
+            createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
+            return true;
+        }
     } else if ( Hineinschreiben( verbotenfile ).hineingeschrieben( QString::fromStdString( nutzername ), true ) ) { // Prüfen ob Benutzername verboten ist
         klog("Nutername verboten!");
         createDialog( "Fehler", "Ein Admin hat diesen Benutzernamen verboten!\nBitte einen anderen Benutzernamen wählen!", this, true );

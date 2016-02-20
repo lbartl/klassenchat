@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,7 +46,8 @@ std::string Datei::readAll() const try {
 namespace static_paths {
     extern Ordner const terminatedir = "./wichtig",  ///< Ordner, in dem eine %Datei mit Benutzernamen liegt, falls der %Admin ihn rausgeschmissen hat
                         senddir      = "./personal", ///< Ordner, in dem Privatchats gespeichert sind
-                        infodir      = "./infos";    ///< Ordner, in dem Infos an Benutzernamen gespeichert sind
+                        infodir      = "./infos",    ///< Ordner, in dem Infos an Benutzernamen gespeichert sind
+                        checkdir     =  "./check";   ///< Ordner, in dem Dateien zum Überprüfen, ob ein Nutzer noch im Chat ist, sind
 
     extern Datei const alltfile      = "./all-terminate", ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der %Chat geschlossen werden soll
                        warnfile      = "./warning",       ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine %Warnung erscheinen soll

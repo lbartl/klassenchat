@@ -45,6 +45,7 @@ inline bool lockfile_exist( Datei const& lockfile ) {
  */
 void Chat::start() {
     nutzername = ui.NutzernameA -> text().toStdString(); // mein Benutzername
+    checkfile = makeToNutzerDatei( checkdir, x_plum, nutzername );
 
     if ( lockfile_exist( *lockfile ) && vergeben() ) { // Es ist bereits jemand mit diesem Benutzernamen angemeldet (pruefen.cpp)
         klog("Nochmal Benutzername eingeben...");
@@ -112,6 +113,7 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
             senddir.removeInhalt();
             infodir.removeInhalt();
             terminatedir.removeInhalt();
+            checkdir.removeInhalt();
         }
 
         lockfile -> touch();
