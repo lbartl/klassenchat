@@ -79,7 +79,7 @@ void Hineinschreiben::reinschreiben() {
     else if ( hineingeschrieben() ) // Bereits hineingeschrieben
         return;
 
-    Datei_append( file, file_mtx, nutzername_str.toStdString() );
+    Datei_lock_append( file, file_mtx, nutzername_str.toStdString() );
     namen.push_back( nutzername_str );
 }
 

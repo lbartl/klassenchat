@@ -40,13 +40,13 @@ void Chat::start_threads() {
 void Chat::stop_threads() {
     ++threads_stop;
 
-    while( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
+    while ( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
         this_thread::sleep_for( 0.1s );
 
     klog("Threads beendet!");
 }
 
-#define UNTIL_STOP while( this_thread::sleep_for( 0.1s ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
+#define UNTIL_STOP while ( this_thread::sleep_for( 0.1s ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
 
 /// Aktualisiert den Chatverlauf.
 /**

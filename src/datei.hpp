@@ -37,8 +37,7 @@ using fstream_exc = std::ios_base::failure;
 /**
  * Datei definiert Methoden für Dateien, wie das Löschen der %Datei, das Schreiben in die %Datei und andere.
  */
-class Datei
-{
+class Datei {
 public:
     /// Konstruktor mit Pfad als C-String.
     Datei( char const*const pfad = "" ) :

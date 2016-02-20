@@ -25,8 +25,7 @@
 #include <unordered_map>
 
 /// Mit der Klasse AdminPass können die Passwörter der #Chat::std_admins verwaltet werden. Einziges Objekt ist #Chat::passwords.
-class AdminPass
-{
+class AdminPass {
 public:
     static constexpr char const* std_pass {"ichbinboss"}; ///< Standard-Passwort
 

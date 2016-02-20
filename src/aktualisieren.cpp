@@ -125,7 +125,7 @@ void Chat::verlauf_up( size_t pos ) {
 
     Typ typvorher = Typ::nichts;
 
-    do { // Wenn Ende von inhalt_new erreicht Schleife beenden
+    do { // Wenn Ende von inhalt erreicht Schleife beenden
         const_it const doppos = std::find( str_pos, line_end, ':' ); // Position des Doppelpunkts
         Typ currtyp;
 

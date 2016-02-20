@@ -82,7 +82,7 @@ void Chat::senden_pruef() {
             else if ( kommando == "/plum" )
                 plum_chat(); // kommandos.cpp
             else if ( kommando == "/schreibeinfo" ) // Information in Chatdatei schreiben
-                Datei_append( *chatfile_all, chatfile_all_mtx, nachricht.c_str() + kommando.length() + 1 );
+                Datei_lock_append( *chatfile_all, chatfile_all_mtx, nachricht.c_str() + kommando.length() + 1 );
             else if ( kommando == "/lock" && flags[x_oberadmin] ) {
                 flags.flip( locked ); // lock-Status aufs Gegenteil setzen
                 createDialog( "Bestätigung", flags[locked] ? "Keiner darf " OBERADMIN " entfernen!" : "Admins dürfen " OBERADMIN " entfernen!", this );

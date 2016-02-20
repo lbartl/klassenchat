@@ -118,8 +118,8 @@ void Chat::plum_chat() {
     Datei_Mutex other_file_mtx = std::move( chatfile_all_mtx ); // Datei_Mutex für chatfile_all des anderen Chats
     chatfile_all_mtx = *chatfile_all;
 
-    Datei_append( chatfile_plum, x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
-    Datei_append( chatfile_norm, x_plum ? other_file_mtx : chatfile_all_mtx, normtext );
+    Datei_lock_append( chatfile_plum, x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
+    Datei_lock_append( chatfile_norm, x_plum ? other_file_mtx : chatfile_all_mtx, normtext );
 
     setfiles(); // start.cpp
 

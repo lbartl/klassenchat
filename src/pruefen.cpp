@@ -79,7 +79,7 @@ bool Chat::pruefen_main() {
 
     if ( restart || flags[x_close] ) { // Ich beende selbst
         klog( restart ? "Neustart" : "Beenden" );
-        Datei_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat verlassen" );
+        Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat verlassen" );
         return true;
     }
 
@@ -106,7 +106,7 @@ bool Chat::pruefen_main() {
             break;
         } else {
             klog("entfernt");
-            Datei_append( *chatfile_all, chatfile_all_mtx, nextUiThing.first <std::string>() -> append(" hat " + nutzername + " entfernt") );
+            Datei_lock_append( *chatfile_all, chatfile_all_mtx, nextUiThing.first <std::string>() -> append(" hat " + nutzername + " entfernt") );
             return true;
         }
     case UiThing::Warnung: { // Warnung anzeigen

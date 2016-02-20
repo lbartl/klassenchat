@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ using std::string;
  * Wenn eine gefunden wird, wird dieser Privatchat geöffnet.
  */
 bool Chat::exist_chat( string const& partner ) {
+    lock_guard lock ( chats_ac_mtx );
     auto chata_it = std::find_if( chats_ac.begin(), chats_ac.end(), // Chataction mit partner finden und Iterator darauf zurückgeben
                                   [&partner] ( Chataction const& currac ) { return currac.partner == partner; } );
 
@@ -73,6 +74,7 @@ void Chat::make_chat( string partner ) {
  * Erstellt eine neue Chataction in #chats_ac und öffnet dann diesen Privatchat.
  */
 void Chat::new_chat( Datei dateichat, string partner ) {
+    lock_guard lock ( chats_ac_mtx );
     Chataction& chatac { *chats_ac.emplace_after( chats_ac.before_begin(), std::move( dateichat ), std::move( partner ) ) }; // Aktion erstellen und speichern
     Datei const*const chatdatei = &chatac.datei; // Zeiger zu Chatdatei
 
@@ -122,6 +124,7 @@ void Chat::ch_chat( string const& partner ) {
  * Wenn der Privatchat nicht mehr gültig ist, wird ein Dialog angezeigt und die entsprechende Chataction gelöscht.
  */
 void Chat::check_all_chats() {
+    lock_guard lock ( chats_ac_mtx );
     auto it_before = chats_ac.before_begin();
 
     for ( Chataction const& currac : chats_ac ) {

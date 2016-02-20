@@ -32,10 +32,8 @@
  * Beim Aufruf des Programms wird, nach dem Passwort-Dialog, ein Objekt der Klasse Chat erzeugt, das die ganze Verwaltung des Chats übernimmt.
  * Dieses stellt gleichzeitig auch das Haupt-Fenster da.
  */
-class Chat final : public QMainWindow
-{
+class Chat final : public QMainWindow {
     Q_OBJECT
-
 public:
     /// Allgemeiner Konstruktor.
     explicit Chat( bool plum, QWidget* parent = nullptr );
@@ -265,7 +263,8 @@ private:
     std::mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
                pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
                nutzer_h_mtx {}, ///< Mutex für die Synchronisation von #nutzer_h
-               admins_h_mtx {}; ///< Mutex für die Synchronisation von #admins_h
+               admins_h_mtx {}, ///< Mutex für die Synchronisation von #admins_h
+               chats_ac_mtx {}; ///< Mutex für die Synchronisation von #chats_ac
 
     Datei_Mutex lockfile_mtx { *lockfile }, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
                 chatfile_all_mtx { *chatfile_all }; ///< Datei_Mutex, die das Schreiben von #chatfile_all kontrolliert

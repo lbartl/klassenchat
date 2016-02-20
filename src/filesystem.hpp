@@ -72,7 +72,7 @@ inline void chDir( Ordner const& ordner ) { // In ordner wechseln
     fs::current_path( ordner );
 }
 
-/// Statische Dateien und Ordner.
+/// Statische Dateien und %Ordner.
 namespace static_paths { // definiert in definitions.cpp
     extern Ordner const terminatedir, senddir, infodir, checkdir;
     extern Datei const alltfile, warnfile, nutzerfile, adminfile, verbotenfile, passfile;

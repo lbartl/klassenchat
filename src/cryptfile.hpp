@@ -27,8 +27,7 @@
  * Cryptfile bietet Methoden zum Schreiben von normalen Text, der dann verschlüsselt wird, in eine %Datei
  * und zum Lesen des Inhalts, der vorher entschlüsselt wird.
  */
-class Cryptfile
-{
+class Cryptfile {
 public:
     /// Allgemeiner Konstruktor.
     explicit Cryptfile( Datei datei, std::vector <uint8_t> schluessel );

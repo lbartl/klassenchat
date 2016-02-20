@@ -134,7 +134,7 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
     ui.NachrichtB -> setFocus(); // Fokus auf Input
     ui.MainStackedWidget -> setCurrentIndex( 1 ); // Chatfenster
 
-    Datei_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat betreten" );
+    Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat betreten" );
     flags.set( x_main ); // Info an closeEvent, dass sich das Fenster nicht mehr einfach schließen lässt, sondern x_close gesetzt werden soll (chat.cpp)
     main_thread(); // aktualisieren.cpp
 }

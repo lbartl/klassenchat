@@ -52,19 +52,15 @@ using sharable_file_mtx_lock = boost::interprocess::sharable_lock <Datei_Mutex>;
 using namespace std::literals;
 
 /// Undocumented.
-template <typename T>
-void Datei_append( Datei const& file, Datei_Mutex& file_mtx, T const& anhang ) {
-    std::ofstream os = file.ostream( true );
-    file_mtx_lock f_lock ( file_mtx );
-    os << anhang << std::endl;
+inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, std::string const& anhang ) {
+    Datei_lock_append( file, file_mtx, anhang.c_str() );
 }
 
 /// Undocumented.
-template <typename T>
-void Datei_write( Datei const& file, Datei_Mutex& file_mtx, T const& neuer_inhalt ) {
-    std::ofstream os = file.ostream();
+inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, char const*const anhang ) {
+    std::ofstream os = file.ostream( true );
     file_mtx_lock f_lock ( file_mtx );
-    os << neuer_inhalt << std::endl;
+    os << anhang << std::endl;
 }
 
 #endif // THREAD_HPP
