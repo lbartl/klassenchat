@@ -6,7 +6,7 @@ var searchData=
   ['chataction',['Chataction',['../structChat_1_1Chataction.html#a701ed650cc14f9d634daa1226ca1bc85',1,'Chat::Chataction']]],
   ['chdir',['chDir',['../filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40',1,'filesystem.hpp']]],
   ['check_5fall_5fchats',['check_all_chats',['../classChat.html#a03c9cca2825f30d97e4c8a8b69b75ca9',1,'Chat']]],
-  ['closeevent',['closeEvent',['../classChat.html#aaf8682dee6b17a1633c774aba3de1762',1,'Chat::closeEvent()'],['../classLockfile.html#aba147be99cec341f9a9607bb1db455ae',1,'Lockfile::closeEvent()']]],
+  ['closeevent',['closeEvent',['../classChat.html#a4cd03c0499bf8ff54d658e21ae5682ee',1,'Chat::closeEvent()'],['../classLockfile.html#a80e799bf9b34a89200d1e67c6d07f682',1,'Lockfile::closeEvent()']]],
   ['create',['create',['../structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60',1,'Ordner']]],
   ['create_5fitemneu',['create_itemneu',['../classVerboten.html#ab9a4942c4c69b7023143765e632aa4ad',1,'Verboten']]],
   ['createdialog',['createDialog',['../simpledialog_8hpp.html#ada1310fe08ec2c2fe272561399d5fd30',1,'simpledialog.cpp']]],

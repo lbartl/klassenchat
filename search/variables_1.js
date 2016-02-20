@@ -7,6 +7,8 @@ var searchData=
   ['chatfile_5fnorm',['chatfile_norm',['../classChat.html#a972d48e14dc795003627d0d44e113f4f',1,'Chat']]],
   ['chatfile_5fplum',['chatfile_plum',['../classChat.html#a580bf5eb8b6d584f5b4dcea9193d6679',1,'Chat']]],
   ['chats_5fac',['chats_ac',['../classChat.html#a20b826f0ffa58434925eae52f6ff699b',1,'Chat']]],
+  ['checkdir',['checkdir',['../namespacestatic__paths.html#a0527e1adf0a871ae064ffd0cdc109149',1,'static_paths']]],
+  ['checkfile',['checkfile',['../classChat.html#a58b42a3d7a9c2dd4bf64124eb050059f',1,'Chat']]],
   ['cond',['cond',['../classChat_1_1UiThing.html#ac0244407a64b1a5df4dc92569c096a89',1,'Chat::UiThing']]],
   ['count',['count',['../classVerboten.html#ade5485894757c5a3e75c215507d0aca0',1,'Verboten']]]
 ];

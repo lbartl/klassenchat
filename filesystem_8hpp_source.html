@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.9.1"/>
+<meta name="generator" content="Doxygen 1.8.10"/>
 <title>Klassenchat: src/filesystem.hpp Quellcode</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -22,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td style="padding-left: 0.5em;">
+  <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klassenchat
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.5</span>
    </div>
   </td>
  </tr>
@@ -32,7 +32,7 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Erzeugt von Doxygen 1.8.9.1 -->
+<!-- Erzeugt von Doxygen 1.8.10 -->
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 </script>
@@ -127,7 +127,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structOrdner.html#ae2d93a793c5b516e521b490e336ab98f">   42</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="structOrdner.html#ae2d93a793c5b516e521b490e336ab98f">Ordner</a>( std::string <span class="keyword">const</span>&amp; pfad ) :</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        fs::path( pfad ) {}</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">   46</a></span>&#160;    <span class="keywordtype">char</span> <span class="keyword">const</span>* <a class="code" href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">getpath</a>() const noexcept {</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structOrdner.html#a67e938a80b1dbd725a1a9501446d976e">   46</a></span>&#160;    <span class="keywordtype">char</span> <span class="keyword">const</span>* <a class="code" href="structOrdner.html#a67e938a80b1dbd725a1a9501446d976e">getpath</a>() const noexcept {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> string().c_str();</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
@@ -151,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacestatic__paths.html">static_paths</a> { <span class="comment">// definiert in definitions.cpp</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">   77</a></span>&#160;    <span class="keyword">extern</span> <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span> <a class="code" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">terminatedir</a>, <a class="code" href="namespacestatic__paths.html#a61e2ee53c7f17fe9f1700b27510e0987">senddir</a>, <a class="code" href="namespacestatic__paths.html#a430026e8b56c49d1f7b215a14ced44b2">infodir</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">   77</a></span>&#160;    <span class="keyword">extern</span> <a class="code" href="structOrdner.html">Ordner</a> <span class="keyword">const</span> <a class="code" href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">terminatedir</a>, <a class="code" href="namespacestatic__paths.html#a61e2ee53c7f17fe9f1700b27510e0987">senddir</a>, <a class="code" href="namespacestatic__paths.html#a430026e8b56c49d1f7b215a14ced44b2">infodir</a>, <a class="code" href="namespacestatic__paths.html#a0527e1adf0a871ae064ffd0cdc109149">checkdir</a>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">   78</a></span>&#160;    <span class="keyword">extern</span> <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span> <a class="code" href="namespacestatic__paths.html#ae204f90e5572fe2068544d1a1c3e0067">alltfile</a>, <a class="code" href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">warnfile</a>, <a class="code" href="namespacestatic__paths.html#a263c8ee2aa15159bc158ca9f87e7ba3b">nutzerfile</a>, <a class="code" href="namespacestatic__paths.html#a89a905faa7aa66108cad4eef086f8a5d">adminfile</a>, <a class="code" href="namespacestatic__paths.html#ad9444bba59f7c92afc680997356fb47e">verbotenfile</a>, <a class="code" href="namespacestatic__paths.html#acc19cded7bc6d310564c68aaa5932b00">passfile</a>;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
@@ -203,10 +203,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="ttc" id="filesystem_8hpp_html_a8474ef885e6b5bd5843691d7b07daba1"><div class="ttname"><a href="filesystem_8hpp.html#a8474ef885e6b5bd5843691d7b07daba1">ifstreamExcAusgabe</a></div><div class="ttdeci">void ifstreamExcAusgabe(fstream_exc const &amp;exc, Datei const &amp;file)</div><div class="ttdoc">Gibt Informationen zu einem ifstream-Fehler aus. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:136</div></div>
 <div class="ttc" id="structOrdner_html_a938d85c3e66944c5fd5a2a08bdab1ba4"><div class="ttname"><a href="structOrdner.html#a938d85c3e66944c5fd5a2a08bdab1ba4">Ordner::Ordner</a></div><div class="ttdeci">Ordner(char const *const pfad=&quot;&quot;)</div><div class="ttdoc">Konstruktor mit Pfad als C-String. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:34</div></div>
 <div class="ttc" id="namespacestatic__paths_html_a9e2791292565ad2b667dda2018dd407e"><div class="ttname"><a href="namespacestatic__paths.html#a9e2791292565ad2b667dda2018dd407e">static_paths::terminatedir</a></div><div class="ttdeci">Ordner const terminatedir</div><div class="ttdoc">Ordner, in dem eine Datei mit Benutzernamen liegt, falls der Admin ihn rausgeschmissen hat...</div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
-<div class="ttc" id="structOrdner_html_ab2f296ec59e24f85ce9a3ab78b839903"><div class="ttname"><a href="structOrdner.html#ab2f296ec59e24f85ce9a3ab78b839903">Ordner::getpath</a></div><div class="ttdeci">char const * getpath() const noexcept</div><div class="ttdoc">Pfad als C-String zurückgeben. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:46</div></div>
+<div class="ttc" id="namespacestatic__paths_html_a0527e1adf0a871ae064ffd0cdc109149"><div class="ttname"><a href="namespacestatic__paths.html#a0527e1adf0a871ae064ffd0cdc109149">static_paths::checkdir</a></div><div class="ttdeci">Ordner const checkdir</div><div class="ttdoc">Ordner, in dem Dateien zum Überprüfen, ob ein Nutzer noch im Chat ist, sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
 <div class="ttc" id="namespacestatic__paths_html_a6169130960b6b357a719a5c9a2d19a11"><div class="ttname"><a href="namespacestatic__paths.html#a6169130960b6b357a719a5c9a2d19a11">static_paths::warnfile</a></div><div class="ttdeci">Datei const warnfile</div><div class="ttdoc">Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine Warnung erscheinen soll...</div><div class="ttdef"><b>Definition:</b> filesystem.hpp:78</div></div>
 <div class="ttc" id="filesystem_8hpp_html_a7fc5bfdb4549fef2976088a3eea50b40"><div class="ttname"><a href="filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40">chDir</a></div><div class="ttdeci">void chDir(Ordner const &amp;ordner)</div><div class="ttdoc">Aktuelles Verzeichnis wechseln. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:71</div></div>
 <div class="ttc" id="filesystem_8hpp_html_a762460314be262b16ecbac23c09ae395"><div class="ttname"><a href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a></div><div class="ttdeci">Datei makeToNutzerDatei(Ordner const &amp;folder, bool const plum, std::string const &amp;benutzername)</div><div class="ttdoc">Erstellt eine Datei für einen Nutzer. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:90</div></div>
+<div class="ttc" id="structOrdner_html_a67e938a80b1dbd725a1a9501446d976e"><div class="ttname"><a href="structOrdner.html#a67e938a80b1dbd725a1a9501446d976e">Ordner::getpath</a></div><div class="ttdeci">char const * getpath() const  noexcept</div><div class="ttdoc">Pfad als C-String zurückgeben. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:46</div></div>
 <div class="ttc" id="structOrdner_html_aaf1e6133637b8fd64e2e948b419e7175"><div class="ttname"><a href="structOrdner.html#aaf1e6133637b8fd64e2e948b419e7175">Ordner::removeInhalt</a></div><div class="ttdeci">void removeInhalt() const </div><div class="ttdoc">Alle Dateien des Ordners entfernen. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:61</div></div>
 <div class="ttc" id="namespacestatic__paths_html_a61e2ee53c7f17fe9f1700b27510e0987"><div class="ttname"><a href="namespacestatic__paths.html#a61e2ee53c7f17fe9f1700b27510e0987">static_paths::senddir</a></div><div class="ttdeci">Ordner const senddir</div><div class="ttdoc">Ordner, in dem Privatchats gespeichert sind. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:77</div></div>
 <div class="ttc" id="filesystem_8hpp_html_a07ebaa26f91ac115f8f26f0fb04c5abb"><div class="ttname"><a href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a></div><div class="ttdeci">void fstreamExcAusgabe(fstream_exc const &amp;exc, char const *const msg)</div><div class="ttdoc">Gibt Informationen zu einem fstream-Fehler aus. </div><div class="ttdef"><b>Definition:</b> filesystem.hpp:109</div></div>
@@ -222,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <hr class="footer"/><address class="footer"><small>
 Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.9.1
+</a> 1.8.10
 </small></address>
 </body>
 </html>

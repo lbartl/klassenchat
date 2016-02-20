@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.9.1"/>
+<meta name="generator" content="Doxygen 1.8.10"/>
 <title>Klassenchat: src/datei.hpp Quellcode</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -22,9 +22,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td style="padding-left: 0.5em;">
+  <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klassenchat
-   &#160;<span id="projectnumber">1.3</span>
+   &#160;<span id="projectnumber">1.5</span>
    </div>
   </td>
  </tr>
@@ -32,7 +32,7 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Erzeugt von Doxygen 1.8.9.1 -->
+<!-- Erzeugt von Doxygen 1.8.10 -->
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 </script>
@@ -167,7 +167,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classDatei.html#a8845f13eb5de3df95e17a8e488a1365d">   94</a></span>&#160;    <span class="keywordtype">char</span> <span class="keyword">const</span>* <a class="code" href="classDatei.html#a8845f13eb5de3df95e17a8e488a1365d">getpath</a>() const noexcept {</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classDatei.html#a8954b9d7663bedb3a04d30b355da1326">   94</a></span>&#160;    <span class="keywordtype">char</span> <span class="keyword">const</span>* <a class="code" href="classDatei.html#a8954b9d7663bedb3a04d30b355da1326">getpath</a>() const noexcept {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classDatei.html#a9df42220d2831fb39cfc5b8c0e17de29">file</a>.c_str();</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
@@ -257,7 +257,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
 <div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="datei_8hpp.html#ad051c3ff2ee7c787eed3223661f2c14d">  219</a></span>&#160;<span class="keyword">inline</span> std::ostream&amp; <a class="code" href="datei_8hpp.html#ad051c3ff2ee7c787eed3223661f2c14d">operator &lt;&lt; </a>( std::ostream&amp; os, <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file ) {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">return</span> os &lt;&lt; <span class="charliteral">&#39;\&quot;&#39;</span> &lt;&lt; file.<a class="code" href="classDatei.html#a8845f13eb5de3df95e17a8e488a1365d">getpath</a>() &lt;&lt; <span class="charliteral">&#39;\&quot;&#39;</span>; <span class="comment">// Pfad in Anführungszeichen ausgeben (da er Leerzeichen enthalten kann)</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">return</span> os &lt;&lt; <span class="charliteral">&#39;\&quot;&#39;</span> &lt;&lt; file.<a class="code" href="classDatei.html#a8954b9d7663bedb3a04d30b355da1326">getpath</a>() &lt;&lt; <span class="charliteral">&#39;\&quot;&#39;</span>; <span class="comment">// Pfad in Anführungszeichen ausgeben (da er Leerzeichen enthalten kann)</span></div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;}</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="datei_8hpp.html#aacbb1d5e1795e80f149409165acad13b">  224</a></span>&#160;<span class="keyword">inline</span> std::istream&amp; <a class="code" href="datei_8hpp.html#aacbb1d5e1795e80f149409165acad13b">operator &gt;&gt; </a>( std::istream&amp; is, <a class="code" href="classDatei.html">Datei</a>&amp; file ) {</div>
@@ -273,7 +273,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="preprocessor">#endif // DATEI_HPP</span></div>
-<div class="ttc" id="classDatei_html_a8845f13eb5de3df95e17a8e488a1365d"><div class="ttname"><a href="classDatei.html#a8845f13eb5de3df95e17a8e488a1365d">Datei::getpath</a></div><div class="ttdeci">char const * getpath() const noexcept</div><div class="ttdoc">Pfad als C-String zurückgeben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:94</div></div>
 <div class="ttc" id="classDatei_html_abc1840873301b9e722ed50bf2d71621f"><div class="ttname"><a href="classDatei.html#abc1840873301b9e722ed50bf2d71621f">Datei::Datei</a></div><div class="ttdeci">Datei(fs::path const &amp;pfad)</div><div class="ttdoc">Konstruktor mit Pfad als boost::filesystem::path. </div><div class="ttdef"><b>Definition:</b> datei.hpp:48</div></div>
 <div class="ttc" id="classDatei_html_aa1d40a04c7ba3190ff627afee128ff1b"><div class="ttname"><a href="classDatei.html#aa1d40a04c7ba3190ff627afee128ff1b">Datei::Datei</a></div><div class="ttdeci">Datei(std::string pfad)</div><div class="ttdoc">Expliziter Konstruktor mit Pfad als std::string. </div><div class="ttdef"><b>Definition:</b> datei.hpp:52</div></div>
 <div class="ttc" id="classDatei_html_a663a8c60f01ba7fe1f3bffee33616164"><div class="ttname"><a href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">Datei::ostream</a></div><div class="ttdeci">std::ofstream ostream(bool app=false) const </div><div class="ttdoc">Einen std::ofstream der Datei zurückgeben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:116</div></div>
@@ -295,6 +294,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="ttc" id="classDatei_html_a03480aedeba4847932b0f485fe1addd8"><div class="ttname"><a href="classDatei.html#a03480aedeba4847932b0f485fe1addd8">Datei::touch</a></div><div class="ttdeci">void touch() const </div><div class="ttdoc">Datei erstellen. </div><div class="ttdef"><b>Definition:</b> datei.hpp:128</div></div>
 <div class="ttc" id="classDatei_html_aa1ee8d318eeac0471ab064e896ca6790"><div class="ttname"><a href="classDatei.html#aa1ee8d318eeac0471ab064e896ca6790">Datei::operator+</a></div><div class="ttdeci">friend std::string operator+(std::string lhs, Datei const &amp;rhs)</div><div class="ttdoc">Dateipfad mit std::string verketten. </div><div class="ttdef"><b>Definition:</b> datei.hpp:199</div></div>
 <div class="ttc" id="classDatei_html_a447486f565b9f995725c9b04ab08e130"><div class="ttname"><a href="classDatei.html#a447486f565b9f995725c9b04ab08e130">Datei::append</a></div><div class="ttdeci">void append(char const *const text) const </div><div class="ttdoc">Ans Ende der Datei schreiben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:144</div></div>
+<div class="ttc" id="classDatei_html_a8954b9d7663bedb3a04d30b355da1326"><div class="ttname"><a href="classDatei.html#a8954b9d7663bedb3a04d30b355da1326">Datei::getpath</a></div><div class="ttdeci">char const * getpath() const  noexcept</div><div class="ttdoc">Pfad als C-String zurückgeben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:94</div></div>
 <div class="ttc" id="datei_8hpp_html_ab1037d806c99eb8714dec825edb210df"><div class="ttname"><a href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a></div><div class="ttdeci">std::ios_base::failure fstream_exc</div><div class="ttdoc">auf Windows wegen einem Fehler in mingw std::exception, sonst std::ios_base::failure ...</div><div class="ttdef"><b>Definition:</b> datei.hpp:33</div></div>
 <div class="ttc" id="classDatei_html_a2457c6c07a36a012bb9314336f196563"><div class="ttname"><a href="classDatei.html#a2457c6c07a36a012bb9314336f196563">Datei::reset</a></div><div class="ttdeci">void reset() const </div><div class="ttdoc">Inhalt der Datei löschen. </div><div class="ttdef"><b>Definition:</b> datei.hpp:165</div></div>
 <div class="ttc" id="classDatei_html_a1d26878281ac8cba8f94427e043c2d35"><div class="ttname"><a href="classDatei.html#a1d26878281ac8cba8f94427e043c2d35">Datei::Datei</a></div><div class="ttdeci">Datei(Datei const &amp;other)</div><div class="ttdoc">Copy-Konstruktor. </div><div class="ttdef"><b>Definition:</b> datei.hpp:56</div></div>
@@ -306,7 +306,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <hr class="footer"/><address class="footer"><small>
 Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.9.1
+</a> 1.8.10
 </small></address>
 </body>
 </html>
