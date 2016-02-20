@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@ Chat::Chat( bool plum, QWidget* parent ) :
 
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
-        ui.Copyright -> setText( "Copyright (C) 2015 Lukas Bartl\n"
+        ui.Copyright -> setText( "Copyright (C) 2015-2016 Lukas Bartl\n"
                                  "Lizenz GPLv3+: GNU GPL Version 3 oder höher <http://gnu.org/licenses/gpl.html>\n"
                                  "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.\n"
                                  "Es gibt keinerlei Garantien.\n\n"
