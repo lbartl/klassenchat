@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,7 @@
 /**
  * Ordner erbt von boost::filesystem::path und definiert nur ein paar zusätzliche Methoden speziell für Verzeichnisse.
  */
-struct Ordner : public fs::path
-{
+struct Ordner : public fs::path {
     /// Konstruktor mit Pfad als C-String.
     Ordner( char const*const pfad = "" ) :
         fs::path( pfad ) {}

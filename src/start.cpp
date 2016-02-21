@@ -21,7 +21,6 @@
 #include "lockfile.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
-#include <QTimer>
 
 using namespace static_paths;
 using std::make_unique;

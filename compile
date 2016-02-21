@@ -98,7 +98,7 @@ if [ "$platform" == "win32" ]; then # Windows
   PATH=$PATH:$MXE/usr/bin
   
   cd mxe
-  git pull | true
+  git pull || true
   make --jobs=2
   cd ..
   
@@ -115,7 +115,7 @@ if [ "$platform" == "win32" ]; then # Windows
   
   build
   
-  rm "$name" 2>/dev/null | true
+  rm "$name" 2>/dev/null || true
   ln "./release/binary.exe" "$name" # Hardlink
 else # Unix
   echo "Kompiliere für Unix..."

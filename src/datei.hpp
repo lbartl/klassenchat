@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,8 @@
 
 namespace fs = boost::filesystem;
 
-/// auf Windows wegen einem Fehler in mingw std::exception, sonst std::ios_base::failure
-#ifdef WIN32
+/// Wegen einem Fehler in gcc5 std::exception
+#if _GLIBCXX_USE_CXX11_ABI
 using fstream_exc = std::exception;
 #else
 using fstream_exc = std::ios_base::failure;

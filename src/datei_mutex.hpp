@@ -38,8 +38,8 @@ struct Datei_Mutex : public boost::interprocess::file_lock {
     Datei_Mutex() = default; ///< Standard-Konstruktor.
 
     /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>.lock" angelegt und als Lock genutzt
-    Datei_Mutex( Datei const& file ) :
-        boost::interprocess::file_lock( [datei = file + ".lock"] () { if ( ! datei.exist() ) datei.touch(); return datei.getpath(); } () ) // Datei erstellen
+    Datei_Mutex( Datei file ) :
+        boost::interprocess::file_lock( [datei = std::move(file) + ".lock"] () { if ( ! datei.exist() ) datei.touch(); return datei.getpath(); } () ) // Datei erstellen
     {}
 
     Datei_Mutex( Datei_Mutex&& ) = default; ///< Move-Konstruktor
@@ -52,15 +52,15 @@ using sharable_file_mtx_lock = boost::interprocess::sharable_lock <Datei_Mutex>;
 using namespace std::literals;
 
 /// Undocumented.
-inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, std::string const& anhang ) {
-    Datei_lock_append( file, file_mtx, anhang.c_str() );
-}
-
-/// Undocumented.
 inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, char const*const anhang ) {
     std::ofstream os = file.ostream( true );
     file_mtx_lock f_lock ( file_mtx );
     os << anhang << std::endl;
+}
+
+/// Undocumented.
+inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, std::string const& anhang ) {
+    Datei_lock_append( file, file_mtx, anhang.c_str() );
 }
 
 #endif // THREAD_HPP

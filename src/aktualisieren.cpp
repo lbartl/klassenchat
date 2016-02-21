@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -160,7 +160,7 @@ void Chat::verlauf_up( size_t pos ) {
  * main_thread() führt den Main-Thread aus.
  * Er ruft pruefen_main() auf.
  * Falls diese Funkion true zurückgibt, wird stop() aufgerufen.
- * Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, indem wiederum main_thread() aufgerufen wird.
+ * Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, der wiederum main_thread() aufruft.
  *
  * main_thread() ruft sich also so lange selbst auf, bis pruefen_main() true zurückgibt.
  */
