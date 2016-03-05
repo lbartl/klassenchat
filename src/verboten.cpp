@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>
-#include <regex>
 
 QString const Verboten::neu_text {"Neuer Eintrag..."};
 ///\cond
@@ -71,9 +70,11 @@ void Verboten::aktualisieren( QListWidgetItem*const item ) {
                       itemtext = text.trimmed(); // Text des Items (ohne Leerzeichen am Anfang und Ende)
 
         { // Falls ungültig das Item löschen
+            constexpr QChar verbotene_zeichen[] { ' ', L'Ä', L'ä', L'Ö', L'ö', L'Ü', L'ü', L'ß' };
+
             bool fail = itemtext.isEmpty() || // Keinen Text eingegeben
                         std::any_of( std_admins.begin(), std_admins.end(), caseInsEqualFunc{ itemtext } ) || // Einen std_admin eingegeben
-                        std::regex_match( itemtext.toStdString(), std::regex("[\\wÄäÖöÜüß_]+") ); // Ungültigen Text eingegeben
+                        std::find_first_of( itemtext.begin(), itemtext.end(), std::begin( verbotene_zeichen ), std::end( verbotene_zeichen ) ) != itemtext.end();
 
             if ( ! fail )
                 for ( unsigned int i = 0; i < count; ++i ) {

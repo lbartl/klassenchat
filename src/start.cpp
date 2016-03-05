@@ -177,6 +177,7 @@ void Chat::stop() {
         flags.reset();
         admins_h.reset();
         passwords.reset();
+        inhalt.clear();
 
         this -> setWindowTitle("Handout Kräuterhexe");
         this -> show();
