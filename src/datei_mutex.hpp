@@ -21,35 +21,74 @@
 #ifndef DATEI_MUTEX_HPP
 #define DATEI_MUTEX_HPP
 
-#ifdef THREAD_HPP // muss vor thread.hpp eingebunden werden, eigentlich nur für Windows, aber, damit der Fehler schnell erkannt wird, auch für Unix
-# error datei_mutex.hpp muss vor thread.hpp eingebunden werden!
-#else
-
 #include "datei.hpp"
-#include <boost/interprocess/sync/file_lock.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
+#include "thread.hpp"
 #include <boost/interprocess/sync/sharable_lock.hpp>
 
+#ifdef WIN32
+# include <share.h>
+class Datei_Mutex {
+public:
+    explicit Datei_Mutex( Datei file ) :
+        lockdatei( std::move( file ) + ".lock" )
+    {
+        if ( ! lockdatei.exist() )
+            std::ofstream( lockdatei.getpath() ); // Datei erstellen (nicht touch() wegen Exception, falls Datei gelockt ist)
+    }
+
+    Datei_Mutex( Datei_Mutex const& ) = delete;
+    Datei_Mutex( Datei_Mutex&& ) = default;
+
+    Datei_Mutex& operator = ( Datei_Mutex const& ) = delete;
+    Datei_Mutex& operator = ( Datei_Mutex&& ) = default;
+
+    bool try_lock() {
+        return ( stream = _fsopen( lockdatei.getpath(), "wb", _SH_DENYRW ) );
+    }
+
+    void lock() {
+        while ( ! try_lock() )
+            this_thread::sleep_for( 1ms );
+    }
+
+    void unlock() {
+        fclose( stream );
+        stream = nullptr;
+    }
+
+    bool try_lock_sharable() {
+        return ( stream = _fsopen( lockdatei.getpath(), "rb", _SH_DENYWR ) );
+    }
+
+    void lock_sharable() {
+        while ( ! try_lock_sharable() )
+            this_thread::sleep_for( 1ms );
+    }
+
+    void unlock_sharable() {
+        unlock();
+    }
+
+private:
+    FILE* stream {};
+    Datei lockdatei;
+};
+#else
+# include <boost/interprocess/sync/file_lock.hpp>
 /// Ein file_lock, benutzbar wie eine Mutex.
 /**
  * Datei_Mutex erbt von boost::interprocess::file_lock und hat nur einen Konstruktor für Datei statt C-String.
  */
 struct Datei_Mutex : public boost::interprocess::file_lock {
-    Datei_Mutex() = default; ///< Standard-Konstruktor.
-
     /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>.lock" angelegt und als Lock genutzt
-    Datei_Mutex( Datei file ) :
+    explicit Datei_Mutex( Datei file ) :
         boost::interprocess::file_lock( [datei = std::move(file) + ".lock"] () { if ( ! datei.exist() ) datei.touch(); return datei.getpath(); } () ) // Datei erstellen
     {}
-
-    Datei_Mutex( Datei_Mutex&& ) = default; ///< Move-Konstruktor
-    Datei_Mutex& operator = ( Datei_Mutex&& ) = default; ///< Bewegender Zuweisungs-Operator
 };
+#endif
 
-using file_mtx_lock = boost::interprocess::scoped_lock <Datei_Mutex>; ///< Kurzform
+using file_mtx_lock = std::lock_guard <Datei_Mutex> const; ///< Kurzform
 using sharable_file_mtx_lock = boost::interprocess::sharable_lock <Datei_Mutex>; ///< Kurzform
-
-using namespace std::literals;
 
 /// Undocumented.
 inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, char const*const anhang ) {
@@ -63,5 +102,4 @@ inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, std::st
     Datei_lock_append( file, file_mtx, anhang.c_str() );
 }
 
-#endif // THREAD_HPP
 #endif // DATEI_MUTEX_HPP

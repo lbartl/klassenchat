@@ -18,7 +18,6 @@
 // Diese Datei definiert die Klasse Hineinschreiben
 
 #include "hineinschreiben.hpp"
-#include "thread.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 

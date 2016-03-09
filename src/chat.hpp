@@ -23,7 +23,6 @@
 #include "ui_chat.h"
 #include "hineinschreiben.hpp"
 #include "adminpass.hpp"
-#include "thread.hpp"
 #include <bitset>
 #include <forward_list>
 

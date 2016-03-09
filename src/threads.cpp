@@ -36,7 +36,7 @@ void Chat::start_threads() {
     klog("Threads gestartet!");
 }
 
-/// Beendet nutzer_thread() und pruefen_thread().
+/// Beendet aktualisieren_thread(), nutzer_thread() und pruefen_thread()
 void Chat::stop_threads() {
     ++threads_stop;
 

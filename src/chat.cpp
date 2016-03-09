@@ -28,8 +28,8 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.5.5" // Versions-Nummer
-#define BUILD   "0058"  // Build-Nummer
+#define VERSION "1.5.6" // Versions-Nummer
+#define BUILD   "0059"  // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren

@@ -46,7 +46,7 @@ void Chat::start() {
     nutzername = ui.NutzernameA -> text().toStdString(); // mein Benutzername
     checkfile = makeToNutzerDatei( checkdir, x_plum, nutzername );
 
-    if ( lockfile_exist( *lockfile ) && vergeben() ) { // Es ist bereits jemand mit diesem Benutzernamen angemeldet (pruefen.cpp)
+    if ( vergeben() && lockfile_exist( *lockfile ) ) { // Es ist bereits jemand mit diesem Benutzernamen angemeldet (pruefen.cpp)
         klog("Nochmal Benutzername eingeben...");
         ui.NutzernameA -> setFocus();
         return;
