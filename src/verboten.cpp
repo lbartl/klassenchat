@@ -106,14 +106,12 @@ void Verboten::aktualisieren( QListWidgetItem*const item ) {
 
 ///\cond
 void Verboten::schreiben() { // speichern
-    std::ofstream verbotendatei = verbotenfile.ostream();
     Datei_Mutex verbotenfile_mtx ( verbotenfile );
     file_mtx_lock f_lock ( verbotenfile_mtx );
+    std::ofstream verbotendatei = verbotenfile.ostream();
 
     for ( unsigned int i = 0; i < count; ++i )
         verbotendatei << ui.listWidget -> item( i ) -> text().toStdString() << '\n';
-
-    verbotendatei.flush();
 
     klog("verbotenfile aktualisiert!");
 }

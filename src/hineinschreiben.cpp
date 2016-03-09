@@ -56,18 +56,14 @@ Hineinschreiben::Hineinschreiben( Datei const& datei ) :
  */
 Hineinschreiben& Hineinschreiben::aktualisieren() {
     constexpr size_t max_length = 20*( sizeof("Ü") - 1 ) + sizeof(" (Plum-Chat)"); // UTF-8, deswegen sind Umlaute größer als ein Byte
-    static char name [max_length]; // Benutzername_str des aktuellen Nutzers
-    static std::mutex mut;
+    char name [max_length]; // Benutzername_str des aktuellen Nutzers
 
     sharable_file_mtx_lock lock ( file_mtx );
     std::ifstream datei = file.istream();
     namen.clear();
 
-    while ( true ) {
-        lock_guard lock ( mut ); // Nötig, da name static ist, und somit nicht gleichzeitig genutzt werden darf
-        if ( ! datei.getline( name, max_length ) ) break;
+    while ( datei.getline( name, max_length ) )
         namen.emplace_back( name );
-    }
 
     return *this;
 }
@@ -90,14 +86,12 @@ void Hineinschreiben::herausnehmen() {
 
     aktualisieren();
 
-    std::ofstream datei = file.ostream();
     file_mtx_lock lock ( file_mtx );
+    std::ofstream datei = file.ostream();
 
     for ( QString const& currnutzer : namen ) // Alle anderen Benutzername_str wieder in Datei schreiben
         if ( currnutzer != nutzername_str )
             datei << currnutzer.toStdString() << '\n';
-
-    datei.flush();
 }
 
 /**

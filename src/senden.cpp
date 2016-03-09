@@ -96,9 +96,9 @@ void Chat::senden_pruef() {
         string::const_iterator line_end;
         bool first = true;
 
-        std::ofstream chatdatei = chatfile -> ostream( true );
-
         if ( flags[chatall] ) chatfile_all_mtx.lock();
+
+        std::ofstream chatdatei = chatfile -> ostream( true );
 
         do { // Nachricht Zeile für Zeile in Datei schreiben
             if ( first )
@@ -120,7 +120,7 @@ void Chat::senden_pruef() {
         } while ( line_end != str_end );
 
         if ( flags[chatall] ) {
-            chatdatei.flush();
+            chatdatei.close();
             chatfile_all_mtx.unlock();
         }
     } catch ( fstream_exc const& exc ) {

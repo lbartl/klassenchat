@@ -92,9 +92,8 @@ using sharable_file_mtx_lock = boost::interprocess::sharable_lock <Datei_Mutex>;
 
 /// Undocumented.
 inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, char const*const anhang ) {
-    std::ofstream os = file.ostream( true );
     file_mtx_lock f_lock ( file_mtx );
-    os << anhang << std::endl;
+    file.ostream( true ) << anhang << '\n';
 }
 
 /// Undocumented.
