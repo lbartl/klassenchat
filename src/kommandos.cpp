@@ -110,13 +110,12 @@ void Chat::plum_chat() {
     chats_ac.clear(); // alle Privatchats löschen (Chatdateien werden von Partnern gelöscht)
 
     if ( ! lockfile -> exist() )
-        if ( this_thread::sleep_for( 0.2s ), ! lockfile -> exist() ) { // siehe start.cpp, lockfile_exist()
+        if ( this_thread::sleep_for( 0.2s ), ! lockfile -> exist() ) // siehe start.cpp, lockfile_exist()
             resetcv();
-            lockfile -> touch();
-        }
 
     Datei_Mutex other_file_mtx = std::move( chatfile_all_mtx ); // Datei_Mutex für chatfile_all des anderen Chats
     chatfile_all_mtx = Datei_Mutex( *chatfile_all );
+    lockfile_mtx = Datei_Mutex( *lockfile );
 
     Datei_lock_append( chatfile_plum, x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
     Datei_lock_append( chatfile_norm, x_plum ? other_file_mtx : chatfile_all_mtx, normtext );

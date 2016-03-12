@@ -70,7 +70,7 @@ bool Chat::vergeben() {
 /**
  * @returns true, wenn %Chat beendet oder neugestartet werden soll, sonst false.
  *
- * Wird alle 0,1 Sekunden von verlauf_up() aufgerufen.
+ * Wird alle 0,1 Sekunden von main_thread() aufgerufen.
  *
  * Überprüft nextUiThing.typ und führt dann die entsprechende Aktion aus.
  */
@@ -86,13 +86,12 @@ bool Chat::pruefen_main() {
     // nextUiThing überprüfen (weitere Erklärungen bei der Definition von UiThing, chat.hpp)
     lock_guard lock ( nextUiThing.mtx );
 
-    if ( flags[x_reload] && nextUiThing.getTyp() == UiThing::nichts ) { // Chatverlauf manuell aktualisieren
-        verlauf_up( 0 );
-        flags.reset( x_reload );
-    }
-
     switch ( nextUiThing.getTyp() ) {
     case UiThing::nichts: // Nichts tun
+        if ( flags[x_reload] ) { // Chatverlauf manuell aktualisieren
+            verlauf_up( 0 );
+            flags.reset( x_reload );
+        }
         return false;
     case UiThing::aktualisieren: // Chatverlauf aktualisieren
         verlauf_up( *nextUiThing.first <size_t>() );

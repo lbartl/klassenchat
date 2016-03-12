@@ -114,8 +114,6 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
             terminatedir.removeInhalt();
             checkdir.removeInhalt();
         }
-
-        lockfile -> touch();
     } else if ( ! darf && ! lock ) { // kein Admin, Dialog um den Chat zu beenden
         klog("Kein Admin im Chat!");
         Lockfile( this ).exec();
@@ -177,6 +175,7 @@ void Chat::stop() {
         flags.reset();
         admins_h.reset();
         passwords.reset();
+        chats_ac.clear();
         inhalt.clear();
 
         this -> setWindowTitle("Handout Kräuterhexe");

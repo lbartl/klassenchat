@@ -28,9 +28,9 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.5.7" // Versions-Nummer
-#define BUILD   "0060"  // Build-Nummer
-#define TYPE    "alpha"  // Build-Typ
+#define VERSION "1.5.8" // Versions-Nummer
+#define BUILD   "0061"  // Build-Nummer
+#define TYPE    "beta"  // Build-Typ
 
 // statische Member definieren
 ///\cond
