@@ -4,6 +4,8 @@
 
 [Dokumentation](http://hanswurst862.github.io/klassenchat)
 
+[Releases](https://github.com/hanswurst862/klassenchat/releases)
+
 ## Kompilieren
 Herunterladen des Quellcodes:
 
