@@ -112,60 +112,91 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef DATEI_MUTEX_HPP</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define DATEI_MUTEX_HPP</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifdef THREAD_HPP // muss vor thread.hpp eingebunden werden, eigentlich nur für Windows, aber, damit der Fehler schnell erkannt wird, auch für Unix</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"># error datei_mutex.hpp muss vor thread.hpp eingebunden werden!</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="datei_8hpp.html">datei.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="thread_8hpp.html">thread.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;boost/interprocess/sync/sharable_lock.hpp&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="datei_8hpp.html">datei.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;boost/interprocess/sync/file_lock.hpp&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/interprocess/sync/scoped_lock.hpp&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;boost/interprocess/sync/sharable_lock.hpp&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structDatei__Mutex.html">   37</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structDatei__Mutex.html">Datei_Mutex</a> : <span class="keyword">public</span> boost::interprocess::file_lock {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="structDatei__Mutex.html#a2f274f40d3fbca82c16cadd77ffa1a87">Datei_Mutex</a>() = <span class="keywordflow">default</span>; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structDatei__Mutex.html#ae5875064b464b3b4f527affce54aa255">   41</a></span>&#160;    <a class="code" href="structDatei__Mutex.html#ae5875064b464b3b4f527affce54aa255">Datei_Mutex</a>( <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file ) :</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        boost::interprocess::file_lock( [datei = file + <span class="stringliteral">&quot;.lock&quot;</span>] () { <span class="keywordflow">if</span> ( ! datei.exist() ) datei.touch(); <span class="keywordflow">return</span> datei.getpath(); } () ) <span class="comment">// Datei erstellen</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifdef WIN32</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"># include &lt;share.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">class </span><a class="code" href="structDatei__Mutex.html">Datei_Mutex</a> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">Datei_Mutex</a>( <a class="code" href="classDatei.html">Datei</a> file ) :</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        lockdatei( <a class="code" href="namespacestd.html">std</a>::move( file ) + <span class="stringliteral">&quot;.lock&quot;</span> )</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">if</span> ( ! lockdatei.exist() )</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            std::ofstream( lockdatei.getpath() ); <span class="comment">// Datei erstellen (nicht touch() wegen Exception, falls Datei gelockt ist)</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">Datei_Mutex</a>( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a> <span class="keyword">const</span>&amp; ) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">Datei_Mutex</a>( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp;&amp; ) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; operator = ( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a> <span class="keyword">const</span>&amp; ) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; operator = ( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp;&amp; ) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="structDatei__Mutex.html#a2f274f40d3fbca82c16cadd77ffa1a87">Datei_Mutex</a>( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp;&amp; ) = <span class="keywordflow">default</span>; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; <a class="code" href="structDatei__Mutex.html#a1e22620e873f83afe08e3238aeee7014">operator = </a>( <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp;&amp; ) = <span class="keywordflow">default</span>; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">bool</span> try_lock() {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> ( stream = _fsopen( lockdatei.getpath(), <span class="stringliteral">&quot;wb&quot;</span>, _SH_DENYRW ) );</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#ad9fbc7fb21e4a294c283619e5c201f94">   49</a></span>&#160;<span class="keyword">using</span> <a class="code" href="datei__mutex_8hpp.html#ad9fbc7fb21e4a294c283619e5c201f94">file_mtx_lock</a> = boost::interprocess::scoped_lock &lt;Datei_Mutex&gt;; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">   50</a></span>&#160;<span class="keyword">using</span> <a class="code" href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">sharable_file_mtx_lock</a> = boost::interprocess::sharable_lock &lt;Datei_Mutex&gt;; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd_1_1literals.html">std::literals</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> lock() {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">while</span> ( ! try_lock() )</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            this_thread::sleep_for( 1ms );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#adaa0d67bfed696b937cfaa2daea2685d">   56</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="datei__mutex_8hpp.html#adaa0d67bfed696b937cfaa2daea2685d">Datei_append</a>( <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file, <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; file_mtx, T <span class="keyword">const</span>&amp; anhang ) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    std::ofstream os = file.<a class="code" href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">ostream</a>( <span class="keyword">true</span> );</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="datei__mutex_8hpp.html#ad9fbc7fb21e4a294c283619e5c201f94">file_mtx_lock</a> f_lock ( file_mtx );</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    os &lt;&lt; anhang &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#a20e88c2b38a4be57b86b46886276d3bf">   64</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="datei__mutex_8hpp.html#a20e88c2b38a4be57b86b46886276d3bf">Datei_write</a>( <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file, <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; file_mtx, T <span class="keyword">const</span>&amp; neuer_inhalt ) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::ofstream os = file.<a class="code" href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">ostream</a>();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="datei__mutex_8hpp.html#ad9fbc7fb21e4a294c283619e5c201f94">file_mtx_lock</a> f_lock ( file_mtx );</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    os &lt;&lt; neuer_inhalt &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // THREAD_HPP</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif // DATEI_MUTEX_HPP</span></div>
-<div class="ttc" id="classDatei_html_a663a8c60f01ba7fe1f3bffee33616164"><div class="ttname"><a href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">Datei::ostream</a></div><div class="ttdeci">std::ofstream ostream(bool app=false) const </div><div class="ttdoc">Einen std::ofstream der Datei zurückgeben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:116</div></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> unlock() {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        fclose( stream );</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        stream = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">bool</span> try_lock_sharable() {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> ( stream = _fsopen( lockdatei.getpath(), <span class="stringliteral">&quot;rb&quot;</span>, _SH_DENYWR ) );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> lock_sharable() {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">while</span> ( ! try_lock_sharable() )</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            this_thread::sleep_for( 1ms );</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> unlock_sharable() {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        unlock();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    FILE* stream {};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="classDatei.html">Datei</a> lockdatei;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor"># include &lt;boost/interprocess/sync/file_lock.hpp&gt;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="structDatei__Mutex.html">   82</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structDatei__Mutex.html">Datei_Mutex</a> : <span class="keyword">public</span> boost::interprocess::file_lock {</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">   84</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">Datei_Mutex</a>( <a class="code" href="classDatei.html">Datei</a> file ) :</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        boost::interprocess::file_lock( [datei = <a class="code" href="namespacestd.html">std</a>::move(file) + <span class="stringliteral">&quot;.lock&quot;</span>] () { <span class="keywordflow">if</span> ( ! datei.exist() ) datei.touch(); <span class="keywordflow">return</span> datei.getpath(); } () ) <span class="comment">// Datei erstellen</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#a4dd6f5528300dc97910ac7f0c27a4e8d">   90</a></span>&#160;<span class="keyword">using</span> <a class="code" href="datei__mutex_8hpp.html#a4dd6f5528300dc97910ac7f0c27a4e8d">file_mtx_lock</a> = std::lock_guard &lt;Datei_Mutex&gt; <span class="keyword">const</span>; </div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">   91</a></span>&#160;<span class="keyword">using</span> <a class="code" href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">sharable_file_mtx_lock</a> = boost::interprocess::sharable_lock &lt;Datei_Mutex&gt;; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#ac3d2ddcda9edce458af20b8372b70c65">   94</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="datei__mutex_8hpp.html#ac3d2ddcda9edce458af20b8372b70c65">Datei_lock_append</a>( <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file, <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; file_mtx, <span class="keywordtype">char</span> <span class="keyword">const</span>*<span class="keyword">const</span> anhang ) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="datei__mutex_8hpp.html#a4dd6f5528300dc97910ac7f0c27a4e8d">file_mtx_lock</a> f_lock ( file_mtx );</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    file.<a class="code" href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">ostream</a>( <span class="keyword">true</span> ) &lt;&lt; anhang &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="datei__mutex_8hpp.html#a50ac6b3be2843655e1ec843a174c2ff0">  100</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="datei__mutex_8hpp.html#ac3d2ddcda9edce458af20b8372b70c65">Datei_lock_append</a>( <a class="code" href="classDatei.html">Datei</a> <span class="keyword">const</span>&amp; file, <a class="code" href="structDatei__Mutex.html">Datei_Mutex</a>&amp; file_mtx, std::string <span class="keyword">const</span>&amp; anhang ) {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="datei__mutex_8hpp.html#ac3d2ddcda9edce458af20b8372b70c65">Datei_lock_append</a>( file, file_mtx, anhang.c_str() );</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif // DATEI_MUTEX_HPP</span></div>
+<div class="ttc" id="classDatei_html_a663a8c60f01ba7fe1f3bffee33616164"><div class="ttname"><a href="classDatei.html#a663a8c60f01ba7fe1f3bffee33616164">Datei::ostream</a></div><div class="ttdeci">std::ofstream ostream(bool app=false) const </div><div class="ttdoc">Einen std::ofstream der Datei zurückgeben. </div><div class="ttdef"><b>Definition:</b> datei.hpp:115</div></div>
 <div class="ttc" id="classDatei_html"><div class="ttname"><a href="classDatei.html">Datei</a></div><div class="ttdoc">Mit der Klasse Datei können Dateien verwaltet werden. </div><div class="ttdef"><b>Definition:</b> datei.hpp:40</div></div>
-<div class="ttc" id="namespacestd_1_1literals_html"><div class="ttname"><a href="namespacestd_1_1literals.html">literals</a></div></div>
+<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
 <div class="ttc" id="datei_8hpp_html"><div class="ttname"><a href="datei_8hpp.html">datei.hpp</a></div></div>
-<div class="ttc" id="datei__mutex_8hpp_html_ad9fbc7fb21e4a294c283619e5c201f94"><div class="ttname"><a href="datei__mutex_8hpp.html#ad9fbc7fb21e4a294c283619e5c201f94">file_mtx_lock</a></div><div class="ttdeci">boost::interprocess::scoped_lock&lt; Datei_Mutex &gt; file_mtx_lock</div><div class="ttdoc">Kurzform. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:49</div></div>
-<div class="ttc" id="structDatei__Mutex_html_a2f274f40d3fbca82c16cadd77ffa1a87"><div class="ttname"><a href="structDatei__Mutex.html#a2f274f40d3fbca82c16cadd77ffa1a87">Datei_Mutex::Datei_Mutex</a></div><div class="ttdeci">Datei_Mutex()=default</div><div class="ttdoc">Standard-Konstruktor. </div></div>
-<div class="ttc" id="structDatei__Mutex_html"><div class="ttname"><a href="structDatei__Mutex.html">Datei_Mutex</a></div><div class="ttdoc">Ein file_lock, benutzbar wie eine Mutex. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:37</div></div>
-<div class="ttc" id="datei__mutex_8hpp_html_adaa0d67bfed696b937cfaa2daea2685d"><div class="ttname"><a href="datei__mutex_8hpp.html#adaa0d67bfed696b937cfaa2daea2685d">Datei_append</a></div><div class="ttdeci">void Datei_append(Datei const &amp;file, Datei_Mutex &amp;file_mtx, T const &amp;anhang)</div><div class="ttdoc">Undocumented. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:56</div></div>
-<div class="ttc" id="datei__mutex_8hpp_html_a20e88c2b38a4be57b86b46886276d3bf"><div class="ttname"><a href="datei__mutex_8hpp.html#a20e88c2b38a4be57b86b46886276d3bf">Datei_write</a></div><div class="ttdeci">void Datei_write(Datei const &amp;file, Datei_Mutex &amp;file_mtx, T const &amp;neuer_inhalt)</div><div class="ttdoc">Undocumented. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:64</div></div>
-<div class="ttc" id="structDatei__Mutex_html_ae5875064b464b3b4f527affce54aa255"><div class="ttname"><a href="structDatei__Mutex.html#ae5875064b464b3b4f527affce54aa255">Datei_Mutex::Datei_Mutex</a></div><div class="ttdeci">Datei_Mutex(Datei const &amp;file)</div><div class="ttdoc">Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>...</div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:41</div></div>
-<div class="ttc" id="datei__mutex_8hpp_html_a197944bb97ac467d1cf2262239cf6f2b"><div class="ttname"><a href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">sharable_file_mtx_lock</a></div><div class="ttdeci">boost::interprocess::sharable_lock&lt; Datei_Mutex &gt; sharable_file_mtx_lock</div><div class="ttdoc">Kurzform. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:50</div></div>
-<div class="ttc" id="structDatei__Mutex_html_a1e22620e873f83afe08e3238aeee7014"><div class="ttname"><a href="structDatei__Mutex.html#a1e22620e873f83afe08e3238aeee7014">Datei_Mutex::operator=</a></div><div class="ttdeci">Datei_Mutex &amp; operator=(Datei_Mutex &amp;&amp;)=default</div><div class="ttdoc">Bewegender Zuweisungs-Operator. </div></div>
+<div class="ttc" id="datei__mutex_8hpp_html_ac3d2ddcda9edce458af20b8372b70c65"><div class="ttname"><a href="datei__mutex_8hpp.html#ac3d2ddcda9edce458af20b8372b70c65">Datei_lock_append</a></div><div class="ttdeci">void Datei_lock_append(Datei const &amp;file, Datei_Mutex &amp;file_mtx, char const *const anhang)</div><div class="ttdoc">Undocumented. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:94</div></div>
+<div class="ttc" id="structDatei__Mutex_html"><div class="ttname"><a href="structDatei__Mutex.html">Datei_Mutex</a></div><div class="ttdoc">Ein file_lock, benutzbar wie eine Mutex. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:82</div></div>
+<div class="ttc" id="structDatei__Mutex_html_a506095dbc19b554bdae593e0af646cfa"><div class="ttname"><a href="structDatei__Mutex.html#a506095dbc19b554bdae593e0af646cfa">Datei_Mutex::Datei_Mutex</a></div><div class="ttdeci">Datei_Mutex(Datei file)</div><div class="ttdoc">Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>...</div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:84</div></div>
+<div class="ttc" id="thread_8hpp_html"><div class="ttname"><a href="thread_8hpp.html">thread.hpp</a></div></div>
+<div class="ttc" id="datei__mutex_8hpp_html_a197944bb97ac467d1cf2262239cf6f2b"><div class="ttname"><a href="datei__mutex_8hpp.html#a197944bb97ac467d1cf2262239cf6f2b">sharable_file_mtx_lock</a></div><div class="ttdeci">boost::interprocess::sharable_lock&lt; Datei_Mutex &gt; sharable_file_mtx_lock</div><div class="ttdoc">Kurzform. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:91</div></div>
+<div class="ttc" id="datei__mutex_8hpp_html_a4dd6f5528300dc97910ac7f0c27a4e8d"><div class="ttname"><a href="datei__mutex_8hpp.html#a4dd6f5528300dc97910ac7f0c27a4e8d">file_mtx_lock</a></div><div class="ttdeci">std::lock_guard&lt; Datei_Mutex &gt; const file_mtx_lock</div><div class="ttdoc">Kurzform. </div><div class="ttdef"><b>Definition:</b> datei_mutex.hpp:90</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

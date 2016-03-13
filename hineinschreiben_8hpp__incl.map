@@ -1,5 +1,6 @@
 <map id="src/hineinschreiben.hpp" name="src/hineinschreiben.hpp">
-<area shape="rect" id="node2" href="$datei__mutex_8hpp.html" title="datei_mutex.hpp" alt="" coords="376,80,495,107"/>
-<area shape="rect" id="node9" href="$functions_8hpp.html" title="functions.hpp" alt="" coords="613,80,713,107"/>
-<area shape="rect" id="node3" href="$datei_8hpp.html" title="datei.hpp" alt="" coords="103,162,178,189"/>
+<area shape="rect" id="node2" href="$datei__mutex_8hpp.html" title="datei_mutex.hpp" alt="" coords="447,80,565,107"/>
+<area shape="rect" id="node12" href="$functions_8hpp.html" title="functions.hpp" alt="" coords="669,80,769,107"/>
+<area shape="rect" id="node3" href="$datei_8hpp.html" title="datei.hpp" alt="" coords="169,162,243,189"/>
+<area shape="rect" id="node6" href="$thread_8hpp.html" title="thread.hpp" alt="" coords="318,162,401,189"/>
 </map>

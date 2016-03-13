@@ -295,7 +295,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ab182340ac30ca972d96a81db1cc511ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3de9bc9a73c178fb730e465fd155e78a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3de9bc9a73c178fb730e465fd155e78a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChat.html#a3de9bc9a73c178fb730e465fd155e78a">stop_threads</a> ()</td></tr>
-<tr class="memdesc:a3de9bc9a73c178fb730e465fd155e78a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beendet <a class="el" href="classChat.html#a07ab60adaa8e95b1e61c71d3c342b8a2" title="Aktualisiert die Nutzerverwaltung. ">nutzer_thread()</a> und <a class="el" href="classChat.html#abf5addf46b2606200ed062b3201627e7" title="Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in nextUiThing. ">pruefen_thread()</a>. <br /></td></tr>
+<tr class="memdesc:a3de9bc9a73c178fb730e465fd155e78a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beendet <a class="el" href="classChat.html#a3d6b73b189c1ee9ae1041d4c5a7b5675" title="Aktualisiert den Chatverlauf. ">aktualisieren_thread()</a>, <a class="el" href="classChat.html#a07ab60adaa8e95b1e61c71d3c342b8a2" title="Aktualisiert die Nutzerverwaltung. ">nutzer_thread()</a> und <a class="el" href="classChat.html#abf5addf46b2606200ed062b3201627e7" title="Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in nextUiThing. ">pruefen_thread()</a> <br /></td></tr>
 <tr class="separator:a3de9bc9a73c178fb730e465fd155e78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d6b73b189c1ee9ae1041d4c5a7b5675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChat.html#a3d6b73b189c1ee9ae1041d4c5a7b5675">aktualisieren_thread</a> ()</td></tr>
 <tr class="memdesc:a3d6b73b189c1ee9ae1041d4c5a7b5675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aktualisiert den Chatverlauf.  <a href="#a3d6b73b189c1ee9ae1041d4c5a7b5675">Mehr ...</a><br /></td></tr>
@@ -396,6 +396,10 @@ std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChat.html#ac40a983d629ee80cfbe2e2f164860da9">admins_h_mtx</a> {}</td></tr>
 <tr class="memdesc:ac40a983d629ee80cfbe2e2f164860da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex für die Synchronisation von <a class="el" href="classChat.html#a0d5de2f862151dbe1a209e9ac0b3428f" title="Alle aktuell angemeldeten Admins (zugewiesen in setfiles()) ">admins_h</a>. <br /></td></tr>
 <tr class="separator:ac40a983d629ee80cfbe2e2f164860da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9cd55faee08bb902d033a1e0bb6ad8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9cd55faee08bb902d033a1e0bb6ad8a"></a>
+std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChat.html#ab9cd55faee08bb902d033a1e0bb6ad8a">chats_ac_mtx</a> {}</td></tr>
+<tr class="memdesc:ab9cd55faee08bb902d033a1e0bb6ad8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex für die Synchronisation von <a class="el" href="classChat.html#a20b826f0ffa58434925eae52f6ff699b" title="Hier sind alle Chatactions gespeichert. ">chats_ac</a>. <br /></td></tr>
+<tr class="separator:ab9cd55faee08bb902d033a1e0bb6ad8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac215222aa624c433bde34529e299b78c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac215222aa624c433bde34529e299b78c"></a>
 <a class="el" href="structDatei__Mutex.html">Datei_Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChat.html#ac215222aa624c433bde34529e299b78c">lockfile_mtx</a> { *<a class="el" href="classChat.html#ad48b984108fd597694bfdd2151e2dd27">lockfile</a> }</td></tr>
 <tr class="memdesc:ac215222aa624c433bde34529e299b78c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. ">Datei_Mutex</a>, die das Schreiben von <a class="el" href="classChat.html#ad48b984108fd597694bfdd2151e2dd27" title="Zeiger auf eigenes lockfile (entweder lockfile_norm oder lockfile_plum) ">lockfile</a> kontrolliert. <br /></td></tr>
@@ -670,7 +674,7 @@ static <a class="el" href="classDatei.html">Datei</a> const&#160;</td><td class=
 </div><div class="memdoc">
 
 <p>Dies ist die Hauptfunktion des Chats. </p>
-<p><a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> führt den Main-Thread aus. Er ruft <a class="el" href="classChat.html#a57fb0b7c684bcddfaa108c3399086dea" title="Aktionen, die von Threads in nextUiThing festgelegt wurden, ausführen. ">pruefen_main()</a> auf. Falls diese Funkion true zurückgibt, wird <a class="el" href="classChat.html#a362676d5bb88786133e4c30ef0bc0214" title="Chat beenden oder neustarten. ">stop()</a> aufgerufen. Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, indem wiederum <a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> aufgerufen wird.</p>
+<p><a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> führt den Main-Thread aus. Er ruft <a class="el" href="classChat.html#a57fb0b7c684bcddfaa108c3399086dea" title="Aktionen, die von Threads in nextUiThing festgelegt wurden, ausführen. ">pruefen_main()</a> auf. Falls diese Funkion true zurückgibt, wird <a class="el" href="classChat.html#a362676d5bb88786133e4c30ef0bc0214" title="Chat beenden oder neustarten. ">stop()</a> aufgerufen. Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, der wiederum <a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> aufruft.</p>
 <p><a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> ruft sich also so lange selbst auf, bis <a class="el" href="classChat.html#a57fb0b7c684bcddfaa108c3399086dea" title="Aktionen, die von Threads in nextUiThing festgelegt wurden, ausführen. ">pruefen_main()</a> true zurückgibt. </p>
 
 </div>
@@ -835,7 +839,7 @@ Hier ist ein Graph, der zeigt, was diese Funktion aufruft:</div>
 
 <p>Aktionen, die von Threads in <a class="el" href="classChat.html#a3312718d8ab66b2ceaa0952bd899b3cc" title="Einziges Objekt von UiThing. ">nextUiThing</a> festgelegt wurden, ausführen. </p>
 <dl class="section return"><dt>Rückgabe</dt><dd>true, wenn Chat beendet oder neugestartet werden soll, sonst false.</dd></dl>
-<p>Wird alle 0,1 Sekunden von <a class="el" href="classChat.html#a911821451541574b295c13a4915a81e9" title="inhalt anzeigen. ">verlauf_up()</a> aufgerufen.</p>
+<p>Wird alle 0,1 Sekunden von <a class="el" href="classChat.html#a655eabd6656d9349e3a21f03e2d70b38" title="Dies ist die Hauptfunktion des Chats. ">main_thread()</a> aufgerufen.</p>
 <p>Überprüft nextUiThing.typ und führt dann die entsprechende Aktion aus. </p>
 
 </div>
@@ -1038,7 +1042,7 @@ Hier ist ein Graph, der zeigt, was diese Funktion aufruft:</div>
 
 <p>Chat beenden oder neustarten. </p>
 <p>Beendet den Chat oder startet ihn neu, je nachdem ob <a class="el" href="classChat.html#a29632dbc516e47c3e8d9dcd0464b8783a29a54c1a9b20af3ec0fb9d5dbd24eb7c" title="Zeigt an ob der Chat neugestartet werden soll. ">x_restart</a> gesetzt wurde. Wird von <a class="el" href="classChat.html#a911821451541574b295c13a4915a81e9" title="inhalt anzeigen. ">verlauf_up()</a> aufgerufen, wenn <a class="el" href="classChat.html#a57fb0b7c684bcddfaa108c3399086dea" title="Aktionen, die von Threads in nextUiThing festgelegt wurden, ausführen. ">pruefen_main()</a> true zurückgibt.</p>
-<p>Schließt zuerst das Fenster und ruft dann <a class="el" href="classChat.html#a3de9bc9a73c178fb730e465fd155e78a" title="Beendet nutzer_thread() und pruefen_thread(). ">stop_threads()</a> auf. Bei einem Neustart wird anschließend alles auf den Zustand nach dem Konstruktor-Aufruf gesetzt und dann das Fenster wieder angezeigt. </p>
+<p>Schließt zuerst das Fenster und ruft dann <a class="el" href="classChat.html#a3de9bc9a73c178fb730e465fd155e78a" title="Beendet aktualisieren_thread(), nutzer_thread() und pruefen_thread() ">stop_threads()</a> auf. Bei einem Neustart wird anschließend alles auf den Zustand nach dem Konstruktor-Aufruf gesetzt und dann das Fenster wieder angezeigt. </p>
 
 </div>
 </div>

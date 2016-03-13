@@ -127,9 +127,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classNutzer.html#a5aa9d7511af759881e8597c7598842b3">   36</a></span>&#160;    Ui::Nutzer <a class="code" href="classNutzer.html#a5aa9d7511af759881e8597c7598842b3">ui</a> {}; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif // NUTZER_HPP</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="hineinschreiben_8hpp.html">hineinschreiben.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classNutzer1.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNutzer1.html">Nutzer1</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNutzer1.html">Nutzer1</a>( std::string nutzername, std::string pc_nutzername, <span class="keywordtype">size_t</span> nummer, <span class="keywordtype">bool</span> x_plum ) :</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        nutzername_str( <a class="code" href="hineinschreiben_8hpp.html#ab7b6838c7576a7ad9edb39a9e465b5da">toBenutzername_str</a>( x_plum, nutzername ) ),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        nutzername( std::move( nutzername ) ),</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        pc_nutzername( std::move( pc_nutzername ) ),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        nummer( nummer ),</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        x_plum( x_plum )</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    {}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    QString nutzername_str;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string nutzername, pc_nutzername;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">size_t</span> nummer;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">bool</span> x_plum;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif // NUTZER_HPP</span></div>
 <div class="ttc" id="classHineinschreiben_html"><div class="ttname"><a href="classHineinschreiben.html">Hineinschreiben</a></div><div class="ttdoc">Mit der Klasse Hineinschreiben können Dateien verwaltet werden, in der Benutzernamen stehen...</div><div class="ttdef"><b>Definition:</b> hineinschreiben.hpp:67</div></div>
+<div class="ttc" id="hineinschreiben_8hpp_html"><div class="ttname"><a href="hineinschreiben_8hpp.html">hineinschreiben.hpp</a></div></div>
 <div class="ttc" id="classNutzer_html_a5aa9d7511af759881e8597c7598842b3"><div class="ttname"><a href="classNutzer.html#a5aa9d7511af759881e8597c7598842b3">Nutzer::ui</a></div><div class="ttdeci">Ui::Nutzer ui</div><div class="ttdoc">UI des Dialogs. </div><div class="ttdef"><b>Definition:</b> nutzer.hpp:36</div></div>
+<div class="ttc" id="classNutzer1_html"><div class="ttname"><a href="classNutzer1.html">Nutzer1</a></div><div class="ttdef"><b>Definition:</b> nutzer.hpp:41</div></div>
+<div class="ttc" id="hineinschreiben_8hpp_html_ab7b6838c7576a7ad9edb39a9e465b5da"><div class="ttname"><a href="hineinschreiben_8hpp.html#ab7b6838c7576a7ad9edb39a9e465b5da">toBenutzername_str</a></div><div class="ttdeci">QString toBenutzername_str(bool const plum, std::string const &amp;benutzername)</div><div class="ttdoc">In Benutzername_str umwandeln. </div><div class="ttdef"><b>Definition:</b> hineinschreiben.hpp:35</div></div>
 <div class="ttc" id="classNutzer_html_a1113ff93a2d08d5c8ab5317760fdbcf2"><div class="ttname"><a href="classNutzer.html#a1113ff93a2d08d5c8ab5317760fdbcf2">Nutzer::Nutzer</a></div><div class="ttdeci">Nutzer(Hineinschreiben const &amp;nutzer, Hineinschreiben const &amp;admins, QWidget *parent=nullptr)</div><div class="ttdoc">Konstruktor. </div><div class="ttdef"><b>Definition:</b> nutzer.cpp:28</div></div>
 <div class="ttc" id="classNutzer_html"><div class="ttname"><a href="classNutzer.html">Nutzer</a></div><div class="ttdoc">Dieser Dialog zeigt alle Nutzer mit ihrem Benutzernamen_str an. Bei Admins wird ein " (Admin)" angehä...</div><div class="ttdef"><b>Definition:</b> nutzer.hpp:28</div></div>
 </div><!-- fragment --></div><!-- contents -->

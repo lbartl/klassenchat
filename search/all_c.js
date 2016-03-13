@@ -9,6 +9,7 @@ var searchData=
   ['nextuithing',['nextUiThing',['../classChat.html#a3312718d8ab66b2ceaa0952bd899b3cc',1,'Chat']]],
   ['nichts',['nichts',['../classChat_1_1UiThing.html#a9d628f5a386903b65b3b20593972f597a9ae777aac951eeab9f860c09eea89ff7',1,'Chat::UiThing']]],
   ['nutzer',['Nutzer',['../classNutzer.html',1,'Nutzer'],['../classNutzer.html#a1113ff93a2d08d5c8ab5317760fdbcf2',1,'Nutzer::Nutzer()']]],
+  ['nutzer1',['Nutzer1',['../classNutzer1.html',1,'']]],
   ['nutzer_5fanz',['nutzer_anz',['../classChat.html#ae89df92801e0552f186dee3737d0fd34',1,'Chat']]],
   ['nutzer_5fh',['nutzer_h',['../classChat.html#ad6d3d8974b4241f011d44c404a52294c',1,'Chat']]],
   ['nutzer_5fh_5fmtx',['nutzer_h_mtx',['../classChat.html#abe680a6c6db47df348bfef9273468d76',1,'Chat']]],
