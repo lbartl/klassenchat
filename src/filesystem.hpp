@@ -63,18 +63,10 @@ struct Ordner : public fs::path {
     }
 };
 
-/// Aktuelles Verzeichnis wechseln.
-/**
- * @param ordner In diesen %Ordner wird gewechselt
- */
-inline void chDir( Ordner const& ordner ) { // In ordner wechseln
-    fs::current_path( ordner );
-}
-
 /// Statische Dateien und %Ordner.
 namespace static_paths { // definiert in definitions.cpp
     extern Ordner const terminatedir, senddir, infodir, checkdir;
-    extern Datei const alltfile, warnfile, nutzerfile, adminfile, verbotenfile, passfile;
+    extern Datei const alltfile, warnfile, passfile;
 }
 
 /// Erstellt eine Datei für einen %Nutzer.
@@ -88,11 +80,6 @@ namespace static_paths { // definiert in definitions.cpp
  */
 inline Datei makeToNutzerDatei( Ordner const& folder, bool const plum, std::string const& benutzername ) {
     return folder / benutzername + ( plum ? "_1" : "_0" );
-}
-
-/// Ruft \ref makeToNutzerDatei auf. Sinnvoll in Kombination mit fromBenutzername_str()
-inline Datei makeToNutzerDatei( Ordner const& folder, std::pair <bool, std::string> const& paar ) {
-    return makeToNutzerDatei( folder, paar.first, paar.second );
 }
 
 // Exceptions
@@ -110,7 +97,7 @@ inline void fstreamExcAusgabe( fstream_exc const& exc, char const*const msg ) { 
                  "what(): " << exc.what() << "\n"
                  "Error-Code: " << errno << "\n"
                  "Bedeutung: " << strerror( errno ) << '\n';
-#ifdef _DEBUG
+#ifdef DEBUG
     std::cerr << '\n';
 #endif
 }

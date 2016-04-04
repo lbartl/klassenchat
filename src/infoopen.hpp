@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,11 +30,10 @@ class InfoOpen : public QDialog
     Q_OBJECT
 
 public:
-    explicit InfoOpen( QString const& benutzername_str, Hineinschreiben const& nutzer, std::string const& an = "", QWidget* parent = nullptr ); ///< Konstruktor.
+    explicit InfoOpen( std::string const& an = "", QWidget* parent = nullptr ); ///< Konstruktor.
 
 private:
     Ui::InfoOpen ui {}; ///< UI des Dialogs
-    QString const& nutzername_str; ///< Chat::nutzername_str
 
     ///\cond
     void schreiben() const;

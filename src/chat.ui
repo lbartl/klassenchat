@@ -219,7 +219,6 @@
     <addaction name="actionKlassenchat"/>
     <addaction name="separator"/>
     <addaction name="actionNeuer_Chat"/>
-    <addaction name="actionNeue_Gruppe"/>
    </widget>
    <addaction name="menuProgramm"/>
    <addaction name="menuChats"/>

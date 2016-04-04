@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,34 @@
 // Diese Datei definiert die Klasse Entfernen
 
 #include "entfernen.hpp"
-#include "hineinschreiben.hpp"
+#include "nutzer.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>
 
 /**
- * @param benutzername_str Chat::nutzername_str
- * @param nutzer Chat::nutzer_h
  * @param ter_name Voreingestellter Benutzername
  * @param parent Parent
  */
-Entfernen::Entfernen( QString const& benutzername_str, Hineinschreiben const& nutzer, std::string const& ter_name, QWidget* parent ) :
-    QDialog( parent ),
-    nutzername_str( benutzername_str )
+Entfernen::Entfernen( std::string const& ter_name, QWidget* parent ) :
+    QDialog( parent )
 {
     ui.setupUi( this );
     ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
 
     this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    QString const name_t = QString::fromStdString( ter_name );
-
     ui.comboBox -> insertItem( 0, "" );
 
-    for ( QString const& currnutzer : nutzer )
-        if ( currnutzer == name_t )
-            ui.comboBox -> setItemText( 0, name_t );
-        else if ( currnutzer != nutzername_str )
-            ui.comboBox -> addItem( currnutzer );
+    shared_lock lock ( nutzer_verwaltung.read_lock() );
+
+    for ( Nutzer const& currnutzer : nutzer_verwaltung )
+        if ( currnutzer.x_plum != nutzer_ich.x_plum )
+            continue;
+        else if ( currnutzer.nutzername == ter_name )
+            ui.comboBox -> setItemText( 0, QString::fromStdString( currnutzer.nutzername ) );
+        else if ( &currnutzer != &nutzer_ich )
+            ui.comboBox -> addItem( QString::fromStdString( currnutzer.nutzername ) );
 
     ui.comboBox -> setCurrentIndex( 0 );
     ui.comboBox -> model() -> sort( 0 ); // Alphabetisch sortieren
@@ -63,7 +62,7 @@ void Entfernen::schreiben() const { // Den Nutzer entfernen
         return;
     }
 
-    makeToNutzerDatei( static_paths::terminatedir, fromBenutzername_str( std::move( name_t ) ) ).write( nutzername_str.toStdString() ); // Schreibe hinein, wer ihn entfernt hat
+    makeToNutzerDatei( static_paths::terminatedir, nutzer_ich.x_plum, name_t.toStdString() ).write( nutzer_ich.nutzername ); // Schreibe hinein, wer ihn entfernt hat
 
     klog("Terminate-Datei erstellt!");
 }

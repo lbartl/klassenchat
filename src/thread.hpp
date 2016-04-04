@@ -22,10 +22,10 @@
 #define THREAD_HPP
 
 #ifdef WIN32
-# include "mingw-std-threads/mingw.thread.h"
+# include "mingw-threads/mingw.thread.h"
 # include <mutex>
-# include "mingw-std-threads/mingw.mutex.h"
-# include "mingw-std-threads/mingw.condition_variable.h" // bindet <atomic> ein
+# include "mingw-threads/mingw.mutex.h"
+# include "mingw-threads/mingw.condition_variable.h" // bindet <atomic> ein
 #else
 # include <thread>
 # include <condition_variable> // bindet <mutex> ein

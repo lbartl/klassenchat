@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,9 @@
 #include "chat.hpp"
 #include "entfernen.hpp"
 #include "simpledialog.hpp"
-#include "admin.hpp"
-#include "nutzer.hpp"
+#include "nutzer_anz.hpp"
 #include "personalo.hpp"
-#include "groupopen.hpp"
 #include "infoopen.hpp"
-#include "verboten.hpp"
 #include "passwort.hpp"
 #include "klog.hpp"
 
@@ -48,7 +45,7 @@ void Chat::hilfe_anz() {
                           "/reload: Chatverlauf neu laden\n"
                           "/chat <name>: In den Privatchat mit <name> wechseln\n";
 
-    if ( flags[admin] ) {
+    if ( nutzer_ich.admin ) {
         kombi_str += "Strg+T: Überall den Chat beenden\n";
 
         kommand_str += "/all: Überall den Chat beenden\n";
@@ -73,11 +70,9 @@ void Chat::hilfe_anz() {
 /// Erstellt für den #oberadmin ein Objekt der Klasse Admin, für andere #admin%s ein Objekt der Klasse Nutzer.
 void Chat::nutzer_anz() {
     klog("Nutzer anzeigen...");
-    lock_guard l1 ( nutzer_h_mtx ),
-               l2 ( admins_h_mtx );
 
-    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin( *nutzer_h, *admins_h, passwords -> aktualisieren(), this ) ) // für Oberadmin
-                                           : static_cast <QDialog*> ( new Nutzer( *nutzer_h, *admins_h, this ) ); // für alle anderen Admins
+    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( passwords -> aktualisieren(), this ) ) // für Oberadmin
+                                           : static_cast <QDialog*> ( new Nutzer_anz( this ) ); // für alle anderen Admins
 
     anz_nutz -> setAttribute( Qt::WA_DeleteOnClose );
     anz_nutz -> show();
@@ -85,45 +80,23 @@ void Chat::nutzer_anz() {
 
 /// Erstellt ein Objekt der Klasse Entfernen (#admin).
 void Chat::entfernen( string const& name ) {
-    lock_guard lock ( nutzer_h_mtx );
-
-    Entfernen* entf1 = new Entfernen( nutzername_str, *nutzer_h, name, this );
+    Entfernen* entf1 = new Entfernen( name, this );
     entf1 -> setAttribute( Qt::WA_DeleteOnClose );
     entf1 -> show();
 }
 
 /// Erstellt ein Objekt der Klasse PersonalO mit einem bestimmten Chatpartner.
 void Chat::personal_op( string const& partner ) {
-    lock_guard lock ( nutzer_h_mtx );
-
-    PersonalO* p1 = new PersonalO( nutzername, *nutzer_h, partner, this );
+    PersonalO* p1 = new PersonalO( partner, this );
     p1 -> setAttribute( Qt::WA_DeleteOnClose );
     p1 -> show();
 }
 
-/// Erstellt ein Objekt der Klasse GroupOpen.
-void Chat::group_open() {
-    lock_guard lock ( nutzer_h_mtx );
-
-    GroupOpen* grp = new GroupOpen( nutzername, *nutzer_h, this );
-    grp -> setAttribute( Qt::WA_DeleteOnClose );
-    grp -> show();
-}
-
 /// Erstellt ein Objekt der Klasse InfoOpen mit einem bestimmten Empfänger (#admin).
 void Chat::info_open( string const& an ) {
-    lock_guard lock ( nutzer_h_mtx );
-
-    InfoOpen* infoo1 = new InfoOpen( nutzername_str, *nutzer_h, an, this );
+    InfoOpen* infoo1 = new InfoOpen( an, this );
     infoo1 -> setAttribute( Qt::WA_DeleteOnClose );
     infoo1 -> show();
-}
-
-/// Erstellt ein Objekt der Klasse Verboten (#admin).
-void Chat::ver_open() {
-    Verboten* ver1 = new Verboten( this );
-    ver1 -> setAttribute( Qt::WA_DeleteOnClose );
-    ver1 -> show();
 }
 
 /// Erstellt ein Objekt der Klasse Passwort, und gibt das eingegebene %Passwort an set_pass() weiter (#std_admin).

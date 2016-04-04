@@ -55,7 +55,7 @@ Hineinschreiben::Hineinschreiben( Datei const& datei ) :
  * Die %Datei neu einlesen und alle Benutzernamen in den Arbeitsspeicher laden.
  */
 Hineinschreiben& Hineinschreiben::aktualisieren() {
-    constexpr size_t max_length = 20*( sizeof("Ü") - 1 ) + sizeof(" (Plum-Chat)"); // UTF-8, deswegen sind Umlaute größer als ein Byte
+    constexpr size_t max_length = 20*2 + sizeof(" (Plum-Chat)"); // UTF-8, Umlaute haben 2 Byte
     char name [max_length]; // Benutzername_str des aktuellen Nutzers
 
     sharable_file_mtx_lock lock ( file_mtx );
@@ -92,27 +92,4 @@ void Hineinschreiben::herausnehmen() {
     for ( QString const& currnutzer : namen ) // Alle anderen Benutzername_str wieder in Datei schreiben
         if ( currnutzer != nutzername_str )
             datei << currnutzer.toStdString() << '\n';
-}
-
-/**
- * Alle Benutzernamen aus meinem %Chat (also normaler %Chat oder Plum-Chat) zurückgeben.
- * Bei Nutzern aus dem Plum-Chat wird das " (Plum-Chat)" Anhängsel entfernt.
- */
-std::vector <string> Hineinschreiben::namen_meinchat() const {
-    if ( nutzername_str == "$$$" )
-        throw std::logic_error("Nicht gesetzt ob im Plum-Chat oder nicht!");
-
-    bool const x_plum = nutzername_str.contains('('); // Ob ich im Plum-Chat bin
-    std::vector <string> meinchat;
-    bool plum;
-    string benutzername;
-
-    for ( QString const& currnutzer : namen ) {
-        std::tie( plum, benutzername ) = fromBenutzername_str( currnutzer );
-
-        if ( plum == x_plum ) // Gleicher Chat
-            meinchat.push_back( std::move( benutzername ) );
-    }
-
-    return meinchat;
 }

@@ -16,24 +16,23 @@
  */
 
 ///\file
-// Dieser Header deklariert globale Funktionen
+// Dieser Header deklariert globale Funktionen, Funktoren und Variablen
 
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
-#include <QString>
+#include <QRegExp>
 
 /// Prüfen ob Container einen Wert enthält.
 /**
- * @param first Iterator des ersten Elements
- * @param last Iterator zum Element nach dem letzten Element
+ * @param container Container
  * @param value Wert
  *
- * Prüft ob value in [first, last) vorhanden ist.
+ * Prüft ob value in container vorhanden ist.
  */
-template <typename InputIt, typename T>
-constexpr bool enthaelt( InputIt first, InputIt last, T const& value ) {
-    return std::find( first, last, value ) != last;
+template <typename Container, typename T>
+constexpr bool enthaelt( Container const& container, T const& value ) {
+    return std::find( std::begin( container ), std::end( container ), value ) != std::end( container );
 }
 
 /// Prüfen ob Cotainer nur aus Elementen besteht, die gleich einem Wert sind.
@@ -69,5 +68,7 @@ struct caseInsEqualFunc {
         return caseInsEqual( a, b );
     }
 };
+
+extern const QRegExp regex_nutzername; ///< Legt fest, wie ein Benutzername aussehen soll
 
 #endif // FUNCTIONS_HPP

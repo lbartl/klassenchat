@@ -62,19 +62,19 @@ void Chat::senden_pruef() {
             ui.actionImmer_im_Vordergrund -> toggle();
         else if ( kommando == "/chat" )
             ch_chat( argument ); // privatchats.cpp
-        else if ( flags[admin] && kommando == "/all" ) // Strg+T und /all geht in jedem Chat (als Admin)
+        else if ( nutzer_ich.admin && kommando == "/all" ) // Strg+T und /all geht in jedem Chat (als Admin)
             allt(); // kommandos.cpp
-        else if ( flags[admin] && flags[chatall] ) {
+        else if ( nutzer_ich.admin && flags[chatall] ) {
             if ( kommando == "/terminate" )
                 entfernen( argument ); // dialog.cpp
             else if ( kommando == "/info" )
                 info_open( argument );
             else if ( kommando == "/verboten" )
-                ver_open();
+                verbotene_namen_dialog( this );
             else if ( kommando == "/reset" )
                 resetcv(); // kommandos.cpp
             else if ( kommando == "/warnung" )
-                warnung_send(); // dialog.cpp
+                warnung_send(); // kommandos.cpp
             else if ( kommando == "/drin" )
                 nutzer_anz(); // dialog.cpp
             else if ( flags[std_admin] && kommando == "/passwort" )
@@ -112,7 +112,7 @@ void Chat::senden_pruef() {
 
             if ( ! enthaelt_nur( str_pos, line_end, ' ' ) && ! std::equal( str_pos, line_end, newline_str, newline_str + 2 ) )
             { // Wenn kein Zeichen, nur Leerzeichen oder das Newline Zeichen eingegeben, nur neue Zeile ausgeben
-                chatdatei << nutzername << ": ";
+                chatdatei << nutzer_ich.nutzername << ": ";
                 chatdatei.write( &*str_pos, line_end - str_pos );
             }
 

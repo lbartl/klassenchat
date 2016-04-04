@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #define HINEINSCHREIBEN_HPP
 
 #include "datei_mutex.hpp"
-#include "functions.hpp"
+#include "global.hpp"
 
 /// In Benutzername_str umwandeln
 /**
@@ -50,13 +50,6 @@ inline std::pair <bool, std::string> fromBenutzername_str( QString const& benutz
     return std::pair <bool, std::string> ( plum, plum ? benutzername_str.left( pos ).toStdString() : benutzername_str.toStdString() );
 }
 
-/// \ref fromBenutzername_str mit rvalue
-inline std::pair <bool, std::string> fromBenutzername_str( QString&& benutzername_str ) {
-    int const pos = benutzername_str.indexOf(' ');
-    bool const plum = pos != -1;
-    return std::pair <bool, std::string> ( plum, plum ? benutzername_str.remove( pos, benutzername_str.length() - pos ).toStdString() : benutzername_str.toStdString() );
-}
-
 /// Mit der Klasse Hineinschreiben können Dateien verwaltet werden, in der Benutzernamen stehen.
 /**
  * Hineinschreiben definiert Methoden für solche Dateien, wie das hineinschreiben des eigenen Benutzernamen
@@ -79,7 +72,7 @@ public:
      */
     bool hineingeschrieben( QString const& benutzername_str, bool caseIns = false ) const {
         return caseIns ? std::any_of( namen.begin(), namen.end(), caseInsEqualFunc{ benutzername_str } )
-                       : enthaelt( namen.begin(), namen.end(), benutzername_str );
+                       : enthaelt( namen, benutzername_str );
     }
 
     /// Überprüfen ob mein Benutzername in der %Datei steht.
@@ -120,7 +113,6 @@ public:
         return namen;
     }
 
-    std::vector <std::string> namen_meinchat() const; ///< Alle Benutzernamen aus meinem %Chat
     Hineinschreiben& aktualisieren(); ///< Namen aktualisieren
     void reinschreiben(); ///< Meinen Benutzername_str in %Datei schreiben
     void herausnehmen(); ///< Meinen Benutzername_str aus %Datei entfernen

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Nutzer</class>
- <widget class="QDialog" name="Nutzer">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
+ <class>Admin_anz</class>
+ <widget class="QDialog" name="Admin_anz">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>200</height>
+    <width>350</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +24,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
@@ -45,7 +42,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Nutzer</receiver>
+   <receiver>Admin_anz</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -61,7 +58,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Nutzer</receiver>
+   <receiver>Admin_anz</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

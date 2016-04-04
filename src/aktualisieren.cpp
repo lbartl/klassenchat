@@ -102,7 +102,7 @@ inline bool toNextLine( const_it& str_pos, const_it& line_end, const_it const st
  * Wenn die Zeile keinen Doppelpunkt enthält, wird sie zentriert platziert, sonst linksbündig.
  */
 void Chat::verlauf_up( size_t pos ) {
-#ifdef _DEBUG
+#ifdef DEBUG
     if ( pos > 1 )
         klog("Veränderungen anzeigen...");
     else
@@ -131,9 +131,9 @@ void Chat::verlauf_up( size_t pos ) {
 
         if ( doppos == line_end ) // Wenn kein Doppelpunkt vorhanden ist, ist es eine Info
             currtyp = Typ::info;
-        else if ( std::equal( str_pos, doppos, nutzername.begin(), nutzername.end() ) ) // Nachricht stammt von mir selber
+        else if ( std::equal( str_pos, doppos, nutzer_ich.nutzername.begin(), nutzer_ich.nutzername.end() ) ) // Nachricht stammt von mir selber
             currtyp = Typ::von_mir;
-        else if ( ! x_plum && flags[chatall] && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
+        else if ( ! nutzer_ich.x_plum && flags[chatall] && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
             currtyp = Typ::von_oberadmin;
         else // Nachricht stammt von jemand anders
             currtyp = Typ::von_anders;

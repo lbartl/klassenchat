@@ -17,17 +17,86 @@
 
 // Diese Datei definiert die Klasse Verboten
 
-#include "verboten.hpp"
+#include "ui_verboten.h"
+#include "chat.hpp"
+
+/// Dieser Dialog zeigt alle verbotenen Benutzernamen an. Er wird mit der Funktion verbotene_namen_dialog() erstellt.
+/**
+ * Es können Benutzernamen hinzugefügt werden, indem das #itemneu bearbeitet wird.
+ * Es können Benutzernamen entfernt werden, indem der Text gelöscht wird.
+ * Es können Benutzernamen verändert werden, indem der Text bearbeitet wird.
+ */
+class Verboten : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit Verboten( QWidget* parent = nullptr ); ///< Konstruktor.
+
+    ///\cond
+    Verboten( Verboten const& ) = delete;
+    Verboten& operator = ( Verboten const& ) = delete;
+    ///\endcond
+
+private:
+    Ui::Verboten ui {}; ///< UI des Dialogs
+    QListWidgetItem* itemneu {}; ///< Hat immer den Text #neu_text und wird neu erstellt, wenn Text bearbeitet wurde
+    unsigned int count {}; ///< Anzahl an Items (ohne #itemneu)
+    int const& neupos { reinterpret_cast <int const&> ( count ) }; ///< Position des #itemneu
+
+    static QString const neu_text; ///< Text des #itemneu
+    static std::array <QString, Chat::std_admins.size()> std_admins; ///< Chat::std_admins mit QString
+
+    void create_itemneu(); ///< #itemneu erstellen
+
+    ///\cond
+    void schreiben();
+    ///\endcond
+
+private slots:
+    void aktualisieren( QListWidgetItem* item ); ///< Wird aufgerufen, wenn ein Item verändert wurde
+};
+
+#include "verboten.moc"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>
+
+/// Erstellt ein Objekt der Klasse Verboten.
+/**
+ * @param parent Parent
+ */
+void verbotene_namen_dialog( QWidget* parent ) {
+    Verboten* ver1 = new Verboten( parent );
+    ver1 -> setAttribute( Qt::WA_DeleteOnClose );
+    ver1 -> show();
+}
+
+namespace {
+    Datei verbotenfile = "./forbid";
+    Datei_Mutex verbotenfile_mtx ( verbotenfile );
+}
+
+bool verboten( std::string const& name ) {
+    sharable_file_mtx_lock f_lock ( verbotenfile_mtx );
+
+    if ( ! verbotenfile.exist() )
+        verbotenfile.write("Ich"); // Ich ist immer verboten
+
+    std::ifstream is = verbotenfile.istream();
+    std::string currname;
+
+    while ( is >> currname ) // Alle Namen einlesen
+        if ( currname.size() == name.size() ) // Nur bei gleicher Größe vergleichen
+            if ( caseInsEqual( QString::fromStdString( currname ), QString::fromStdString( name ) ) )
+                return true;
+
+    return false;
+}
 
 QString const Verboten::neu_text {"Neuer Eintrag..."};
 ///\cond
 decltype( Verboten::std_admins ) Verboten::std_admins {};
 ///\endcond
-
-using static_paths::verbotenfile;
 
 Verboten::Verboten( QWidget* parent ) :
     QDialog( parent )
@@ -70,11 +139,10 @@ void Verboten::aktualisieren( QListWidgetItem*const item ) {
                       itemtext = text.trimmed(); // Text des Items (ohne Leerzeichen am Anfang und Ende)
 
         { // Falls ungültig das Item löschen
-            constexpr QChar verbotene_zeichen[] { ' ', L'Ä', L'ä', L'Ö', L'ö', L'Ü', L'ü', L'ß' };
-
             bool fail = itemtext.isEmpty() || // Keinen Text eingegeben
+                        itemtext.length() > 20 || // Zu langer Benutzername
                         std::any_of( std_admins.begin(), std_admins.end(), caseInsEqualFunc{ itemtext } ) || // Einen std_admin eingegeben
-                        std::find_first_of( itemtext.begin(), itemtext.end(), std::begin( verbotene_zeichen ), std::end( verbotene_zeichen ) ) != itemtext.end();
+                        ! regex_nutzername.exactMatch( itemtext ); // Ungültigen Text eingegeben
 
             if ( ! fail )
                 for ( unsigned int i = 0; i < count; ++i ) {
@@ -106,7 +174,6 @@ void Verboten::aktualisieren( QListWidgetItem*const item ) {
 
 ///\cond
 void Verboten::schreiben() { // speichern
-    Datei_Mutex verbotenfile_mtx ( verbotenfile );
     file_mtx_lock f_lock ( verbotenfile_mtx );
     std::ofstream verbotendatei = verbotenfile.ostream();
 

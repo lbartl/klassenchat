@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,11 +30,10 @@ class Entfernen : public QDialog
     Q_OBJECT
 
 public:
-    explicit Entfernen( QString const& benutzername_str, Hineinschreiben const& nutzer, std::string const& ter_name = "", QWidget* parent = nullptr ); ///< Konstruktor.
+    explicit Entfernen( std::string const& ter_name = "", QWidget* parent = nullptr ); ///< Konstruktor.
 
 private:
     Ui::Entfernen ui {}; ///< UI des Dialogs
-    QString const& nutzername_str; ///< Chat::nutzername_str
 
     ///\cond
     void schreiben() const;

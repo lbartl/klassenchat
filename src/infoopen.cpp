@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,34 @@
 // Diese Datei steuert den QDialog um eine Information an einen Nutzer zu senden
 
 #include "infoopen.hpp"
-#include "hineinschreiben.hpp"
+#include "nutzer.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>
 
 /**
- * @param benutzername_str Chat::nutzername_str
- * @param nutzer Chat::nutzer_h
  * @param an Voreingestellter Benutzername
  * @param parent Parent
  */
-InfoOpen::InfoOpen( QString const& benutzername_str, Hineinschreiben const& nutzer, std::string const& an, QWidget* parent ) :
-    QDialog( parent ),
-    nutzername_str( benutzername_str )
+InfoOpen::InfoOpen( std::string const& an, QWidget* parent ) :
+    QDialog( parent )
 {
     ui.setupUi( this );
     ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
 
     this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    QString const name_an = QString::fromStdString( an );
-
     ui.comboBox -> insertItem( 0, "" );
 
-    for ( QString const& currnutzer : nutzer )
-        if ( currnutzer == name_an )
-            ui.comboBox -> setItemText( 0, name_an );
-        else if ( currnutzer != nutzername_str )
-            ui.comboBox -> addItem( currnutzer );
+    shared_lock lock ( nutzer_verwaltung.read_lock() );
+
+    for ( Nutzer const& currnutzer : nutzer_verwaltung )
+        if ( currnutzer.x_plum != nutzer_ich.x_plum )
+            continue;
+        else if ( currnutzer.nutzername == an )
+            ui.comboBox -> setItemText( 0, QString::fromStdString( an ) );
+        else if ( &currnutzer != &nutzer_ich )
+            ui.comboBox -> addItem( QString::fromStdString( currnutzer.nutzername ) );
 
     ui.comboBox -> setCurrentIndex( 0 );
     ui.comboBox -> model() -> sort( 0 );
@@ -73,7 +72,7 @@ void InfoOpen::schreiben() const { // Information an Nutzer schreiben
         return;
     }
 
-    makeToNutzerDatei( static_paths::infodir, fromBenutzername_str( std::move( name_to ) ) ).ostream() << 'i' << nutzername_str.toStdString() << '\n' << text;
+    makeToNutzerDatei( static_paths::infodir, nutzer_ich.x_plum, name_to.toStdString() ).ostream() << 'i' << nutzer_ich.nutzername << '\n' << text;
 
     klog("Information gesendet!");
 }

@@ -37,14 +37,8 @@ if [ ! -e bin ]; then
     ln -rs win32/bin bin/win32
 fi
 
-# MXE
-cd win32
-if [ ! -e mxe ]; then
-    git clone https://github.com/mxe/mxe.git
-fi
-cd mxe
-
 # MXE-Config
+cd mxe
 cat << EOF > settings.mk
 JOBS := $cores
 MXE_TMP := /tmp
@@ -57,7 +51,7 @@ echo 'local-pkg-list: $(LOCAL_PKG_LIST)' >> settings.mk
 
 # MXE Kompilieren
 make --jobs=2
-cd ../..
+cd ..
 
 # Config
 
@@ -99,5 +93,5 @@ until [ "$compile" == "j" ] || [ "$compile" == "n" ]; do
 done
 
 if [ "$compile" == "j" ]; then
-    ./compile all --neu
+    ./compile all
 fi

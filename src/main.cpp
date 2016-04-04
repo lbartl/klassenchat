@@ -25,7 +25,7 @@
 using std::clog;
 using std::cerr;
 
-#ifdef _DEBUG
+#ifdef DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const& context, QString const& msg ) { // Für Debugging
     ios_base::sync_with_stdio( false );
@@ -52,7 +52,7 @@ void messageOutput( QtMsgType type, QMessageLogContext const& context, QString c
 #define TRY_RELEASE
 #define CATCH_RELEASE
 
-#else // _DEBUG
+#else // DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const&, QString const& msg ) { // Für Release
     ios_base::sync_with_stdio( false );
@@ -78,13 +78,11 @@ void messageOutput( QtMsgType type, QMessageLogContext const&, QString const& ms
 #define TRY_RELEASE try
 #define CATCH_RELEASE catch (...) { throw; }
 
-#endif // _DEBUG
+#endif // DEBUG
 
 int main( int argc, char* argv[] ) TRY_RELEASE {
     QApplication app ( argc, argv );
     qInstallMessageHandler( messageOutput );
-
-    chDir("./S.75_3"); // Ins Chat-Verzeichnis wechseln
 
     if ( ! Datei("./icon.ico").exist() ) // Die einzige wichtige Datei im Chat-Verzeichnis ist das Icon, alles andere wird automatisch wieder erstellt
         qFatal("Icon nicht gefunden!");

@@ -21,6 +21,7 @@
 #define CHAT_HPP
 
 #include "ui_chat.h"
+#include "nutzer.hpp"
 #include "hineinschreiben.hpp"
 #include "adminpass.hpp"
 #include <bitset>
@@ -81,10 +82,11 @@ private:
     // statische Member in chat.cpp definiert
     static Datei const chatfile_norm, chatfile_plum, lockfile_norm, lockfile_plum;
 
+    bool const x_plum_anfang; ///< x_plum beim Chat öffnen (je nach Passwort)
+
     /// Enumerator für #flags.
     enum {
         locked, ///< Zeigt für #oberadmin an, ob Admins ihn entfernen dürfen
-        admin, ///< Zeigt an ob man ein %Admin ist
         std_admin, ///< Zeigt an ob man einer der #std_admins ist
         x_oberadmin, ///< Zeigt an ob man der #oberadmin ist
         chatall, ///< Zeigt an ob man im Klassenchat ist
@@ -96,19 +98,14 @@ private:
     };
 
     std::bitset <COUNT> flags {}; ///< Flags des Chats
-    bool x_plum; ///< Zeigt an ob man im Plum-Chat oder im normalen %Chat ist
     Ui::Chat ui {}; ///< UI des Chats
     QAction* ui_sep {}; ///< Ein Seperator um "Neuer Privatchat..." von den Privatchats zu trennen
-    std::string nutzername {}, ///< Mein Benutzername
-                inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
-    QString nutzername_str {}; ///< Mein Benutzername_str, siehe toBenutzername_str()
+    std::string inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
     Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in setfiles())
           infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in setfiles())
           checkfile {}; ///< %Datei, mit der überprüft werden kann ob man noch im Chat ist (zugewiesen in start())
     Datei const *chatfile_all, ///< Zeiger auf Klassenchat-Datei (entweder #chatfile_norm oder #chatfile_plum)
                 *lockfile;     ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
-    std::unique_ptr <Hineinschreiben> nutzer_h {}; ///< Alle aktuell angemeldeten %Nutzer (zugewiesen in setfiles())
-    std::unique_ptr <Hineinschreiben> admins_h {}; ///< Alle aktuell angemeldeten Admins (zugewiesen in setfiles())
 
     /// Die Passwörter der #std_admins.
     /**
@@ -261,8 +258,6 @@ private:
 
     std::mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
                pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
-               nutzer_h_mtx {}, ///< Mutex für die Synchronisation von #nutzer_h
-               admins_h_mtx {}, ///< Mutex für die Synchronisation von #admins_h
                chats_ac_mtx {}; ///< Mutex für die Synchronisation von #chats_ac
 
     Datei_Mutex lockfile_mtx { *lockfile }, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
@@ -277,9 +272,7 @@ private:
     void hilfe_anz();
     void nutzer_anz();
     void personal_op( std::string const& partner = "" );
-    void group_open();
     void info_open( std::string const& an = "" );
-    void ver_open();
     void openAdminPass();
 
     // kommandos.cpp
@@ -297,7 +290,6 @@ private:
     void check_all_chats();
 
     // pruefen.cpp
-    bool vergeben();
     bool pruefen_main();
 
     // senden.cpp
@@ -307,7 +299,6 @@ private:
     void start();
     void passwort();
     void start2();
-    void setfiles();
     void stop();
 
     // threads.cpp

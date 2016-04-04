@@ -51,17 +51,16 @@ bool Chat::exist_chat( string const& partner ) {
  */
 void Chat::make_chat( string partner ) {
     if ( exist_chat( partner ) ) { // Chat mit diesem partner existiert schon
-        ios_base::sync_with_stdio( false );
         KLOG << "Privatchat mit " << partner << " existiert schon! In diesen Chat gewechselt!" << endl;
         return;
     }
 
-    Datei file = static_paths::senddir / partner + '_' + nutzername;
-    file += x_plum ? "_1.jpg" : "_0.jpg";
+    Datei file = static_paths::senddir / partner + '_' + nutzer_ich.nutzername;
+    file += nutzer_ich.x_plum ? "_1.jpg" : "_0.jpg";
 
-    file.ostream() << "Privatchat von " << nutzername << " und " << partner << '\n';
+    file.ostream() << "Privatchat von " << nutzer_ich.nutzername << " und " << partner << '\n';
 
-    makeToNutzerDatei( static_paths::infodir, x_plum, partner ).ostream() << file << nutzername; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
+    makeToNutzerDatei( static_paths::infodir, nutzer_ich.x_plum, partner ).ostream() << file << nutzer_ich.nutzername; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
 
     new_chat( std::move( file ), std::move( partner ) );
 }
@@ -83,7 +82,6 @@ void Chat::new_chat( Datei dateichat, string partner ) {
 
     open_chat( chatdatei ); // Chat öffnen
 
-    ios_base::sync_with_stdio( false );
     KLOG << "Neuen Privatchat mit " << chatac.partner << " erstellt!" << endl;
 }
 
@@ -96,7 +94,7 @@ void Chat::open_chat( Datei const*const chatdatei ) {
 
 /// Öffnet den Klassenchat.
 void Chat::klassenchat() {
-    ui.menuAdmin -> setEnabled( flags[admin] ); // Wenn man ein Admin ist einschalten, sonst ausschalten
+    ui.menuAdmin -> setEnabled( nutzer_ich.admin ); // Wenn man ein Admin ist einschalten, sonst ausschalten
     flags.set( chatall ); // zeigt Funktionen wie senden_pruef(), dass man im Klassenchat ist
     chatfile = chatfile_all;
 }
@@ -127,10 +125,8 @@ void Chat::check_all_chats() {
     lock_guard lock ( chats_ac_mtx );
     auto it_before = chats_ac.before_begin();
 
-    for ( Chataction const& currac : chats_ac ) {
-        lock_guard lock ( nutzer_h_mtx );
-
-        if ( ! nutzer_h -> hineingeschrieben( x_plum, currac.partner ) ) { // nicht mehr gültig
+    for ( Chataction const& currac : chats_ac )
+        if ( ! nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, currac.partner ) ) { // nicht mehr gültig
             QString text = QString::fromStdString( "Der Nutzer " + currac.partner + " hat den Chat verlassen!\n"
                                                    "Der Privatchat mit " + currac.partner + " wurde gelöscht!" );
             if ( chatfile == &currac.datei )
@@ -148,5 +144,4 @@ void Chat::check_all_chats() {
             break;
         } else
             ++it_before;
-    }
 }

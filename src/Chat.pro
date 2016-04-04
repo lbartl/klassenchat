@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Dies ist die QMake-Projekt-Datei
+# Dies ist die QMake-Projekt-Datei für den Chat
 
 # Allgemein
 TEMPLATE = app
@@ -22,24 +22,25 @@ QT      += core gui widgets
 CONFIG  += qt
 
 win32 {
-   TARGET = binary # mingw unterstützt kein Unicode, deswegen wird nachträglich Hardlink erstellt
+    TARGET = binary1 # nachträglicher Hardlink um .exe zu entfernen
 } else {
-   TARGET = "Handout_Kräuterhexe"
+    TARGET = "hi.jpg"
 }
 
 CONFIG(release, debug|release) {
     linux {
-        DESTDIR = bin
+        DESTDIR = "bin/S.75_3"
     }
     OBJECTS_DIR = objects
     MOC_DIR = $$OBJECTS_DIR
     RCC_DIR = $$OBJECTS_DIR
     UI_DIR = $$OBJECTS_DIR
+} else {
+    DESTDIR = "S.75_3"
 }
 
 # Source
-HEADERS = functions.hpp \
-          datei.hpp \
+HEADERS = datei.hpp \
           datei_mutex.hpp \
           thread.hpp \
           cryptfile.hpp \
@@ -52,13 +53,12 @@ HEADERS = functions.hpp \
           nutzer.hpp \
           personalo.hpp \
           entfernen.hpp \
-          admin.hpp \
           infoopen.hpp \
           klog.hpp \
-          verboten.hpp \
           simpledialog.hpp \
           filesystem.hpp \
-          groupopen.hpp
+          nutzer_anz.hpp \
+          global.hpp
 
 SOURCES = main.cpp \
           definitions.cpp \
@@ -77,31 +77,29 @@ SOURCES = main.cpp \
           passwort.cpp \
           warnung.cpp \
           lockfile.cpp \
-          nutzer.cpp \
           personalo.cpp \
           entfernen.cpp \
-          admin.cpp \
           infoopen.cpp \
           verboten.cpp \
           simpledialog.cpp \
-          groupopen.cpp
+          nutzer_anz.cpp \
+          nutzer.cpp
 
 FORMS   = chat.ui \
           passwort.ui \
           warnung.ui \
-          nutzer.ui \
           lockfile.ui \
           personalo.ui \
           entfernen.ui \
-          admin.ui \
           infoopen.ui \
           verboten.ui \
           simpledialog.ui \
-          groupopen.ui
+          admin_anz.ui \
+          nutzer_anz.ui
 
 # Präprozessor
 CONFIG(debug, debug|release) {
-    DEFINES += _DEBUG
+    DEFINES += DEBUG
 }
 
 win32 {
@@ -121,15 +119,15 @@ exists("../config/std_admins") { # Standard-Admins, chat.hpp
 }
 
 # Kompilieren
-QMAKE_CXXFLAGS += -std=c++14 # C++14-Standard
 QMAKE_CXXFLAGS_RELEASE -= -g -O2 -pipe -Wall # Kein Debugging für Release-Versionen
+QMAKE_CXXFLAGS_RELEASE += -flto -ffast-math -O3 # Optimieren für Schnelligkeit
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization # Warnungen
 
 linux-clang { # Clang/LLVM
-    QMAKE_CXXFLAGS_RELEASE += -O3 # Höchste Optimierung für clang
+    QMAKE_CXXFLAGS += -std=c++14
 } else { # GCC
-    QMAKE_CXXFLAGS_RELEASE += -Ofast # Optimieren für Schnelligkeit
-    QMAKE_CXXFLAGS_DEBUG   += -ggdb -Og # Optimieren für Debugging
+    CONFIG += c++14
+    QMAKE_CXXFLAGS_DEBUG += -ggdb -Og # Optimieren für Debugging
 }
 
 CONFIG(debug, debug|release) {
@@ -137,11 +135,10 @@ CONFIG(debug, debug|release) {
 }
 
 # Linken
-QMAKE_LFLAGS_RELEASE += -s # strip, unnötige Symbole entfernen
+QMAKE_LFLAGS_RELEASE += -flto -s # Link Time Optimization und Strip
 
 win32 {
-    RC_FILE = chat.rc # Windows Icon
-    LIBS += -lboost_system-mt -lboost_filesystem-mt
+    LIBS += -lboost_system-mt -lboost_filesystem-mt -lboost_thread_win32-mt
 } else {
     LIBS += -lboost_system -lboost_filesystem
 }

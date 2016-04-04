@@ -15,9 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Diese Datei definiert die Memberfunktion Datei::readAll() und die Konstanten von filesystem.hpp
+// Diese Datei definiert die Memberfunktion Datei::readAll(), die Konstanten von filesystem.hpp und die globalen Variablen von global.hpp
 
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 #include <iostream>
 
@@ -48,8 +49,7 @@ namespace static_paths {
 
     extern Datei const alltfile      = "./all-terminate", ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der %Chat geschlossen werden soll
                        warnfile      = "./warning",       ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine %Warnung erscheinen soll
-                       nutzerfile    = "./nutzer",        ///< Datei, in der alle angemeldeten Benutzernamen gespeichert sind
-                       adminfile     = "./boss",          ///< Datei, in der alle angemeldeten Admins gespeichert sind
-                       verbotenfile  = "./forbid",        ///< Datei, in der alle verbotenen Benuternamen gespeichert sind
                        passfile      = "./pass.jpg";      ///< Datei, in der alle Passwörter der std_admins gespeichert sind
 }
+
+extern QRegExp const regex_nutzername ("[\\wÄäÖöÜüß_]+"); // global.hpp

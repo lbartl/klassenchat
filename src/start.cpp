@@ -19,6 +19,7 @@
 
 #include "chat.hpp"
 #include "lockfile.hpp"
+#include "simpledialog.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 
@@ -34,6 +35,10 @@ inline bool lockfile_exist( Datei const& lockfile ) {
     }
 }
 
+namespace {
+    std::string nutzername; // mein Benutzername am Anfang
+}
+
 /// Starten des Chats. Aufgerufen nach dem Anmelden.
 /**
  * 1. Setzt meinen Benutzernamen auf den eingegebenen Namen.
@@ -44,30 +49,67 @@ inline bool lockfile_exist( Datei const& lockfile ) {
  */
 void Chat::start() {
     nutzername = ui.NutzernameA -> text().toStdString(); // mein Benutzername
-    checkfile = makeToNutzerDatei( checkdir, x_plum, nutzername );
 
-    if ( vergeben() && lockfile_exist( *lockfile ) ) { // Es ist bereits jemand mit diesem Benutzernamen angemeldet (pruefen.cpp)
-        klog("Nochmal Benutzername eingeben...");
-        ui.NutzernameA -> setFocus();
+    if ( nutzername == "" ) {
+        qWarning("Keinen Namen eingegeben!");
+        ui.NutzernameA->setFocus();
         return;
     }
 
-    nutzername_str = toBenutzername_str( x_plum, nutzername );
-    bool const is_oberadmin = ! x_plum && nutzername == oberadmin;
-    bool const is_std_admin = is_oberadmin || ( ! x_plum && enthaelt( std_admins.begin(), std_admins.end(), nutzername ) );
-    flags[x_oberadmin] = is_oberadmin; // Oberadmin
-    flags[std_admin] = is_std_admin; // Standard-Admin
-    flags[admin] = is_std_admin; // Admin
-    ui.action_berall_den_Chat_beenden -> setEnabled( is_std_admin ); // Explizit abschalten, da Tastenkombination
-    ui.actionNeues_Admin_Passwort -> setEnabled( is_std_admin );
-    ui.actionWarnung_senden -> setEnabled( ! x_plum );
+    if ( verboten( nutzername ) ) { // Prüfen ob Benutzername verboten ist
+        klog("Nutername verboten!");
+        createDialog( "Fehler", "Ein Admin hat diesen Benutzernamen verboten!\nBitte einen anderen Benutzernamen wählen!", this, true );
+        ui.NutzernameA->setFocus();
+        return;
+    }
 
-    if ( is_std_admin ) {
+    checkfile = makeToNutzerDatei( checkdir, x_plum_anfang, nutzername );
+    terminatefile = makeToNutzerDatei( terminatedir, x_plum_anfang, nutzername );
+    infofile = makeToNutzerDatei( infodir, x_plum_anfang, nutzername );
+
+    bool lock = lockfile_exist( *lockfile );
+    flags[std_admin] = enthaelt( Chat::std_admins, nutzername ); // Standard-Admin
+
+    if ( ! lock ) // Niemand ist im Chat
+        if ( flags[std_admin] || x_plum_anfang ) {
+            resetcv();
+
+            if ( ! lockfile_exist( x_plum_anfang ? lockfile_norm : lockfile_plum ) ) { // Lockfile des anderen Chats
+                nutzer_verwaltung.reset();
+
+                senddir.removeInhalt();
+                infodir.removeInhalt();
+                terminatedir.removeInhalt();
+                checkdir.removeInhalt();
+            }
+        } else {
+            klog("Kein Admin im Chat!");
+            Lockfile( this ).exec();
+            return;
+        }
+    else if ( nutzer_verwaltung.getNutzer( x_plum_anfang, nutzername ) ) { // Prüfen ob Benutzername vergeben ist
+        checkfile.touch();
+        this_thread::sleep_for( 0.5s ); // Warten bis die Datei von dem Nutzer gelöscht wird
+
+        if ( checkfile.exist() ) { // Bei diesem Nutzer ist der Chat abgestürzt
+            checkfile.remove();
+            lockfile_mtx.lock();
+                lockfile->remove();
+            lockfile_mtx.unlock();
+        } else {
+            klog("Nutzername vergeben!");
+            createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
+            ui.NutzernameA->setFocus();
+            return;
+        }
+    }
+
+    if ( flags[std_admin] ) {
         passwords = make_unique <AdminPass> ( nutzername );
 
         klog("Admin, öffne Passwortfeld...");
 
-        ui.Label2 -> setText( "Passwort für " + nutzername_str + ": " ); // std_admin nur im normalen Chat, deswegen ist nutzername_str hier gleich wie nutzername
+        ui.Label2 -> setText( QString::fromStdString( "Passwort für " + nutzername + ": " ) );
         ui.LineStackedWidget -> setCurrentIndex( 1 ); // Passwort
     } else
         start2();
@@ -97,59 +139,29 @@ void Chat::passwort() {
  * 6. Ruft verlauf_up() auf.
  */
 void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
-    bool const lock = lockfile_exist( *lockfile ),
-               darf = flags[admin] || x_plum;
+    nutzer_verwaltung.makeNutzerIch( x_plum_anfang, std::move( nutzername ) );
 
-    if ( darf && ! lock ) { // Admin oder Plum-Chat, Chatverlauf löschen
-        resetcv();
-
-        Datei const& lockfile_other { x_plum ? lockfile_norm : lockfile_plum }; // Lockfile des anderen Chats
-
-        if ( ! lockfile_exist( lockfile_other ) ) {
-            nutzerfile.reset();
-            adminfile.reset();
-
-            senddir.removeInhalt();
-            infodir.removeInhalt();
-            terminatedir.removeInhalt();
-            checkdir.removeInhalt();
-        }
-    } else if ( ! darf && ! lock ) { // kein Admin, Dialog um den Chat zu beenden
-        klog("Kein Admin im Chat!");
-        Lockfile( this ).exec();
-        return;
-    }
-
-    setfiles();
-    klassenchat();
-    start_threads();
-
-    this -> setWindowTitle( QString::fromStdString( nutzername + " - Chat" ) );
-
-    ui.menuBar -> setVisible( true ); // Menüleiste einblenden
-
-    ui.NachrichtB -> setFocus(); // Fokus auf Input
-    ui.MainStackedWidget -> setCurrentIndex( 1 ); // Chatfenster
-
-    Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat betreten" );
-    flags.set( x_main ); // Info an closeEvent, dass sich das Fenster nicht mehr einfach schließen lässt, sondern x_close gesetzt werden soll (chat.cpp)
-    main_thread(); // aktualisieren.cpp
-}
-
-/// Wird aufgerufen, nachdem #nutzername und #x_plum oder #nutzername_str gesetzt oder verändert wurden.
-/**
- * Zuweisung von #chatfile_all_mtx, #nutzer_h, #admins_h, #terminatefile und #infofile.
- * Diese benötigen entweder den #nutzername%n und #x_plum oder #nutzername_str.
- */
-void Chat::setfiles() {
-    nutzer_h = make_unique <Hineinschreiben> ( nutzername_str, nutzerfile );
-    if ( flags[admin] ) admins_h = make_unique <Hineinschreiben> ( nutzername_str, adminfile );
-
-    terminatefile = makeToNutzerDatei( terminatedir, x_plum, nutzername );
-    infofile = makeToNutzerDatei( infodir, x_plum, nutzername );
+    flags[x_oberadmin] = ! nutzer_ich.x_plum && nutzer_ich.nutzername == oberadmin; // Oberadmin
 
     terminatefile.remove();
     infofile.remove();
+
+    klassenchat();
+    start_threads();
+
+    this -> setWindowTitle( QString::fromStdString( nutzer_ich.nutzername + " - Chat" ) );
+
+    ui.action_berall_den_Chat_beenden -> setEnabled( nutzer_ich.admin ); // Explizit abschalten, da Tastenkombination
+    ui.actionNeues_Admin_Passwort -> setEnabled( nutzer_ich.admin );
+    ui.actionWarnung_senden -> setEnabled( ! nutzer_ich.x_plum );
+
+    ui.menuBar -> setVisible( true ); // Menüleiste einblenden
+    ui.NachrichtB -> setFocus(); // Fokus auf Input
+    ui.MainStackedWidget -> setCurrentIndex( 1 ); // Chatfenster
+
+    Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzer_ich.nutzername + " hat den Chat betreten" );
+    flags.set( x_main ); // Info an closeEvent, dass sich das Fenster nicht mehr einfach schließen lässt, sondern x_close gesetzt werden soll (chat.cpp)
+    main_thread(); // aktualisieren.cpp
 }
 
 /// %Chat beenden oder neustarten.
@@ -162,7 +174,7 @@ void Chat::setfiles() {
  */
 void Chat::stop() {
     flags.reset( x_main );
-    this -> close(); // Fenster schließen
+    this->close(); // Fenster schließen
 
     stop_threads();
 
@@ -173,7 +185,6 @@ void Chat::stop() {
         ui.menuBar -> setVisible( false );
 
         flags.reset();
-        admins_h.reset();
         passwords.reset();
         chats_ac.clear();
         inhalt.clear();

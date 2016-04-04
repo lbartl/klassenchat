@@ -28,9 +28,9 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.5.8" // Versions-Nummer
-#define BUILD   "0061"  // Build-Nummer
-#define TYPE    "beta"  // Build-Typ
+#define VERSION "1.6.0" // Versions-Nummer
+#define BUILD   "0062"  // Build-Nummer
+#define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren
 ///\cond
@@ -48,7 +48,7 @@ Datei const Chat::chatfile_norm = "./verlauf.jpg", ///< Datei, in der der normal
  */
 Chat::Chat( bool plum, QWidget* parent ) :
     QMainWindow( parent ),
-    x_plum( plum ),
+    x_plum_anfang( plum ),
     chatfile_all( plum ? &chatfile_plum : &chatfile_norm ),
     lockfile( plum ? &lockfile_plum : &lockfile_norm )
 {
@@ -59,12 +59,11 @@ Chat::Chat( bool plum, QWidget* parent ) :
     ui.MainStackedWidget -> setCurrentIndex( 0 ); // Anmelde-Fenster
     ui.LineStackedWidget -> setCurrentIndex( 0 ); // Nutzername
 
-    ui.NutzernameA -> setValidator( new QRegExpValidator( QRegExp("[\\wÄäÖöÜüß_]+"), ui.NutzernameA ) ); // Nur Buchstaben und Zahlen erlauben, keine Sonderzeichen und Leerzeichen
+    ui.NutzernameA -> setValidator( new QRegExpValidator( regex_nutzername, ui.NutzernameA ) ); // Nur Buchstaben und Zahlen erlauben, keine Sonderzeichen und Leerzeichen
     ui.NutzernameA -> setMaxLength( 20 );
 
     if ( plum ) { // Plum-Chat
         ui.Copyright -> setText("Chat");
-
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
         ui.Copyright -> setText( "Copyright (C) 2015-2016 Lukas Bartl\n"
@@ -92,7 +91,6 @@ Chat::Chat( bool plum, QWidget* parent ) :
     connect( ui.actionHilfe,       &QAction::triggered, [this] () { hilfe_anz();   } );
     connect( ui.actionKlassenchat, &QAction::triggered, [this] () { klassenchat(); } );
     connect( ui.actionNeuer_Chat,  &QAction::triggered, [this] () { personal_op(); } );
-    connect( ui.actionNeue_Gruppe, &QAction::triggered, [this] () { group_open();  } );
 
     connect( ui.actionEinen_Nutzer_entfernen,       &QAction::triggered, [this] () { entfernen();     } );
     connect( ui.actionChatverlauf_l_schen,          &QAction::triggered, [this] () { resetcv();       } );
@@ -101,12 +99,9 @@ Chat::Chat( bool plum, QWidget* parent ) :
     connect( ui.actionWer_ist_alles_im_Chat,        &QAction::triggered, [this] () { nutzer_anz();    } );
     connect( ui.actionIn_den_Plum_Chat_wechseln,    &QAction::triggered, [this] () { plum_chat();     } );
     connect( ui.actionInformation_an_Nutzer_senden, &QAction::triggered, [this] () { info_open();     } );
-    connect( ui.actionVerbotene_Benutzernamen,      &QAction::triggered, [this] () { ver_open();      } );
     connect( ui.actionNeues_Admin_Passwort,         &QAction::triggered, [this] () { openAdminPass(); } );
 
-#ifndef _DEBUG
-    delete ui.actionNeue_Gruppe;
-#endif
+    connect( ui.actionVerbotene_Benutzernamen, &QAction::triggered, [this] () { verbotene_namen_dialog( this ); } );
 }
 
 void Chat::closeEvent( QCloseEvent* event ) {

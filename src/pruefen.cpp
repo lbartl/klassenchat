@@ -25,47 +25,6 @@
 
 using namespace static_paths;
 
-/// Prüfen, ob mein Benutzername vergeben oder verboten ist.
-/**
- * @returns true wenn vergeben oder verboten, sonst false.
- *
- * Wenn mein Benutzername vergeben oder verboten ist, wird ein Dialog angezeigt.
- */
-bool Chat::vergeben() {
-    klog("Überprüfen ob Nutzername vergeben oder verboten ist...");
-
-    if ( nutzername == "" ) {
-        qWarning("Keinen Namen eingegeben!");
-        return true;
-    }
-
-    if ( ! verbotenfile.exist() )
-        verbotenfile.write("Ich"); // "Ich" ist immer verboten
-
-    if ( Hineinschreiben( toBenutzername_str( x_plum, nutzername ), nutzerfile ).hineingeschrieben() ) { // Prüfen ob Benutzername vergeben ist
-        checkfile.touch();
-        this_thread::sleep_for( 0.5s ); // Warten bis die Datei von dem Nutzer gelöscht wird
-
-        if ( checkfile.exist() ) { // Bei diesem Nutzer ist der Chat abgestürzt
-            checkfile.remove();
-            Hineinschreiben( toBenutzername_str( x_plum, nutzername ), adminfile ).herausnehmen(); // Falls der Nutzer ein Admin war, aber kein std_admin
-            lockfile_mtx.lock();
-                lockfile -> remove();
-            lockfile_mtx.unlock();
-            return false;
-        } else {
-            klog("Nutzername vergeben!");
-            createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
-            return true;
-        }
-    } else if ( Hineinschreiben( verbotenfile ).hineingeschrieben( QString::fromStdString( nutzername ), true ) ) { // Prüfen ob Benutzername verboten ist
-        klog("Nutername verboten!");
-        createDialog( "Fehler", "Ein Admin hat diesen Benutzernamen verboten!\nBitte einen anderen Benutzernamen wählen!", this, true );
-        return true;
-    } else
-        return false;
-}
-
 /// Aktionen, die von Threads in #nextUiThing festgelegt wurden, ausführen.
 /**
  * @returns true, wenn %Chat beendet oder neugestartet werden soll, sonst false.
@@ -79,7 +38,7 @@ bool Chat::pruefen_main() {
 
     if ( restart || flags[x_close] ) { // Ich beende selbst
         klog( restart ? "Neustart" : "Beenden" );
-        Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzername + " hat den Chat verlassen" );
+        Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzer_ich.nutzername + " hat den Chat verlassen" );
         return true;
     }
 
@@ -105,7 +64,7 @@ bool Chat::pruefen_main() {
             break;
         } else {
             klog("entfernt");
-            Datei_lock_append( *chatfile_all, chatfile_all_mtx, nextUiThing.first <std::string>() -> append(" hat " + nutzername + " entfernt") );
+            Datei_lock_append( *chatfile_all, chatfile_all_mtx, nextUiThing.first <std::string>()->append(" hat " + nutzer_ich.nutzername + " entfernt") );
             return true;
         }
     case UiThing::Warnung: { // Warnung anzeigen
@@ -114,12 +73,10 @@ bool Chat::pruefen_main() {
         warn -> show();
     } break;
     case UiThing::ToAdmin: // Admin werden
-        flags.set( admin );
         ui.menuAdmin -> setEnabled( flags[chatall] ); // Nur im Klassenchat anzeigen
         ui.action_berall_den_Chat_beenden -> setEnabled( true );
         break;
     case UiThing::FromAdmin: // normaler Nutzer werden
-        flags.reset( admin );
         ui.menuAdmin -> setEnabled( false );
         ui.action_berall_den_Chat_beenden -> setEnabled( false );
         break;

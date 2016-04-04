@@ -12,6 +12,10 @@ Herunterladen des Quellcodes:
     git clone https://github.com/hanswurst862/klassenchat
     cd klassenchat
     
+Aktualisieren des Quellcodes:
+    
+    ./update
+    
 Zum Einrichten (inklusive Installieren des Cross-Compilers MXE):
 
     ./configure

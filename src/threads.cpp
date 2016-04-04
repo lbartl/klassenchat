@@ -94,11 +94,7 @@ void Chat::aktualisieren_thread() {
  * Beim Beenden wird #lockfile gelöscht und mein Name aus #nutzer_h und #admins_h herausgenommen.
  */
 void Chat::nutzer_thread() {
-    nutzer_h -> reinschreiben();
-
-    if ( admins_h ) admins_h -> reinschreiben();
-
-    uint_fast8_t i = 0; // nutzer_h und admins_h werden nur jede halbe Sekunde (jedes 5. Mal) aktualisiert
+    uint_fast8_t i = 0; // nutzer_verwaltung wird nur jede halbe Sekunde (jedes 5. Mal) aktualisiert
 
     UNTIL_STOP {
         lock_guard lock ( nutzer_mtx );
@@ -110,16 +106,7 @@ void Chat::nutzer_thread() {
 
         if ( ++i == 5 ) {
             i = 0;
-
-            nutzer_h_mtx.lock();
-                nutzer_h -> aktualisieren();
-            nutzer_h_mtx.unlock();
-
-            if ( admins_h ) { // Wenn admins_h kein nullptr ist, also wenn ich Admin bin
-                lock_guard lock ( admins_h_mtx );
-                admins_h -> aktualisieren();
-            }
-
+            nutzer_verwaltung.aktualisieren();
             check_all_chats(); // privatchats.cpp
         }
     }
@@ -128,8 +115,7 @@ void Chat::nutzer_thread() {
         lockfile -> remove();
     lockfile_mtx.unlock();
 
-    nutzer_h -> herausnehmen();
-    if ( admins_h ) admins_h -> herausnehmen();
+    nutzer_verwaltung.herausnehmen();
 
     ++threads_stop;
 }
@@ -153,6 +139,7 @@ void Chat::pruefen_thread() {
 #ifndef WIN32
     struct sigaction sig_ac;
     sig_ac.sa_handler = [] ( int ) { signal_stop = true; };
+    sigemptyset( &sig_ac.sa_mask );
     sig_ac.sa_flags = 0;
 
     if ( sigaction( SIGINT, &sig_ac, nullptr ) ||
@@ -184,13 +171,21 @@ void Chat::pruefen_thread() {
         } else if ( checkfile.exist() ) { // Zeigen, dass ich noch im Chat bin, indem die Datei entfernt wird
             klog("Lösche checkfile...");
             checkfile.remove();
-        } else if ( ! x_plum && warnfile.exist() ) { // Warnung
-            Hineinschreiben warn1 ( nutzername_str, warnfile );
+        } else if ( ! nutzer_ich.x_plum && warnfile.exist() ) { // Warnung
+            std::ifstream is = warnfile.istream();
 
-            if ( ! warn1.hineingeschrieben() ) {
-                warn1.reinschreiben();
-                klog("Warnung empfangen!");
-                nextUiThing.newTyp( UiThing::Warnung );
+            while ( true ) {
+                size_t currnummer;
+                is >> currnummer;
+                if ( currnummer == nutzer_ich.nummer ) // bereits empfangen
+                    break;
+                else if ( ! is ) { // noch nicht empfangen
+                    is.close();
+                    warnfile.ostream( true ) << nutzer_ich.nummer << ' ';
+                    klog("Warnung empfangen!");
+                    nextUiThing.newTyp( UiThing::Warnung );
+                    break;
+                }
             }
         }
 
@@ -198,38 +193,19 @@ void Chat::pruefen_thread() {
             switch ( infofile.readChar() ) {
             case '1': // Zum Admin werden
                 klog("Werde zum Admin...");
-
-                nutzer_mtx.lock();
-                    admins_h = std::make_unique <Hineinschreiben> ( nutzername_str, adminfile );
-                    admins_h -> reinschreiben();
-                nutzer_mtx.unlock();
-
+                nutzer_verwaltung.flip_admin();
                 nextUiThing.newTyp( UiThing::ToAdmin );
                 break;
             case '0': // Zum normalen Nutzer werden
                 klog("Werde zum normalen Nutzer...");
-
-                nutzer_mtx.lock();
-                    admins_h -> herausnehmen();
-                    admins_h.reset();
-                nutzer_mtx.unlock();
-
+                nutzer_verwaltung.flip_admin();
                 nextUiThing.newTyp( UiThing::FromAdmin );
                 break;
             case 'i': { // Admin hat mir eine Info gesendet
                 klog("Info von Admin empfangen!");
 
-                string inhalt = infofile.readAll();
-                size_t line_end = inhalt.find('\n');
-
-                if ( x_plum ) {
-                    size_t klammer_pos = inhalt.find( '(', line_end );
-
-                    if ( klammer_pos != string::npos ) {
-                        inhalt.erase( klammer_pos, line_end - klammer_pos );
-                        line_end = klammer_pos - 1;
-                    }
-                }
+                string const inhalt = infofile.readAll();
+                size_t const line_end = inhalt.find('\n');
 
                 QString text = "Der Administrator " + QString::fromUtf8( inhalt.c_str() + 1, line_end - 1 ) + " schreibt:\n\n"
                               + QString::fromUtf8( inhalt.c_str() + line_end + 1, inhalt.length() - line_end - 1 );

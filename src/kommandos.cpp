@@ -35,7 +35,7 @@ void Chat::resetcv() {
 
     alltfile.remove();
 
-    if ( ! x_plum || flags[x_main] ) {
+    if ( ! nutzer_ich.x_plum || flags[x_main] ) {
         warnfile.remove();
         terminatedir.removeInhalt();
     }
@@ -49,7 +49,7 @@ void Chat::allt() {
 
 /// Eine Warnung an alle senden (#admin).
 void Chat::warnung_send() {
-    if ( x_plum ) // vom Plum-Chat aus können keine Warnungen gesendet oder empfangen werden
+    if ( nutzer_ich.x_plum ) // vom Plum-Chat aus können keine Warnungen gesendet oder empfangen werden
         return;
 
     klog("Warnung senden..");
@@ -69,44 +69,36 @@ void Chat::plum_chat() {
     lock_guard l1 ( nutzer_mtx ),
                l2 ( pruefen_mtx );
 
-    x_plum = ! x_plum; // flippen
-
-    if ( vergeben() ) { // Im anderen Chat ist jemand mit meinem Namen angemeldet
-        x_plum = ! x_plum;
+    if ( nutzer_verwaltung.getNutzer( ! nutzer_ich.x_plum, nutzer_ich.nutzername ) ) // Im anderen Chat ist jemand mit meinem Namen angemeldet
         return;
-    }
 
     lockfile_mtx.lock();
         lockfile -> remove();
     lockfile_mtx.unlock();
 
-    nutzer_h -> herausnehmen();
-    admins_h -> herausnehmen();
+    nutzer_verwaltung.flip_x_plum();
 
-    nutzername_str = toBenutzername_str( x_plum, nutzername );
+    string normtext, plumtext;
 
-    string normtext = nutzername,
-           plumtext = nutzername;
-
-    if ( x_plum ) { // Kommt vom normalen Chat
+    if ( nutzer_ich.x_plum ) { // Kommt vom normalen Chat
         chatfile_all = &chatfile_plum;
         lockfile     = &lockfile_plum;
 
-        plumtext += " hat den Chat betreten";
-        normtext += " hat in den Plum-Chat gewechselt";
+        plumtext = nutzer_ich.nutzername + " hat den Chat betreten";
+        normtext = nutzer_ich.nutzername + " hat in den Plum-Chat gewechselt";
 
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
    } else { // Kommt vom Plum-Chat
         chatfile_all = &chatfile_norm;
         lockfile     = &lockfile_norm;
 
-        plumtext += " hat den Chat verlassen";
-        normtext += " hat in diesen Chat gewechselt";
+        plumtext = nutzer_ich.nutzername + " hat den Chat verlassen";
+        normtext = nutzer_ich.nutzername + " hat in diesen Chat gewechselt";
 
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den Plum-Chat wechseln");
     }
 
-    ui.actionWarnung_senden -> setEnabled( ! x_plum );
+    ui.actionWarnung_senden -> setEnabled( ! nutzer_ich.x_plum );
     chats_ac.clear(); // alle Privatchats löschen (Chatdateien werden von Partnern gelöscht)
 
     if ( ! lockfile -> exist() )
@@ -117,13 +109,15 @@ void Chat::plum_chat() {
     chatfile_all_mtx = Datei_Mutex( *chatfile_all );
     lockfile_mtx = Datei_Mutex( *lockfile );
 
-    Datei_lock_append( chatfile_plum, x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
-    Datei_lock_append( chatfile_norm, x_plum ? other_file_mtx : chatfile_all_mtx, normtext );
+    Datei_lock_append( chatfile_plum, nutzer_ich.x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
+    Datei_lock_append( chatfile_norm, nutzer_ich.x_plum ? other_file_mtx : chatfile_all_mtx, normtext );
 
-    setfiles(); // start.cpp
+    checkfile = makeToNutzerDatei( checkdir, nutzer_ich.x_plum, nutzer_ich.nutzername );
+    terminatefile = makeToNutzerDatei( terminatedir, nutzer_ich.x_plum, nutzer_ich.nutzername );
+    infofile = makeToNutzerDatei( infodir, nutzer_ich.x_plum, nutzer_ich.nutzername );
 
-    nutzer_h -> reinschreiben();
-    admins_h -> reinschreiben();
+    terminatefile.remove();
+    infofile.remove();
 
     klassenchat();
 }

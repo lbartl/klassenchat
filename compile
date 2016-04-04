@@ -54,69 +54,48 @@ SRC=$PWD/src
 
 function build { # Kompilieren und Dateien erstellen
   make --jobs=$jobs
-  if [ ! -e "./bin/S.75_3" ]; then
-    mkdir "./bin/S.75_3"
+  if [ ! -e "./bin/S.75_3/icon.ico" ]; then
     cp $SRC/icon.ico "./bin/S.75_3/"
   fi
 }
 
 cd "./$platform"
 
-if [ "$platform" == "win32" ]; then
-   name="./bin/Handout_Kräuterh‮fdp.exe"
-else
-   name="./bin/Handout_Kräuterhexe"
+if [ "$(cat ./config 2>/dev/null)" != "$(ls -1 ../config/)" ]; then
+    ls -1 ../config/ > ./config
+    touch "$SRC/Chat.pro"
+    touch "$SRC/chat.hpp"
 fi
 
-for i in "verwalter" "oberadmin" "std_admins"; do
-    config_file="../config/$i"
-    
-    if [ "$i" == "verwalter" ]; then
-        touch_file="$SRC/chat.cpp"
-    else
-        touch_file="$SRC/chat.hpp"
-    fi
-    
-    if [ -e "$config_file" ] && [ ! -e "./$i" ]; then
-        touch "./$i"
-        touch "$SRC/Chat.pro"
-        touch "$touch_file"
-    elif [ ! -e "$config_file" ] && [ -e "./$i" ]; then
-        rm -f "./$i"
-        touch "$SRC/Chat.pro"
-        touch "$touch_file"
-    elif [ "../config/$i" -nt "$name" ]; then
-        touch "$SRC/Chat.pro"
-        touch "$touch_file"
-    fi
-done
+if [ ! -e ./Makefile ]; then
+    neu=1
+fi
 
 if [ "$platform" == "win32" ]; then # Windows
   echo "Kompiliere für Windows..."
   
-  MXE=$PWD/mxe
+  MXE=$PWD/../mxe
   PATH=$PATH:$MXE/usr/bin
-  
-  cd mxe
-  git pull || true
-  make --jobs=2
-  cd ..
   
   if [ $neu == 1 ]; then
     for i in *; do
-        if [ "$i" != "mxe" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+        if [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
             rm -rf "$i"
         fi
     done
     
     mkdir bin
-    i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Chat.pro # Makefile erzeugen
+    i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Make.pro # Makefile erzeugen
   fi
   
   build
   
+  name="./bin/Handout_Kräuterh‮fdp.exe"
   rm "$name" 2>/dev/null || true
-  ln "./release/binary.exe" "$name" # Hardlink
+  ln "./release/binary0.exe" "$name" # Hardlink
+
+  rm "./bin/S.75_3/hi.jpg" 2>/dev/null || true
+  ln "./release/binary1.exe" "./bin/S.75_3/hi.jpg"
 else # Unix
   echo "Kompiliere für Unix..."
   
@@ -133,9 +112,9 @@ else # Unix
     done
     
     if [ $clang == 1 ]; then
-        qmake-qt5 -spec linux-clang $SRC/Chat.pro # Makefile mit clang++ als Compiler erzeugen
+        qmake-qt5 -spec linux-clang $SRC/Make.pro # Makefile mit clang++ als Compiler erzeugen
     else
-        qmake-qt5 -spec linux-g++ $SRC/Chat.pro # Makefile mit g++ als Compiler erzeugen
+        qmake-qt5 -spec linux-g++ $SRC/Make.pro # Makefile mit g++ als Compiler erzeugen
     fi
   fi
   

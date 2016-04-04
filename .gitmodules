@@ -1,0 +1,6 @@
+[submodule "src/mingw-threads"]
+	path = src/mingw-threads
+	url = https://github.com/meganz/mingw-std-threads.git
+[submodule "mxe"]
+	path = mxe
+	url = https://github.com/mxe/mxe.git

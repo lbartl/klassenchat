@@ -25,7 +25,7 @@
 using std::endl;
 using std::ios_base;
 
-#ifdef _DEBUG
+#ifdef DEBUG
 
 inline void klog( char const* msg ) { // Ausgeben eines C-Strings
     ios_base::sync_with_stdio( false );
@@ -34,12 +34,12 @@ inline void klog( char const* msg ) { // Ausgeben eines C-Strings
 
 #define KLOG ( ios_base::sync_with_stdio( false ), std::clog ) // Ausgeben eines Streams
 
-#else // _DEBUG
+#else // DEBUG
 
 inline void klog( char const* ) {} // Leere Funktion, nichts tun
 
 #define KLOG if ( false ) std::clog // Nichts ausgeben
 
-#endif // _DEBUG
+#endif // DEBUG
 
 #endif // LOG_HPP
