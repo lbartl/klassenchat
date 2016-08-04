@@ -41,12 +41,12 @@ void Chat::stop_threads() {
     ++threads_stop;
 
     while ( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
-        this_thread::sleep_for( 0.1s );
+        this_thread::sleep_for( 100ms );
 
     klog("Threads beendet!");
 }
 
-#define UNTIL_STOP while ( this_thread::sleep_for( 0.1s ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
+#define UNTIL_STOP while ( this_thread::sleep_for( 100ms ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
 
 /// Aktualisiert den Chatverlauf.
 /**
@@ -68,7 +68,7 @@ void Chat::aktualisieren_thread() {
 
             i = 0;
         } else {
-            std::string inhalt_new = chatfile -> readAll(); // Datei einlesen
+            std::string inhalt_new = chatfile->readAll(); // Datei einlesen
 
             if ( inhalt_new != inhalt ) { // Chatverlauf hat sich verändert
                 unique_lock lock ( nextUiThing.mtx );
@@ -87,11 +87,9 @@ void Chat::aktualisieren_thread() {
 /**
  * Alle 0,1 Sekunden wird überprüft, ob #lockfile existiert, wenn nicht, wird es erstellt.
  *
- * Alle 0,5 Sekunden werden #nutzer_h und #admins_h aktualisiert und check_all_chats() aufgerufen.
+ * Alle 0,5 Sekunden wird #nutzer_verwaltung aktualisiert und check_all_chats() aufgerufen.
  *
- * Beim Starten wird automatisch mein Name in #nutzer_h und #admins_h (wenn ich #admin bin) hineingeschrieben.
- *
- * Beim Beenden wird #lockfile gelöscht und mein Name aus #nutzer_h und #admins_h herausgenommen.
+ * Beim Beenden wird #lockfile gelöscht und NutzerVerwaltung::herausnehmen() aufgerufen.
  */
 void Chat::nutzer_thread() {
     uint_fast8_t i = 0; // nutzer_verwaltung wird nur jede halbe Sekunde (jedes 5. Mal) aktualisiert
@@ -129,7 +127,7 @@ namespace {
 
 /// Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in #nextUiThing.
 /**
- * Schreibt Informationen zum Beenden des %Chats, zu Warnungen, Informationen, Änderungen von #admin und zur Erstellung eines neuen Privatchats in #nextUiThing.
+ * Schreibt Informationen zum Beenden des Chats, zu Warnungen, Informationen, Änderungen von Nutzer::admin und zur Erstellung eines neuen Privatchats in #nextUiThing.
  * Diese werden dann von pruefen_main() verarbeitet und die entsprechende Aktion ausgeführt.
  */
 void Chat::pruefen_thread() {

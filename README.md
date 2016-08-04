@@ -9,7 +9,7 @@
 ## Kompilieren
 Herunterladen des Quellcodes:
 
-    git clone --recursive https://github.com/hanswurst862/klassenchat
+    git clone --recursive https://github.com/hanswurst862/klassenchat.git
     cd klassenchat
     
 Aktualisieren des Quellcodes:

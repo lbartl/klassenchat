@@ -21,6 +21,7 @@
 #include "lockfile.hpp"
 #include "simpledialog.hpp"
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 
 using namespace static_paths;
@@ -30,7 +31,7 @@ inline bool lockfile_exist( Datei const& lockfile ) {
     if ( lockfile.exist() )
         return true;
     else {
-        this_thread::sleep_for( 0.2s ); // Es könnte sein, dass währenddessen jemand das Lockfile erstellt
+        this_thread::sleep_for( 200ms ); // Es könnte sein, dass währenddessen jemand das Lockfile erstellt
         return lockfile.exist();
     }
 }
@@ -41,11 +42,12 @@ namespace {
 
 /// Starten des Chats. Aufgerufen nach dem Anmelden.
 /**
- * 1. Setzt meinen Benutzernamen auf den eingegebenen Namen.
- * 2. Ruft vergeben() auf.
- * 3. Prüft ob mein Benutzername in #std_admins vorhanden ist, und setzt danach #std_admin und #admin.
- * 4. Weißt #passwords zu.
- * 5. Wenn ich ein #std_admin bin, wird das Passwort-Feld geöffnet, wenn nicht, wird start2() aufgerufen.
+ * 1. Überprüfen, ob mein Benutzername verboten ist, wenn ja, dann nochmal einen Namen eingeben.
+ * 2. Prüft ob mein Benutzername in #std_admins vorhanden ist, und setzt danach #std_admin.
+ * 3. Überprüfen, ob jemand im %Chat ist, wenn nicht lösche ich den Chatverlauf (#std_admin) oder verlasse den %Chat (Lockfile).
+ * 4. Setzen von #checkfile, #terminatefile und #infofile.
+ * 5. Überprüfen, ob mein Benutzername vergeben ist, wenn ja, dann nochmal einen Namen eingeben.
+ * 6. Wenn ich ein #std_admin bin, wird das Passwort-Feld geöffnet, wenn nicht, wird start2() aufgerufen.
  */
 void Chat::start() {
     nutzername = ui.NutzernameA -> text().toStdString(); // mein Benutzername
@@ -89,7 +91,7 @@ void Chat::start() {
         }
     else if ( nutzer_verwaltung.getNutzer( x_plum_anfang, nutzername ) ) { // Prüfen ob Benutzername vergeben ist
         checkfile.touch();
-        this_thread::sleep_for( 0.5s ); // Warten bis die Datei von dem Nutzer gelöscht wird
+        this_thread::sleep_for( 500ms ); // Warten bis die Datei von dem Nutzer gelöscht wird
 
         if ( checkfile.exist() ) { // Bei diesem Nutzer ist der Chat abgestürzt
             checkfile.remove();
@@ -105,8 +107,6 @@ void Chat::start() {
     }
 
     if ( flags[std_admin] ) {
-        passwords = make_unique <AdminPass> ( nutzername );
-
         klog("Admin, öffne Passwortfeld...");
 
         ui.Label2 -> setText( QString::fromStdString( "Passwort für " + nutzername + ": " ) );
@@ -120,7 +120,7 @@ void Chat::start() {
  * Wenn das eingegebene %Passwort richtig war, wird start2() aufgerufen, wenn nicht, wird der %Chat beendet.
  */
 void Chat::passwort() {
-    if ( passwords -> getpass() == ui.PasswortA -> text().toStdString() ) { // richtiges Passwort
+    if ( passwords.getpass( nutzername ) == ui.PasswortA -> text().toStdString() ) { // richtiges Passwort
         ui.PasswortA -> setText(""); // für einen Neustart
         ui.LineStackedWidget -> setCurrentIndex( 0 ); // für einen Neustart
         start2();
@@ -132,11 +132,11 @@ void Chat::passwort() {
 
 /// Starten des Chats. Aufgerufen durch start() oder passwort().
 /**
- * 1. Überprüft ob jemand im %Chat ist, wenn nicht lösche ich den Chatverlauf (#admin) oder verlasse den %Chat (Lockfile).
- * 2. Ruft setfiles(), klassenchat() und start_threads() auf.
- * 4. Öffnet das Chatfenster.
- * 5. Schreibt in #chatfile_all, dass ich den Chat betreten habe.
- * 6. Ruft verlauf_up() auf.
+ * 1. Ruft NutzerVerwaltung::makeNutzerIch() auf.
+ * 2. Setzt #oberadmin und ruft klassenchat() und start_threads() auf.
+ * 3. Öffnet das Chatfenster.
+ * 4. Schreibt in #chatfile_all, dass ich den Chat betreten habe.
+ * 5. Ruft main_thread() auf.
  */
 void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
     nutzer_verwaltung.makeNutzerIch( x_plum_anfang, std::move( nutzername ) );
@@ -159,7 +159,10 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
     ui.NachrichtB -> setFocus(); // Fokus auf Input
     ui.MainStackedWidget -> setCurrentIndex( 1 ); // Chatfenster
 
-    Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzer_ich.nutzername + " hat den Chat betreten" );
+    chatfile_all_mtx.lock();
+        chatfile_all->ostream( true ) << nutzer_ich.nutzername << " hat den Chat betreten\n";
+    chatfile_all_mtx.unlock();
+
     flags.set( x_main ); // Info an closeEvent, dass sich das Fenster nicht mehr einfach schließen lässt, sondern x_close gesetzt werden soll (chat.cpp)
     main_thread(); // aktualisieren.cpp
 }
@@ -185,9 +188,11 @@ void Chat::stop() {
         ui.menuBar -> setVisible( false );
 
         flags.reset();
-        passwords.reset();
         chats_ac.clear();
         inhalt.clear();
+
+        chatfile_all = x_plum_anfang ? &chatfile_plum : &chatfile_norm;
+        lockfile = x_plum_anfang ? &lockfile_plum : &lockfile_norm;
 
         this -> setWindowTitle("Handout Kräuterhexe");
         this -> show();

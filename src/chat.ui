@@ -209,6 +209,7 @@
     <addaction name="actionChatverlauf_l_schen"/>
     <addaction name="actionWer_ist_alles_im_Chat"/>
     <addaction name="actionVerbotene_Benutzernamen"/>
+    <addaction name="actionVerbotene_Pc_Nutzernamen"/>
     <addaction name="actionNeues_Admin_Passwort"/>
     <addaction name="actionIn_den_Plum_Chat_wechseln"/>
    </widget>
@@ -315,6 +316,11 @@
   <action name="actionNeue_Gruppe">
    <property name="text">
     <string>Neue &amp;Gruppe...</string>
+   </property>
+  </action>
+  <action name="actionVerbotene_Pc_Nutzernamen">
+   <property name="text">
+    <string>Verbotene Pc-Nutzernamen...</string>
    </property>
   </action>
  </widget>

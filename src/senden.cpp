@@ -19,7 +19,9 @@
 
 #include "chat.hpp"
 #include "simpledialog.hpp"
+#include "pc_nutzername.hpp"
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 #include <boost/tokenizer.hpp>
 
@@ -71,6 +73,8 @@ void Chat::senden_pruef() {
                 info_open( argument );
             else if ( kommando == "/verboten" )
                 verbotene_namen_dialog( this );
+            else if ( kommando == "/verbotenpc" )
+                verbotene_pc_nutzernamen_dialog( this );
             else if ( kommando == "/reset" )
                 resetcv(); // kommandos.cpp
             else if ( kommando == "/warnung" )
@@ -81,9 +85,10 @@ void Chat::senden_pruef() {
                 openAdminPass();
             else if ( kommando == "/plum" )
                 plum_chat(); // kommandos.cpp
-            else if ( kommando == "/schreibeinfo" ) // Information in Chatdatei schreiben
-                Datei_lock_append( *chatfile_all, chatfile_all_mtx, nachricht.c_str() + kommando.length() + 1 );
-            else if ( kommando == "/lock" && flags[x_oberadmin] ) {
+            else if ( kommando == "/schreibeinfo" ) { // Information in Chatdatei schreiben
+                file_mtx_lock f_lock ( chatfile_all_mtx );
+                chatfile_all->append( nachricht.c_str() + kommando.length() + 1 );
+            } else if ( kommando == "/lock" && flags[x_oberadmin] ) {
                 flags.flip( locked ); // lock-Status aufs Gegenteil setzen
                 createDialog( "Bestätigung", flags[locked] ? "Keiner darf " OBERADMIN " entfernen!" : "Admins dürfen " OBERADMIN " entfernen!", this );
             }

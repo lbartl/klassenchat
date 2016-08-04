@@ -17,6 +17,7 @@
 
 // Diese Datei definiert die Memberfunktion Datei::readAll(), die Konstanten von filesystem.hpp und die globalen Variablen von global.hpp
 
+#include "datei_mutex.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
 #include "klog.hpp"
@@ -49,7 +50,9 @@ namespace static_paths {
 
     extern Datei const alltfile      = "./all-terminate", ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der %Chat geschlossen werden soll
                        warnfile      = "./warning",       ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine %Warnung erscheinen soll
-                       passfile      = "./pass.jpg";      ///< Datei, in der alle Passwörter der std_admins gespeichert sind
+                       pc_forbidfile = "./pc_forbid";     ///< Datei in der alle verbotenen Pc-Nutzernamen gespeichert sind
+
+    Datei_Mutex pc_forbidfile_mtx ( pc_forbidfile ); ///< Datei_Mutex für #pc_forbidfile
 }
 
 extern QRegExp const regex_nutzername ("[\\wÄäÖöÜüß_]+"); // global.hpp

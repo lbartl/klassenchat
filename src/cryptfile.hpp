@@ -74,7 +74,7 @@ private:
     std::vector <uint8_t> key; ///< Schlüssel
 
     ///\cond
-    mutable size_t keyat = 0; // Nächster Schlüssel
+    size_t mutable keyat = 0; // Nächster Schlüssel
     ///\endcond
 };
 

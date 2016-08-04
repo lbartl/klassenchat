@@ -19,9 +19,9 @@
 
 #include "nutzer_anz.hpp"
 #include "chat.hpp"
-#include "nutzer.hpp"
 #include "adminpass.hpp"
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 #include <QPushButton>
 
@@ -78,8 +78,6 @@ Admin_anz::Admin_anz( AdminPass const& admin_pass, QWidget* parent ) :
             name += " (Passwort \"" + admin_pass.getpass( currnutzer.nutzername ) + "\")";
 
         anz_nutzer.emplace_back( currnutzer.nummer, QListWidgetItem( QString::fromStdString( name ) ) ); // Item erstellen und mit Nummer des Nutzers in anz_nutzer schreiben
-
-        //QListWidgetItem* curri = new QListWidgetItem( QString::fromStdString( name ), ui.listWidget ); // Item erstellen
         QListWidgetItem& curri = anz_nutzer.back().second; // Referenz auf das Item
         ui.listWidget->addItem( &curri ); // Item hinzufügen
         curri.setFlags( &currnutzer == &nutzer_ich ? Qt::ItemIsUserCheckable : Qt::ItemIsUserCheckable | Qt::ItemIsEnabled ); // Sich selbst kann der Oberadmin nicht entmachten
@@ -111,7 +109,7 @@ void Admin_anz::schreiben() const { // Information an Nutzer schreiben, dass sei
         else // Nichts tun
             continue;
 
-        makeToNutzerDatei( static_paths::infodir, currnutzer->x_plum, currnutzer->nutzername ).ostream() << to_admin;
+        makeToNutzerDatei( static_paths::infodir, *currnutzer ).ostream() << to_admin;
         KLOG << ( currnutzer->x_plum ? currnutzer->nutzername + " (Plum-Chat)" : currnutzer->nutzername ) << ( to_admin ? " zum Admin gemacht!" : " zum normalen Nutzer gemacht!" ) << endl;
     }
 }

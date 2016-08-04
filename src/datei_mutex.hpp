@@ -90,15 +90,4 @@ struct Datei_Mutex : public boost::interprocess::file_lock {
 using file_mtx_lock = std::lock_guard <Datei_Mutex> const; ///< Kurzform
 using sharable_file_mtx_lock = boost::interprocess::sharable_lock <Datei_Mutex>; ///< Kurzform
 
-/// Undocumented.
-inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, char const*const anhang ) {
-    file_mtx_lock f_lock ( file_mtx );
-    file.ostream( true ) << anhang << '\n';
-}
-
-/// Undocumented.
-inline void Datei_lock_append( Datei const& file, Datei_Mutex& file_mtx, std::string const& anhang ) {
-    Datei_lock_append( file, file_mtx, anhang.c_str() );
-}
-
 #endif // DATEI_MUTEX_HPP

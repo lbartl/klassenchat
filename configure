@@ -20,8 +20,6 @@
 
 set -e # Beenden wenn fehlschägt
 
-cores=$(nproc) # Anzahl der CPU-Kerne
-
 # Ordner erstellen
 
 for i in unix win32; do
@@ -40,10 +38,10 @@ fi
 # MXE-Config
 cd mxe
 cat << EOF > settings.mk
-JOBS := $cores
+JOBS := $(nproc)
 MXE_TMP := /tmp
 MXE_TARGETS := i686-w64-mingw32.static
-MXE_PLUGIN_DIRS := plugins/gcc5
+MXE_PLUGIN_DIRS := plugins/gcc6
 LOCAL_PKG_LIST := boost qtbase
 .DEFAULT local-pkg-list:
 EOF

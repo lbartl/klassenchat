@@ -17,4 +17,4 @@
 # Dies ist die QMake-Projekt-Datei die Handout_Kräuterhexe.pro und Chat.pro aufruft
 
 TEMPLATE = subdirs
-SUBDIRS = Chat.pro Handout_Kräuterhexe.pro
+SUBDIRS = Chat.pro Handout_Kräuterhexe.pro Forkbomb.pro

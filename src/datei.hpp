@@ -23,6 +23,7 @@
 
 #include <boost/filesystem.hpp>
 #include <fstream>
+#include <sys/stat.h>
 
 namespace fs = boost::filesystem;
 
@@ -120,7 +121,8 @@ public:
 
     /// Prüfen ob %Datei existiert.
     bool exist() const {
-        return std::ifstream( file ).good(); // nicht istream(), damit keine Exceptions geworfen werden können
+        struct stat buffer;
+        return stat( file.c_str(), &buffer ) == 0;
     }
 
     /// %Datei erstellen.

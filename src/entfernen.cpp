@@ -18,7 +18,6 @@
 // Diese Datei definiert die Klasse Entfernen
 
 #include "entfernen.hpp"
-#include "nutzer.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QPushButton>
@@ -62,7 +61,7 @@ void Entfernen::schreiben() const { // Den Nutzer entfernen
         return;
     }
 
-    makeToNutzerDatei( static_paths::terminatedir, nutzer_ich.x_plum, name_t.toStdString() ).write( nutzer_ich.nutzername ); // Schreibe hinein, wer ihn entfernt hat
+    makeToNutzerDatei( static_paths::terminatedir, nutzer_ich.x_plum, name_t.toStdString() ).ostream() << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
 
     klog("Terminate-Datei erstellt!");
 }

@@ -21,8 +21,6 @@
 #define CHAT_HPP
 
 #include "ui_chat.h"
-#include "nutzer.hpp"
-#include "hineinschreiben.hpp"
 #include "adminpass.hpp"
 #include <bitset>
 #include <forward_list>
@@ -32,8 +30,9 @@
  * Beim Aufruf des Programms wird, nach dem Passwort-Dialog, ein Objekt der Klasse Chat erzeugt, das die ganze Verwaltung des Chats übernimmt.
  * Dieses stellt gleichzeitig auch das Haupt-Fenster da.
  */
-class Chat final : public QMainWindow {
+class Chat : public QMainWindow {
     Q_OBJECT
+
 public:
     /// Allgemeiner Konstruktor.
     explicit Chat( bool plum, QWidget* parent = nullptr );
@@ -45,7 +44,7 @@ public:
     ///\endcond
 
     /// Einen neuen Privatchat erstellen.
-    void make_chat( std::string partner ); // privatchats.cpp
+    void make_chat( Nutzer const& partner ); // privatchats.cpp
 
 #ifndef OBERADMIN
 # define OBERADMIN "LukasB"
@@ -63,7 +62,7 @@ public:
 # define STD_ADMINS { oberadmin, "Oberlusche", "Patiboy", "Jaguar" }
 #endif
 #define STD_ADMINS_COUNT std::initializer_list <char const*> ( STD_ADMINS ).size() // Wie viele Standard-Admins es gibt
-    /// Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles %Passwort, siehe #passwords.
+    /// Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles %Passwort, siehe AdminPass.
     /**
       * Der #oberadmin ist automatisch ein Standard-Admin.
       * Die anderen Standard-Admins können beim Kompilieren in der %Datei "config/std_admins", getrennt durch Whitespaces, festgelegt werden.
@@ -101,18 +100,11 @@ private:
     Ui::Chat ui {}; ///< UI des Chats
     QAction* ui_sep {}; ///< Ein Seperator um "Neuer Privatchat..." von den Privatchats zu trennen
     std::string inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
-    Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in setfiles())
-          infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in setfiles())
+    Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in start())
+          infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in start())
           checkfile {}; ///< %Datei, mit der überprüft werden kann ob man noch im Chat ist (zugewiesen in start())
     Datei const *chatfile_all, ///< Zeiger auf Klassenchat-Datei (entweder #chatfile_norm oder #chatfile_plum)
                 *lockfile;     ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
-
-    /// Die Passwörter der #std_admins.
-    /**
-      * #passwords wird in start() zugewiesen,
-      * wenn ich kein #std_admin bin ist #passwords ein nullptr.
-      */
-    std::unique_ptr <AdminPass> passwords {};
 
     struct : public std::atomic <Datei const*> {
         ///\cond
@@ -170,7 +162,7 @@ private:
             Privatchat ///< new_chat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (std::string)
         };
 
-        std::mutex mtx {}; ///< Mutex für die Synchronisation
+        mutex mtx {}; ///< Mutex für die Synchronisation
 
         UiThing() = default;
 
@@ -253,12 +245,12 @@ private:
         static constexpr size_t size_one = std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei) }); ///< Maximale Größe eines Objekts
         unsigned char speicher [2*size_one]; ///< Speicher für first() und second()
         Typ typ = nichts; ///< Zeigt was geschehen soll
-        std::condition_variable cond {}; ///< Condition-Variable für die Synchronisation
+        condition_variable cond {}; ///< Condition-Variable für die Synchronisation
     } nextUiThing {}; ///< Einziges Objekt von UiThing
 
-    std::mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
-               pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
-               chats_ac_mtx {}; ///< Mutex für die Synchronisation von #chats_ac
+    mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
+          pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
+          chats_ac_mtx {}; ///< Mutex für die Synchronisation von #chats_ac
 
     Datei_Mutex lockfile_mtx { *lockfile }, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
                 chatfile_all_mtx { *chatfile_all }; ///< Datei_Mutex, die das Schreiben von #chatfile_all kontrolliert

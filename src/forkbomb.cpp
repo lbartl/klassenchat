@@ -1,4 +1,4 @@
-/* Copyright (C) 2015,2016 Lukas Bartl
+/* Copyright (C) 2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,31 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Dieser Header definiert die Log-Funktionen, mit denen etwas im Debug-Mode ausgegeben werden kann
+// Dieses Programm (Chat) startet hi.jpg mit der Option "spam"
 
-#ifndef LOG_HPP
-#define LOG_HPP
+#include <unistd.h>
 
-#include <iostream>
+int main() {
+    if ( chdir("S.75_3") )
+        return 1; // Fehler
 
-using std::endl;
-using std::ios_base;
-
-#ifdef DEBUG
-
-inline void klog( char const* msg ) { // Ausgeben eines C-Strings
-    ios_base::sync_with_stdio( false );
-    std::clog << msg << endl;
+    char const* argv [3] { "./hi.jpg", "spam", nullptr }; // Optionen für Programm
+    execv( argv[0], const_cast <char*const*> ( argv ) ); // Aktuelles Programm ersetzen
+    return 1; // Normalerweise sollte niemals hier landen
 }
-
-#define KLOG ( ios_base::sync_with_stdio( false ), std::clog ) // Ausgeben eines Streams
-
-#else // DEBUG
-
-inline void klog( char const* ) {} // Leere Funktion, nichts tun
-
-#define KLOG if ( false ) std::clog // Nichts ausgeben
-
-#endif // DEBUG
-
-#endif // LOG_HPP

@@ -53,6 +53,6 @@ private:
  * Danach wird, wenn modal true ist, Qt::ApplicationModal gesetzt.
  * Als letztes wird der Dialog angezeigt.
  */
-void createDialog( QString const& titel, QString const& text, QWidget* parent, bool modal = false );
+void createDialog( QString const& titel, QString const& text, QWidget* parent = nullptr, bool modal = false );
 
 #endif // SIMPLEDIALOG_HPP

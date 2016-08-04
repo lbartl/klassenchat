@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Diese Datei definiert die Klasse AdminPass
+// Diese Datei definiert das Singleton AdminPass
 
 #include "adminpass.hpp"
 #include "filesystem.hpp"
@@ -23,13 +23,7 @@
 
 using std::string;
 
-AdminPass::AdminPass( std::string const& benutzername ) :
-    nutzername( benutzername ),
-    passfile( static_paths::passfile, { 75, 45, 114, 30, 6, 203, 13, 102, 77, 155, 97, 100, 201, 170, 209, 178, 67, 102, 18, 218, 94, 106, 159, 126, 54, 65, 151, 91, 129, 107, 125, 102, 215, 96, 169, 18 } ),
-    file_mtx( static_paths::passfile )
-{
-    fromFile();
-}
+AdminPass& passwords = AdminPass::getInstance();
 
 void AdminPass::fromFile() { // Passwörter aktualisieren
     allpass.clear();
@@ -86,9 +80,9 @@ void AdminPass::setpass( string newpass ) {
     fromFile(); // Zur Sicherheit, um nicht aus Versehen neue Passwörter von anderen Admins zu überschreiben
 
     if ( newpass == std_pass )
-        allpass.erase( nutzername ); // Wenn wieder auf Standard-Passwort gewechselt löschen
+        allpass.erase( nutzer_ich.nutzername ); // Wenn wieder auf Standard-Passwort gewechselt löschen
     else
-        allpass[ nutzername ] = std::move( newpass );
+        allpass[ nutzer_ich.nutzername ] = std::move( newpass );
 
     toFile();
 

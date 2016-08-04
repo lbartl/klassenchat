@@ -34,11 +34,10 @@ using namespace static_paths;
  * Überprüft nextUiThing.typ und führt dann die entsprechende Aktion aus.
  */
 bool Chat::pruefen_main() {
-    bool const restart = flags[x_restart];
-
-    if ( restart || flags[x_close] ) { // Ich beende selbst
-        klog( restart ? "Neustart" : "Beenden" );
-        Datei_lock_append( *chatfile_all, chatfile_all_mtx, nutzer_ich.nutzername + " hat den Chat verlassen" );
+    if ( flags[x_restart] || flags[x_close] ) { // Ich beende selbst
+        klog( flags[x_restart] ? "Neustart" : "Beenden" );
+        file_mtx_lock f_lock ( chatfile_all_mtx );
+        chatfile_all->ostream( true ) << nutzer_ich.nutzername << " hat den Chat verlassen\n";
         return true;
     }
 
@@ -60,11 +59,28 @@ bool Chat::pruefen_main() {
     case UiThing::entfernt: // Ich wurde entfernt
         if ( flags[locked] ) { // Kann nicht entfernt werden, stattdessen diesen Benutzer entfernen
             klog("Jemand wollte mich entfernen, diesen Nutzer in den Entfernen-Dialog stellen...");
-            entfernen( *nextUiThing.first <std::string>() );
+            entfernen( nextUiThing.first <std::string>()->erase( 0, 1 ) );
             break;
         } else {
-            klog("entfernt");
-            Datei_lock_append( *chatfile_all, chatfile_all_mtx, nextUiThing.first <std::string>()->append(" hat " + nutzer_ich.nutzername + " entfernt") );
+            std::string const& entferner = *nextUiThing.first <std::string>();
+
+            if ( entferner[0] == 'x' ) { // Pc-Nutzername gesperrt statt einfach nur entfernt
+                klog("Admin hat meinen Pc-Nutzernamen gesperrt!");
+
+                if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) { // Wenn Admin im gleichen Chat wie ich ist
+                    file_mtx_lock f_lock ( chatfile_all_mtx );
+                    chatfile_all->ostream( true ) << nextUiThing.first <std::string>()->c_str()+2 << " hat " << nutzer_ich.nutzername << " entfernt\n";
+                }
+
+                SimpleDialog dialog ( "ARSCHLOCH", "Der Chat ist nicht für dich, Arschloch!!!", this );
+                dialog.setWindowModality( Qt::ApplicationModal );
+                dialog.exec();
+            } else {
+                klog("entfernt");
+                file_mtx_lock f_lock ( chatfile_all_mtx );
+                chatfile_all->ostream( true ) << nextUiThing.first <std::string>()->c_str()+1 << " hat " << nutzer_ich.nutzername << " entfernt\n";
+            }
+
             return true;
         }
     case UiThing::Warnung: { // Warnung anzeigen

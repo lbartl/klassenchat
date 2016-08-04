@@ -36,6 +36,7 @@ fi
 
 neu=0
 clang=0
+native=0
 jobs=$(($(nproc)*2))
 
 for opt in $options; do
@@ -43,6 +44,8 @@ for opt in $options; do
         neu=1
     elif [ "$opt" == "--clang" ]; then
         clang=1
+    elif [ "$opt" == "--native" ]; then
+        native=1
     elif [ "$opt" == "--halb" ]; then # wurde von --all aufgerufen
         ((jobs/=2))
     elif [ "$(echo "$opt" | cut -d "=" -f1)" == "--jobs" ]; then
@@ -54,8 +57,12 @@ SRC=$PWD/src
 
 function build { # Kompilieren und Dateien erstellen
   make --jobs=$jobs
+  if [ ! -e "./bin/S.75_3/" ]; then
+    mkdir "./bin/S.75_3"
+  fi
+
   if [ ! -e "./bin/S.75_3/icon.ico" ]; then
-    cp $SRC/icon.ico "./bin/S.75_3/"
+    cp "$SRC/icon.ico" "./bin/S.75_3/"
   fi
 }
 
@@ -74,9 +81,8 @@ fi
 if [ "$platform" == "win32" ]; then # Windows
   echo "Kompiliere für Windows..."
   
-  MXE=$PWD/../mxe
-  PATH=$PATH:$MXE/usr/bin
-  
+  export PATH=$PWD/../mxe/usr/bin:$PATH
+
   if [ $neu == 1 ]; then
     for i in *; do
         if [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
@@ -85,7 +91,8 @@ if [ "$platform" == "win32" ]; then # Windows
     done
     
     mkdir bin
-    i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Make.pro # Makefile erzeugen
+
+        i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Make.pro # Makefile erzeugen
   fi
   
   build
@@ -112,10 +119,16 @@ else # Unix
     done
     
     if [ $clang == 1 ]; then
-        qmake-qt5 -spec linux-clang $SRC/Make.pro # Makefile mit clang++ als Compiler erzeugen
+        spec=linux-clang
     else
-        qmake-qt5 -spec linux-g++ $SRC/Make.pro # Makefile mit g++ als Compiler erzeugen
+        spec=linux-g++
     fi
+
+    if [ $native == 1 ]; then
+        config="CONFIG+=native"
+    fi
+
+    qmake-qt5 -spec $spec $config $SRC/Make.pro # Makefile erzeugen
   fi
   
   build

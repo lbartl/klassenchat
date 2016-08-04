@@ -15,87 +15,116 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+///\file
 // Dieser Header deklariert die Klasse Nutzer und das Singleton NutzerVerwaltung
 
 #ifndef NUTZER_HPP
 #define NUTZER_HPP
 
-///\cond
-
-#include "hineinschreiben.hpp"
+#include "datei_mutex.hpp"
 #include <set>
-#include <shared_mutex>
 
-#ifdef WIN32
-# include <boost/thread/shared_mutex.hpp>
-using boost::shared_mutex;
-#else
-using shared_mutex = std::shared_timed_mutex;
-#endif
+class QWidget;
 
-using shared_lock = std::shared_lock <shared_mutex>;
+/// Die Klasse Nutzer repräsentiert einen %Nutzer des Chats
+class Nutzer {
+public:
+    std::atomic <bool> const& admin { admin_priv }; ///< Ob der %Nutzer ein Admin ist
+    bool const x_plum; ///< Ob der %Nutzer im Plum-Chat ist
+    std::string const nutzername, ///< Der Benutzername des Nutzers
+                      pc_nutzername; ///< Der Pc-Benutzername des Nutzers
+    size_t const nummer; ///< Die Nummer des Nutzers
 
-struct Nutzer {
-    bool const x_plum, admin;
-    std::string const nutzername, pc_nutzername;
-    size_t const nummer;
-
-    explicit Nutzer( bool const x_plum, bool const admin, std::string nutzername, std::string pc_nutzername, size_t const nummer ) :
+    /// Konstruktor.
+    explicit Nutzer( bool const admin, bool const x_plum, std::string nutzername, std::string pc_nutzername, size_t const nummer ) :
         x_plum( x_plum ),
-        admin( admin ),
         nutzername( std::move( nutzername ) ),
         pc_nutzername( std::move( pc_nutzername ) ),
-        nummer( nummer )
+        nummer( nummer ),
+        admin_priv( admin )
     {}
 
-    bool operator < ( Nutzer const& other ) const {
-        return nummer < other.nummer;
-    }
+private:
+    friend class NutzerVerwaltung;
+
+    std::atomic <bool> mutable admin_priv; ///< Kann von NutzerVerwaltung geändert werden
 };
 
+/// Vergleicht zwei Nutzer
+/**
+ * \code
+ * return nutzer.nummer < other.nummer;
+ * \endcode
+ */
+inline bool operator < ( Nutzer const& nutzer, Nutzer const& other ) {
+    return nutzer.nummer < other.nummer;
+}
+
+/// Vergleicht einen Nutzer mit einer Nummer
+/**
+ * \code
+ * return nutzer.nummer < nummer;
+ * \endcode
+ */
 inline bool operator < ( Nutzer const& nutzer, size_t const nummer ) {
     return nutzer.nummer < nummer;
 }
 
+/// Vergleicht eine Nummer mit einem Nutzer
+/**
+ * \code
+ * return nummer < nutzer.nummer;
+ * \endcode
+ */
 inline bool operator < ( size_t const nummer, Nutzer const& nutzer ) {
     return nummer < nutzer.nummer;
 }
 
 // nutzer.cpp
 
+/// Dieses Singleton verwaltet alle Nutzer, die gerade im %Chat sind
 class NutzerVerwaltung {
-    using iterator = std::set<Nutzer, std::less<>>::const_iterator;
-    using lock_guard = std::lock_guard <shared_mutex> const;
+    using iterator = std::set<Nutzer, std::less<>>::const_iterator; ///< Kurzform
+    using lock_guard = std::lock_guard <shared_mutex> const; ///< Kurzform
 
 public:
+    /// Gibt die einzige Instanz von NutzerVerwaltung zurück
     static NutzerVerwaltung& getInstance() {
         static NutzerVerwaltung instance;
         return instance;
     }
 
+    ///\cond
     NutzerVerwaltung( NutzerVerwaltung const& ) = delete;
     NutzerVerwaltung& operator = ( NutzerVerwaltung const& ) = delete;
+    ///\endcond
 
+    /// Gibt einen #shared_lock, initialisiert mit #mtx, zurück
     shared_lock read_lock() {
         return shared_lock( mtx );
     }
 
+    /// Gibt *#ich zurück
     Nutzer const& getNutzerIch() {
         return *ich;
     }
 
+    /// Gibt alle_nutzer.begin() zurück
     iterator begin() {
         return alle_nutzer.begin();
     }
 
+    /// Gibt alle_nutzer.end() zurück
     iterator end() {
         return alle_nutzer.end();
     }
 
+    /// Gibt alle_nutzer.size() zurück
     size_t size() {
         return alle_nutzer.size();
     }
 
+    /// Lockt #mtx und #file_mtx, ruft einlesen() auf und gibt dann *this zurück
     NutzerVerwaltung& aktualisieren() {
         lock_guard lock ( mtx );
         sharable_file_mtx_lock f_lock ( file_mtx );
@@ -103,18 +132,21 @@ public:
         return *this;
     }
 
+    /// Gibt Nutzer mit übergebener Nummer zurück, falls nicht existiert nullptr
     Nutzer const* getNutzer( size_t const nummer ) {
         shared_lock lock ( mtx );
         iterator it = alle_nutzer.find( nummer );
         return it == end() ? nullptr : &*it;
     }
 
+    /// Gibt Nutzer mit übergebenem x_plum und nutzernamen zurück, falls nicht existiert nullptr
     Nutzer const* getNutzer( bool const x_plum, std::string const& nutzername ) {
         shared_lock lock ( mtx );
         iterator it = std::find_if( begin(), end(), [x_plum,&nutzername] ( Nutzer const& nutzer ) { return nutzer.x_plum == x_plum && nutzer.nutzername == nutzername; } );
         return it == end() ? nullptr : &*it;
     }
 
+    /// Löscht den Inhalt von #file
     void reset() {
         lock_guard lock ( mtx );
         file_mtx_lock f_lock ( file_mtx );
@@ -122,33 +154,30 @@ public:
         file.remove();
     }
 
-    void makeNutzerIch( bool const x_plum, std::string nutzername );
-    void flip_x_plum();
-    void flip_admin();
-    void herausnehmen();
+    void makeNutzerIch( bool const x_plum, std::string nutzername ); ///< Meinen Nutzer erstellen
+    void flip_x_plum(); ///< x_plum bei meinem Nutzer aufs Gegenteil setzen
+    void flip_admin(); ///< admin bei meinem Nutzer aufs Gegenteil setzen
+    void herausnehmen(); ///< Meinen Nutzer aus #alle_nutzer und #file herausnehmen
 
 private:
     NutzerVerwaltung() { aktualisieren(); }
-    void einlesen();
-    void schreiben();
+    void einlesen(); ///< #alle_nutzer aus #file einlesen
+    void schreiben(); ///< #alle_nutzer in #file schreiben
 
-    std::set <Nutzer, std::less<>> alle_nutzer {};
-    iterator ich = end();
+    std::set <Nutzer, std::less<>> alle_nutzer {}; ///< Alle aktuellen Nutzer
+    iterator ich = end(); ///< Iterator zu meinem Nutzer
     size_t next_nummer {}; ///< Nummer für den nächsten neuen Nutzer
-    shared_mutex mtx {};
+    shared_mutex mtx {}; ///< Mutex für die Synchronisation von #alle_nutzer
     Datei const file {"./nutzer"}; ///< Datei, in der alle angemeldeten Benutzernamen gespeichert sind
-    Datei_Mutex file_mtx { file };
+    Datei_Mutex file_mtx { file }; ///< Datei_Mutex für die Synchronisation von #file
 };
 
-extern NutzerVerwaltung& nutzer_verwaltung;
-#define nutzer_ich nutzer_verwaltung.getNutzerIch()
+extern NutzerVerwaltung& nutzer_verwaltung; ///< Referenz auf NutzerVerwaltung::getInstance()
+#define nutzer_ich nutzer_verwaltung.getNutzerIch() ///< Referenz auf meinen Nutzer
 
 // verboten.cpp
-
-class QWidget;
 
 void verbotene_namen_dialog( QWidget* parent = nullptr );
 bool verboten( std::string const& name );
 
-///\endcond
 #endif // NUTZER_HPP

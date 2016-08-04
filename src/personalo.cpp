@@ -54,9 +54,9 @@ PersonalO::PersonalO( std::string const& name_arg, Chat* parent ) :
 
 ///\cond
 void PersonalO::start() { // Neuen Chat starten
-    QString const partner = ui.comboBox -> currentText(); // der ausgewählte Benutzername
+    Nutzer const* partner = nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, ui.comboBox->currentText().toStdString() ); // der Chatpartner
 
-    partner == "" ? qWarning("Keinen Namen ausgewählt!")
-                  : chat_par -> make_chat( partner.toStdString() );
+    if ( partner ) // Wenn Partner noch im Chat ist
+        chat_par->make_chat( *partner );
 }
 ///\endcond

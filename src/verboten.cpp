@@ -58,6 +58,7 @@ private slots:
 
 #include "verboten.moc"
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 #include <QPushButton>
 
@@ -66,16 +67,21 @@ private slots:
  * @param parent Parent
  */
 void verbotene_namen_dialog( QWidget* parent ) {
-    Verboten* ver1 = new Verboten( parent );
-    ver1 -> setAttribute( Qt::WA_DeleteOnClose );
-    ver1 -> show();
+    Verboten* ver = new Verboten( parent );
+    ver->setAttribute( Qt::WA_DeleteOnClose );
+    ver->show();
 }
 
 namespace {
-    Datei verbotenfile = "./forbid";
+    Datei const verbotenfile = "./forbid";
     Datei_Mutex verbotenfile_mtx ( verbotenfile );
 }
 
+/// Überprüft ob ein Name verboten ist.
+/**
+ * @param name Der zu überprüfende Name
+ * @return Ob der Name verboten ist
+ */
 bool verboten( std::string const& name ) {
     sharable_file_mtx_lock f_lock ( verbotenfile_mtx );
 
@@ -108,10 +114,15 @@ Verboten::Verboten( QWidget* parent ) :
     if ( std_admins[0] == "" ) // noch nicht initialisiert
         std::copy( Chat::std_admins.begin(), Chat::std_admins.end(), std_admins.begin() );
 
+    this -> setWindowTitle("Verbotene Nutzernamen");
     this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    for ( QString const& currname : Hineinschreiben( verbotenfile ) ) {
-        QListWidgetItem* curri = new QListWidgetItem( currname, ui.listWidget );
+    sharable_file_mtx_lock f_lock ( verbotenfile_mtx );
+    std::ifstream is = verbotenfile.istream();
+    std::string currname;
+
+    while ( is >> currname ) {
+        QListWidgetItem* curri = new QListWidgetItem( QString::fromStdString( currname ), ui.listWidget );
         curri -> setFlags( currname == "Ich" ? Qt::ItemIsEditable : Qt::ItemIsEnabled | Qt::ItemIsEditable ); // "Ich" ist immer verboten
         ++count;
     }

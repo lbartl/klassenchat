@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,26 +16,36 @@
  */
 
 ///\file
-// Bindet die Thread-Header <thread>, <mutex>, <condition_variable> und <atomic> ein
+// Bindet die Thread-Header <thread>, <mutex>, <shared_mutex>, <condition_variable> und <atomic> ein
 
 #ifndef THREAD_HPP
 #define THREAD_HPP
 
+#include <shared_mutex>
+
 #ifdef WIN32
 # include "mingw-threads/mingw.thread.h"
-# include <mutex>
-# include "mingw-threads/mingw.mutex.h"
-# include "mingw-threads/mingw.condition_variable.h" // bindet <atomic> ein
+# include <boost/thread/shared_mutex.hpp>
+# include <boost/thread/condition_variable.hpp>
+
+
+using boost::mutex;
+using boost::shared_mutex;
+using boost::condition_variable;
+using unique_lock = boost::unique_lock <mutex>;
 #else
 # include <thread>
-# include <condition_variable> // bindet <mutex> ein
 # include <atomic>
+
+using std::mutex;
+using shared_mutex = std::shared_timed_mutex; ///< Unter Windows boost::shared_mutex, unter Unix std::shared_timed_mutex
+using std::condition_variable;
+using unique_lock = std::unique_lock <mutex>; ///< meistens wird std::unique_lock mit mutex genutzt
 #endif
 
-namespace this_thread = std::this_thread;
+using lock_guard = std::lock_guard <mutex> const; ///< meistens wird std::lock_guard mit mutex genutzt
+using shared_lock = std::shared_lock <shared_mutex>; ///< meistens wird std::shared_lock mit #shared_mutex genutzt
+
 using namespace std::literals; // Damit z.B. 0.5s, 50ms oder "baum"s geschrieben werden kann
-
-using lock_guard = std::lock_guard <std::mutex> const; ///< meistens wird std::lock_guard mit std::mutex genutzt
-using unique_lock = std::unique_lock <std::mutex>; ///< meistens wird std::unique_lock mit std::mutex genutzt
-
+namespace this_thread = std::this_thread;
 #endif // THREAD_HPP

@@ -21,7 +21,7 @@
 #ifndef FILESYSTEM_HPP
 #define FILESYSTEM_HPP
 
-#include "datei.hpp"
+#include "nutzer.hpp"
 #include <iostream>
 
 /// Mit der Klasse Ordner können Verzeichnisse verwaltet werden.
@@ -63,23 +63,37 @@ struct Ordner : public fs::path {
     }
 };
 
+struct Datei_Mutex;
+
 /// Statische Dateien und %Ordner.
 namespace static_paths { // definiert in definitions.cpp
     extern Ordner const terminatedir, senddir, infodir, checkdir;
-    extern Datei const alltfile, warnfile, passfile;
+    extern Datei const alltfile, warnfile;
 }
 
-/// Erstellt eine Datei für einen %Nutzer.
+/// Erstellt eine Datei für einen Nutzer.
 /**
  * @param folder der Ordner, in dem die Datei erstellt wird
- * @param plum ob der %Nutzer im Plum-Chat ist
+ * @param plum ob der Nutzer im Plum-Chat ist
  * @param benutzername der Benutzername
- * @returns Datei für %Nutzer.
+ * @returns Datei für Nutzer.
  *
  * Erstellt eine Datei in folder, die als Namen den Benutzernamen und danach "_1" für Plum-Chat und "_0" für normalen %Chat hat.
  */
 inline Datei makeToNutzerDatei( Ordner const& folder, bool const plum, std::string const& benutzername ) {
     return folder / benutzername + ( plum ? "_1" : "_0" );
+}
+
+/// Erstellt eine Datei für einen Nutzer.
+/**
+ * @param folder der Ordner, in dem die Datei erstellt wird
+ * @param nutzer der Nutzer
+ * @returns Datei für Nutzer.
+ *
+ * Erstellt eine Datei in folder, die als Namen den Benutzernamen und danach "_1" für Plum-Chat und "_0" für normalen %Chat hat.
+ */
+inline Datei makeToNutzerDatei( Ordner const& folder, Nutzer const& nutzer ) {
+    return makeToNutzerDatei( folder, nutzer.x_plum, nutzer.nutzername );
 }
 
 // Exceptions

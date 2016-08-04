@@ -18,7 +18,9 @@
 // Diese Datei steuert die Erstellung und Zerstörung des Hauptfensters
 
 #include "chat.hpp"
+#include "pc_nutzername.hpp"
 #include "filesystem.hpp"
+#include "global.hpp"
 #include "klog.hpp"
 #include <QCloseEvent>
 
@@ -28,8 +30,8 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.6.0" // Versions-Nummer
-#define BUILD   "0062"  // Build-Nummer
+#define VERSION "1.6.1" // Versions-Nummer
+#define BUILD   "0065"  // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren
@@ -61,20 +63,25 @@ Chat::Chat( bool plum, QWidget* parent ) :
 
     ui.NutzernameA -> setValidator( new QRegExpValidator( regex_nutzername, ui.NutzernameA ) ); // Nur Buchstaben und Zahlen erlauben, keine Sonderzeichen und Leerzeichen
     ui.NutzernameA -> setMaxLength( 20 );
+    ui.NutzernameA -> setFocus();
 
     if ( plum ) { // Plum-Chat
         ui.Copyright -> setText("Chat");
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
-        ui.Copyright -> setText( "Copyright (C) 2015-2016 Lukas Bartl\n"
-                                 "Lizenz GPLv3+: GNU GPL Version 3 oder höher <http://gnu.org/licenses/gpl.html>\n"
-                                 "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.\n"
-                                 "Es gibt keinerlei Garantien.\n\n"
-                                 "Den Quellcode gibt es auf https://github.com/hanswurst862/klassenchat\n\n"
-                                 "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!\n\n"
+        ui.Copyright -> setText( "Copyright (C) 2015-2016 Lukas Bartl<br>"
+                                 "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.<br>"
+                                 "Es gibt keinerlei Garantien.<br>"
+                                 "Lizenz GPLv3+: GNU GPL Version 3 oder höher: "
+                                 "<a href='https://www.gnu.org/licenses/gpl.html'>www.gnu.org/licenses/gpl.html</a><br><br>"
+                                 "Den Quellcode gibt es auf "
+                                 "<a href='https://www.github.com/hanswurst862/klassenchat'>www.github.com/hanswurst862/klassenchat</a><br><br>"
+                                 "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!<br><br>"
                                  "Version: " VERSION "-" BUILD " " TYPE );
 
-    ui.Copyright -> setTextInteractionFlags( Qt::TextSelectableByMouse ); // Text kann von Nutzer ausgewählt werden
+    ui.Copyright -> setTextFormat( Qt::RichText );
+    ui.Copyright -> setTextInteractionFlags( Qt::TextBrowserInteraction ); // Links können von Nutzer angeklickt werden
+    ui.Copyright -> setOpenExternalLinks( true ); // Links werden in Browser geöffnet
 
     connect( ui.NutzernameA, &QLineEdit::returnPressed, ui.Ok1,    &QPushButton::click );
     connect( ui.PasswortA,   &QLineEdit::returnPressed, ui.Ok2,    &QPushButton::click );
@@ -102,6 +109,7 @@ Chat::Chat( bool plum, QWidget* parent ) :
     connect( ui.actionNeues_Admin_Passwort,         &QAction::triggered, [this] () { openAdminPass(); } );
 
     connect( ui.actionVerbotene_Benutzernamen, &QAction::triggered, [this] () { verbotene_namen_dialog( this ); } );
+    connect( ui.actionVerbotene_Pc_Nutzernamen, &QAction::triggered, [this] () { verbotene_pc_nutzernamen_dialog( this ); } );
 }
 
 void Chat::closeEvent( QCloseEvent* event ) {
@@ -122,7 +130,7 @@ void Chat::closeEvent( QCloseEvent* event ) {
 void Chat::vordergrund( bool const status ) { // Chatfenster immer im Vordergrund anzeigen
     this -> setWindowFlags( status ? windowFlags() | Qt::WindowStaysOnTopHint : windowFlags() & ~Qt::WindowStaysOnTopHint );
 
-    this_thread::sleep_for( 0.1s ); // 0,1 Sekunden warten bis Window Manager Flag erkannt hat
+    this_thread::sleep_for( 100ms ); // 0,1 Sekunden warten bis Window Manager Flag erkannt hat
 
     this -> show();
 }

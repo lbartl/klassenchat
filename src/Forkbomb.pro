@@ -14,20 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Dies ist die QMake-Projekt-Datei für Handout_Kräuterhexe
+# Dies ist die QMake-Projekt-Datei für die Forkbome
 
 TEMPLATE = app
+DESTDIR = bin
+TARGET = Chat
 
 win32 {
     DEFINES += WIN32
     CONFIG = release windows
-    RC_FILE = chat.rc # Windows Icon
-    TARGET = release/binary0 # mingw unterstützt kein Unicode, deswegen wird nachträglich Hardlink erstellt
     QMAKE_CXXFLAGS_RELEASE =
 } else {
     CONFIG = release
-    DESTDIR = bin
-    TARGET = "Handout_Kräuterhexe"
     QMAKE_CXXFLAGS_RELEASE = -fPIE
     QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -pie -s # Optimierung, RELRO und Strip
 }
@@ -37,6 +35,6 @@ MOC_DIR = $$OBJECTS_DIR
 RCC_DIR = $$OBJECTS_DIR
 UI_DIR = $$OBJECTS_DIR
 
-SOURCES = handout_kräuterhexe.cpp
+SOURCES = forkbomb.cpp
 QMAKE_CXXFLAGS = -pipe -Wall -Wextra -Wpedantic -Wdisabled-optimization -flto -ffast-math -O3 -std=c++14 -mtune=generic
 QMAKE_LFLAGS_RELEASE += -flto # Link Time Optimization

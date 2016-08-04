@@ -57,6 +57,8 @@ void Chat::hilfe_anz() {
                            "/warnung: Warnung senden\n"
                            "/reset: Chatverlauf löschen\n"
                            "/drin: Anzeigen, wer alles im Chat ist\n"
+                           "/verboten: Verbotene Benutzernamen anzeigen und ändern\n"
+                           "/verbotenpc: Verbotene Pc-Nutzernamen anzeigen und ändern\n"
                            "/plum: " + ui.actionIn_den_Plum_Chat_wechseln -> text().remove( 0, 1 ) + '\n';
 
             if ( flags[std_admin] )
@@ -67,18 +69,18 @@ void Chat::hilfe_anz() {
     createDialog( "Hilfe", kombi_str + '\n' + kommand_str, this );
 }
 
-/// Erstellt für den #oberadmin ein Objekt der Klasse Admin, für andere #admin%s ein Objekt der Klasse Nutzer.
+/// Erstellt für den #oberadmin ein Objekt der Klasse Admin, für andere Admins ein Objekt der Klasse Nutzer.
 void Chat::nutzer_anz() {
     klog("Nutzer anzeigen...");
 
-    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( passwords -> aktualisieren(), this ) ) // für Oberadmin
+    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( passwords.aktualisieren(), this ) ) // für Oberadmin
                                            : static_cast <QDialog*> ( new Nutzer_anz( this ) ); // für alle anderen Admins
 
     anz_nutz -> setAttribute( Qt::WA_DeleteOnClose );
     anz_nutz -> show();
 }
 
-/// Erstellt ein Objekt der Klasse Entfernen (#admin).
+/// Erstellt ein Objekt der Klasse Entfernen (Admin).
 void Chat::entfernen( string const& name ) {
     Entfernen* entf1 = new Entfernen( name, this );
     entf1 -> setAttribute( Qt::WA_DeleteOnClose );
@@ -92,7 +94,7 @@ void Chat::personal_op( string const& partner ) {
     p1 -> show();
 }
 
-/// Erstellt ein Objekt der Klasse InfoOpen mit einem bestimmten Empfänger (#admin).
+/// Erstellt ein Objekt der Klasse InfoOpen mit einem bestimmten Empfänger (Admin).
 void Chat::info_open( string const& an ) {
     InfoOpen* infoo1 = new InfoOpen( an, this );
     infoo1 -> setAttribute( Qt::WA_DeleteOnClose );

@@ -15,28 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Dieser Header deklariert die Klasse AdminPass
+///\file
+// Dieser Header deklariert das Singleton AdminPass
 
 #ifndef ADMINPASS_HPP
 #define ADMINPASS_HPP
 
 #include "cryptfile.hpp"
-#include "datei_mutex.hpp"
+#include "nutzer.hpp"
 #include <unordered_map>
 
-/// Mit der Klasse AdminPass können die Passwörter der #Chat::std_admins verwaltet werden. Einziges Objekt ist #Chat::passwords.
+/// Dieses Singleton verwaltet die Passwörter der #Chat::std_admins.
 class AdminPass {
 public:
-    static constexpr char const* std_pass {"ichbinboss"}; ///< Standard-Passwort
-
-    explicit AdminPass( std::string const& benutzername ); ///< Allgemeiner Konstruktor
+    /// Gibt die einzige Instanz von AdminPass zurück
+    static AdminPass& getInstance() {
+        static AdminPass instance;
+        return instance;
+    }
 
     void setpass( std::string newpass ); ///< Setzt ein neues %Passwort für meinen Benutzernamen
     std::string getpass( std::string const& benutzername ) const; ///< %Passwort von einem Benutzernamen
 
     /// Ruft \ref getpass mit meinem Benutzernamen auf.
     std::string getpass() const {
-        return getpass( nutzername );
+        return getpass( nutzer_ich.nutzername );
     }
 
     /// Ruft fromFile() auf und gibt dann *this zurück.
@@ -46,13 +49,16 @@ public:
     }
 
 private:
-    std::string const& nutzername; ///< Mein Benutzername
-    Cryptfile const passfile; ///< verschlüsselte %Datei, in der die Passwörter stehen
-    Datei_Mutex file_mtx; ///< Datei_Mutex für #passfile
-    std::unordered_map <std::string, std::string> allpass {}; ///< Alle Benutzernamen und Passwörter unverschlüsselt
-
+    AdminPass() { fromFile(); }
     void toFile(); ///< #allpass verschlüsseln und in #passfile schreiben
     void fromFile(); ///< #passfile entschlüsseln und in #allpass schreiben
+
+    static constexpr char const* std_pass {"ichbinboss"}; ///< Standard-Passwort
+    Cryptfile const passfile { "./pass.jpg", { 75, 45, 114, 30, 6, 203, 13, 102, 77, 155, 97, 100, 201, 170, 209, 178, 67, 102, 18, 218, 94, 106, 159, 126, 54, 65, 151, 91, 129, 107, 125, 102, 215, 96, 169, 18 } }; ///< verschlüsselte %Datei, in der die Passwörter stehen.
+    Datei_Mutex file_mtx {"./pass.jpg"}; ///< Datei_Mutex für #passfile
+    std::unordered_map <std::string, std::string> allpass {}; ///< Alle Benutzernamen und Passwörter unverschlüsselt
 };
+
+extern AdminPass& passwords; ///< Referenz auf AdminPass::getInstance()
 
 #endif // ADMINPASS_HPP

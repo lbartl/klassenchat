@@ -45,7 +45,6 @@ HEADERS = datei.hpp \
           thread.hpp \
           cryptfile.hpp \
           adminpass.hpp \
-          hineinschreiben.hpp \
           chat.hpp \
           passwort.hpp \
           warnung.hpp \
@@ -58,7 +57,9 @@ HEADERS = datei.hpp \
           simpledialog.hpp \
           filesystem.hpp \
           nutzer_anz.hpp \
-          global.hpp
+          global.hpp \
+          forkbomb.hpp \
+          pc_nutzername.hpp
 
 SOURCES = main.cpp \
           definitions.cpp \
@@ -72,7 +73,6 @@ SOURCES = main.cpp \
           pruefen.cpp \
           cryptfile.cpp \
           adminpass.cpp \
-          hineinschreiben.cpp \
           chat.cpp \
           passwort.cpp \
           warnung.cpp \
@@ -83,7 +83,8 @@ SOURCES = main.cpp \
           verboten.cpp \
           simpledialog.cpp \
           nutzer_anz.cpp \
-          nutzer.cpp
+          nutzer.cpp \
+          pc_nutzername.cpp
 
 FORMS   = chat.ui \
           passwort.ui \
@@ -95,11 +96,14 @@ FORMS   = chat.ui \
           verboten.ui \
           simpledialog.ui \
           admin_anz.ui \
-          nutzer_anz.ui
+          nutzer_anz.ui \
+          forkbomb.ui
 
 # Präprozessor
 CONFIG(debug, debug|release) {
     DEFINES += DEBUG
+} else {
+    DEFINES += _FORTIFY_SOURCE=2
 }
 
 win32 {
@@ -119,23 +123,29 @@ exists("../config/std_admins") { # Standard-Admins, chat.hpp
 }
 
 # Kompilieren
-QMAKE_CXXFLAGS_RELEASE -= -g -O2 -pipe -Wall # Kein Debugging für Release-Versionen
-QMAKE_CXXFLAGS_RELEASE += -flto -ffast-math -O3 # Optimieren für Schnelligkeit
-QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization # Warnungen
-
-linux-clang { # Clang/LLVM
-    QMAKE_CXXFLAGS += -std=c++14
-} else { # GCC
-    CONFIG += c++14
-    QMAKE_CXXFLAGS_DEBUG += -ggdb -Og # Optimieren für Debugging
-}
+CONFIG += c++14
+QMAKE_CXXFLAGS_RELEASE = -fstack-protector-strong --param=ssp-buffer-size=4 -mtune=generic -flto -ffast-math -O3 # Optimieren für Schnelligkeit
+QMAKE_CXXFLAGS_DEBUG = -ggdb3 -Og # Optimieren für Debugging
+QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization -Werror=format-security # Warnungen
 
 CONFIG(debug, debug|release) {
-    QMAKE_CXXFLAGS_WARN_ON += -Weffc++ -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods # Nur für Debugging Versionen
+    QMAKE_CXXFLAGS_WARN_ON += -Weffc++ -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods # Nur bei Debug-Versionen, sonst gibt es Warnungen von Bibliotheken
+}
+
+linux {
+    QMAKE_CXXFLAGS_RELEASE += -fPIE
+}
+
+native {
+    QMAKE_CXXFLAGS_RELEASE += -march=native
 }
 
 # Linken
-QMAKE_LFLAGS_RELEASE += -flto -s # Link Time Optimization und Strip
+linux {
+    QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -pie -s # Optimierung, RELRO und Strip
+}
+
+QMAKE_LFLAGS_RELEASE += -flto # Link Time Optimization
 
 win32 {
     LIBS += -lboost_system-mt -lboost_filesystem-mt -lboost_thread_win32-mt

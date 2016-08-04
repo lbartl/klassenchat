@@ -25,7 +25,7 @@
 using namespace static_paths;
 using std::string;
 
-/// Chatverlauf löschen (#admin).
+/// Chatverlauf löschen (Admin).
 void Chat::resetcv() {
     klog("reset");
 
@@ -41,13 +41,13 @@ void Chat::resetcv() {
     }
 }
 
-/// Überall den %Chat beenden (#admin).
+/// Überall den %Chat beenden (Admin).
 void Chat::allt() {
     klog("++terminate-all++");
     alltfile.touch();
 }
 
-/// Eine Warnung an alle senden (#admin).
+/// Eine Warnung an alle senden (Admin).
 void Chat::warnung_send() {
     if ( nutzer_ich.x_plum ) // vom Plum-Chat aus können keine Warnungen gesendet oder empfangen werden
         return;
@@ -64,7 +64,7 @@ void Chat::warnung_send() {
     warnfile.remove();
 }
 
-/// In den Plum-Chat wechseln oder zurück (#admin).
+/// In den Plum-Chat wechseln oder zurück (Admin).
 void Chat::plum_chat() {
     lock_guard l1 ( nutzer_mtx ),
                l2 ( pruefen_mtx );
@@ -102,19 +102,23 @@ void Chat::plum_chat() {
     chats_ac.clear(); // alle Privatchats löschen (Chatdateien werden von Partnern gelöscht)
 
     if ( ! lockfile -> exist() )
-        if ( this_thread::sleep_for( 0.2s ), ! lockfile -> exist() ) // siehe start.cpp, lockfile_exist()
+        if ( this_thread::sleep_for( 200ms ), ! lockfile -> exist() ) // siehe start.cpp, lockfile_exist()
             resetcv();
 
-    Datei_Mutex other_file_mtx = std::move( chatfile_all_mtx ); // Datei_Mutex für chatfile_all des anderen Chats
-    chatfile_all_mtx = Datei_Mutex( *chatfile_all );
-    lockfile_mtx = Datei_Mutex( *lockfile );
+    {
+        Datei_Mutex other_file_mtx = std::move( chatfile_all_mtx ); // Datei_Mutex für chatfile_all des anderen Chats
+        chatfile_all_mtx = Datei_Mutex( *chatfile_all );
+        lockfile_mtx = Datei_Mutex( *lockfile );
 
-    Datei_lock_append( chatfile_plum, nutzer_ich.x_plum ? chatfile_all_mtx : other_file_mtx, plumtext );
-    Datei_lock_append( chatfile_norm, nutzer_ich.x_plum ? other_file_mtx : chatfile_all_mtx, normtext );
+        file_mtx_lock l1 ( chatfile_all_mtx ),
+                      l2 ( other_file_mtx );
+        chatfile_norm.append( normtext );
+        chatfile_plum.append( plumtext );
+    }
 
-    checkfile = makeToNutzerDatei( checkdir, nutzer_ich.x_plum, nutzer_ich.nutzername );
-    terminatefile = makeToNutzerDatei( terminatedir, nutzer_ich.x_plum, nutzer_ich.nutzername );
-    infofile = makeToNutzerDatei( infodir, nutzer_ich.x_plum, nutzer_ich.nutzername );
+    checkfile = makeToNutzerDatei( checkdir, nutzer_ich );
+    terminatefile = makeToNutzerDatei( terminatedir, nutzer_ich );
+    infofile = makeToNutzerDatei( infodir, nutzer_ich );
 
     terminatefile.remove();
     infofile.remove();
@@ -130,7 +134,7 @@ void Chat::plum_chat() {
  * Wenn das neue %Passwort ungültig ist, wird ein Dialog angezeigt.
  */
 void Chat::set_pass( string newpass ) try {
-    passwords -> setpass( std::move( newpass ) );
+    passwords.setpass( std::move( newpass ) );
 } catch ( std::invalid_argument const& exc ) {
     createDialog( "Fehler", exc.what(), this, true );
     openAdminPass();

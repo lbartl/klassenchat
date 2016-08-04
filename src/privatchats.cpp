@@ -43,26 +43,26 @@ bool Chat::exist_chat( string const& partner ) {
 }
 
 /**
- * @param partner Benutzername des Chatpartners.
+ * @param partner der Chatpartner.
  *
  * Neuen Privatchat mit diesem Chatpartner erstellen und öffnen.
  *
  * \callgraph
  */
-void Chat::make_chat( string partner ) {
-    if ( exist_chat( partner ) ) { // Chat mit diesem partner existiert schon
-        KLOG << "Privatchat mit " << partner << " existiert schon! In diesen Chat gewechselt!" << endl;
+void Chat::make_chat( Nutzer const& partner ) {
+    if ( exist_chat( partner.nutzername ) ) { // Chat mit diesem partner existiert schon
+        KLOG << "Privatchat mit " << partner.nutzername << " existiert schon! In diesen Chat gewechselt!" << endl;
         return;
     }
 
-    Datei file = static_paths::senddir / partner + '_' + nutzer_ich.nutzername;
+    Datei file = static_paths::senddir / partner.nutzername + '_' + nutzer_ich.nutzername;
     file += nutzer_ich.x_plum ? "_1.jpg" : "_0.jpg";
 
-    file.ostream() << "Privatchat von " << nutzer_ich.nutzername << " und " << partner << '\n';
+    file.ostream() << "Privatchat von " << nutzer_ich.nutzername << " und " << partner.nutzername << '\n';
 
-    makeToNutzerDatei( static_paths::infodir, nutzer_ich.x_plum, partner ).ostream() << file << nutzer_ich.nutzername; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
+    makeToNutzerDatei( static_paths::infodir, partner ).ostream() << file << nutzer_ich.nutzername; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
 
-    new_chat( std::move( file ), std::move( partner ) );
+    new_chat( std::move( file ), partner.nutzername );
 }
 
 /// Eine neue Chataction erstellen. Aufgerufen von make_chat() und pruefen2()
@@ -117,7 +117,7 @@ void Chat::ch_chat( string const& partner ) {
 /// Überprüfen, ob alle Privatchats noch existieren. Wird alle 0,5 Sekunden von nutzer_thread() aufgerufen
 /**
  * Prüft für jeden Privatchat aus #chats_ac, ob er noch gültig ist,
- * indem geschaut wird, ob der Chatpartner in #nutzer_h steht.
+ * indem geschaut wird, ob der Chatpartner in nutzer_verwaltung noch vorhanden ist
  *
  * Wenn der Privatchat nicht mehr gültig ist, wird ein Dialog angezeigt und die entsprechende Chataction gelöscht.
  */

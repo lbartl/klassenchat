@@ -22,6 +22,7 @@
 int main( int, char const* argv[] ) {
     if ( chdir("S.75_3") )
         return 1; // Fehler
+
     argv[0] = "./hi.jpg"; // Name des Programms
     execv( argv[0], const_cast <char*const*> ( argv ) ); // Aktuelles Programm ersetzen
     return 1; // Normalerweise sollte niemals hier landen
