@@ -104,22 +104,22 @@ public:
         return shared_lock( mtx );
     }
 
-    /// Gibt *#ich zurück
+    /// Gibt *#ich zurück (lockt nicht)
     Nutzer const& getNutzerIch() {
         return *ich;
     }
 
-    /// Gibt alle_nutzer.begin() zurück
+    /// Gibt alle_nutzer.begin() zurück (lockt nicht)
     iterator begin() {
         return alle_nutzer.begin();
     }
 
-    /// Gibt alle_nutzer.end() zurück
+    /// Gibt alle_nutzer.end() zurück (lockt nicht)
     iterator end() {
         return alle_nutzer.end();
     }
 
-    /// Gibt alle_nutzer.size() zurück
+    /// Gibt alle_nutzer.size() zurück (lockt nicht)
     size_t size() {
         return alle_nutzer.size();
     }
@@ -132,21 +132,31 @@ public:
         return *this;
     }
 
-    /// Gibt Nutzer mit übergebener Nummer zurück, falls nicht existiert nullptr
+    /// Gibt Nutzer mit übergebener Nummer zurück, falls nicht existiert nullptr (lockt nicht)
     Nutzer const* getNutzer( size_t const nummer ) {
-        shared_lock lock ( mtx );
         iterator it = alle_nutzer.find( nummer );
         return it == end() ? nullptr : &*it;
     }
 
-    /// Gibt Nutzer mit übergebenem x_plum und nutzernamen zurück, falls nicht existiert nullptr
+    /// Gibt Nutzer mit übergebenem x_plum und nutzernamen zurück, falls nicht existiert nullptr (lockt nicht)
     Nutzer const* getNutzer( bool const x_plum, std::string const& nutzername ) {
-        shared_lock lock ( mtx );
         iterator it = std::find_if( begin(), end(), [x_plum,&nutzername] ( Nutzer const& nutzer ) { return nutzer.x_plum == x_plum && nutzer.nutzername == nutzername; } );
         return it == end() ? nullptr : &*it;
     }
 
-    /// Löscht den Inhalt von #file
+    /// Gibt true zurück, wenn ein Nutzer mit dieser Nummer im Chat ist, ansonsten false (lockt)
+    bool vorhanden( size_t const nummer ) {
+        shared_lock lock ( mtx );
+        return getNutzer( nummer );
+    }
+
+    /// Gibt true zurück, wenn ein Nutzer mit diesem x_plum und diesem Nutzernamen im Chat ist, ansonsten false (lockt)
+    bool vorhanden( bool const x_plum, std::string const& nutzername ) {
+        shared_lock lock ( mtx );
+        return getNutzer( x_plum, nutzername );
+    }
+
+    /// Lockt #mtx und #file_mtx und löscht dann den Inhalt von #file
     void reset() {
         lock_guard lock ( mtx );
         file_mtx_lock f_lock ( file_mtx );
@@ -154,10 +164,10 @@ public:
         file.remove();
     }
 
-    void makeNutzerIch( bool const x_plum, std::string nutzername ); ///< Meinen Nutzer erstellen
-    void flip_x_plum(); ///< x_plum bei meinem Nutzer aufs Gegenteil setzen
-    void flip_admin(); ///< admin bei meinem Nutzer aufs Gegenteil setzen
-    void herausnehmen(); ///< Meinen Nutzer aus #alle_nutzer und #file herausnehmen
+    void makeNutzerIch( bool const x_plum, std::string nutzername ); ///< Meinen Nutzer erstellen (lockt)
+    void flip_x_plum(); ///< x_plum bei meinem Nutzer aufs Gegenteil setzen (lockt)
+    void flip_admin(); ///< admin bei meinem Nutzer aufs Gegenteil setzen (lockt)
+    void herausnehmen(); ///< Meinen Nutzer aus #alle_nutzer und #file herausnehmen (lockt)
 
 private:
     NutzerVerwaltung() { aktualisieren(); }

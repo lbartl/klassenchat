@@ -18,16 +18,15 @@
 // Diese Datei definiert die Klasse PersonalO
 
 #include "personalo.hpp"
-#include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include <QPushButton>
 
 /**
  * @param name_arg Voreingestellter Benutzername
  * @param parent Parent
  */
-PersonalO::PersonalO( std::string const& name_arg, Chat* parent ) :
-    QDialog( parent ),
-    chat_par( parent )
+PersonalO::PersonalO( std::string const& name_arg, QWidget* parent ) :
+    QDialog( parent )
 {
     ui.setupUi( this );
     ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
@@ -49,14 +48,5 @@ PersonalO::PersonalO( std::string const& name_arg, Chat* parent ) :
     ui.comboBox -> setCurrentIndex( 0 );
     ui.comboBox -> model() -> sort( 0 );
 
-    connect( this, &PersonalO::accepted, [this] () { start(); } );
+    connect( this, &PersonalO::accepted, [this] () { chat_verwaltung.makeChat( ui.comboBox->currentText().toStdString() ); } );
 }
-
-///\cond
-void PersonalO::start() { // Neuen Chat starten
-    Nutzer const* partner = nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, ui.comboBox->currentText().toStdString() ); // der Chatpartner
-
-    if ( partner ) // Wenn Partner noch im Chat ist
-        chat_par->make_chat( *partner );
-}
-///\endcond

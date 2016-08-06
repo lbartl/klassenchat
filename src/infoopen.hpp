@@ -22,8 +22,6 @@
 
 #include "ui_infoopen.h"
 
-class Hineinschreiben;
-
 /// Mit diesem Dialog kann ein %Admin Informationen versenden.
 class InfoOpen : public QDialog
 {

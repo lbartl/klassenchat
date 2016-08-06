@@ -2,7 +2,7 @@
 
 [Quellcode](https://github.com/hanswurst862/klassenchat)
 
-[Dokumentation](http://hanswurst862.github.io/klassenchat)
+[Dokumentation](https://hanswurst862.github.io/klassenchat)
 
 [Releases](https://github.com/hanswurst862/klassenchat/releases)
 

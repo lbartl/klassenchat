@@ -59,7 +59,8 @@ HEADERS = datei.hpp \
           nutzer_anz.hpp \
           global.hpp \
           forkbomb.hpp \
-          pc_nutzername.hpp
+          pc_nutzername.hpp \
+          chatverwaltung.hpp
 
 SOURCES = main.cpp \
           definitions.cpp \
@@ -68,7 +69,6 @@ SOURCES = main.cpp \
           aktualisieren.cpp \
           senden.cpp \
           kommandos.cpp \
-          privatchats.cpp \
           dialog.cpp \
           pruefen.cpp \
           cryptfile.cpp \
@@ -84,7 +84,8 @@ SOURCES = main.cpp \
           simpledialog.cpp \
           nutzer_anz.cpp \
           nutzer.cpp \
-          pc_nutzername.cpp
+          pc_nutzername.cpp \
+          chatverwaltung.cpp
 
 FORMS   = chat.ui \
           passwort.ui \

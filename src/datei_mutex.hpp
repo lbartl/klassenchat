@@ -16,7 +16,7 @@
  */
 
 ///\file
-// Dieser Header definiert das struct Datei_Mutex
+// Dieser Header definiert die Klasse Datei_Mutex
 
 #ifndef DATEI_MUTEX_HPP
 #define DATEI_MUTEX_HPP
@@ -69,6 +69,10 @@ public:
         unlock();
     }
 
+    void remove() {
+        lockdatei.remove();
+    }
+
 private:
     FILE* stream {};
     Datei lockdatei;
@@ -77,13 +81,23 @@ private:
 # include <boost/interprocess/sync/file_lock.hpp>
 /// Ein file_lock, benutzbar wie eine Mutex.
 /**
- * Datei_Mutex erbt von boost::interprocess::file_lock und hat nur einen Konstruktor für Datei statt C-String.
+ * Datei_Mutex erbt von boost::interprocess::file_lock und hat einen Konstruktor für Datei statt C-String und eine Methode remove()
  */
-struct Datei_Mutex : public boost::interprocess::file_lock {
+class Datei_Mutex : public boost::interprocess::file_lock {
+public:
     /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>.lock" angelegt und als Lock genutzt
     explicit Datei_Mutex( Datei file ) :
-        boost::interprocess::file_lock( [datei = std::move(file) + ".lock"] () { if ( ! datei.exist() ) datei.touch(); return datei.getpath(); } () ) // Datei erstellen
+        boost::interprocess::file_lock( [&file] () { file += ".lock"; if ( ! file.exist() ) file.touch(); return file.getpath(); } () ), // Datei erstellen
+        lockdatei( std::move( file ) )
     {}
+
+    /// Löschen der #lockdatei. Sie sollte nicht gelockt sein und nach dieser Methode sollte der Destruktor aufgerufen werden.
+    void remove() {
+        lockdatei.remove();
+    }
+
+private:
+    Datei lockdatei; ///< Die Lock-Datei
 };
 #endif
 

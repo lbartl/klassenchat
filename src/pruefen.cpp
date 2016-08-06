@@ -18,6 +18,7 @@
 // Diese Datei wird regelmäßig von aktualisieren.cpp aufgerufen und prüft, ob alles im Chat noch "normal" ist
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "warnung.hpp"
 #include "simpledialog.hpp"
 #include "filesystem.hpp"
@@ -36,8 +37,7 @@ using namespace static_paths;
 bool Chat::pruefen_main() {
     if ( flags[x_restart] || flags[x_close] ) { // Ich beende selbst
         klog( flags[x_restart] ? "Neustart" : "Beenden" );
-        file_mtx_lock f_lock ( chatfile_all_mtx );
-        chatfile_all->ostream( true ) << nutzer_ich.nutzername << " hat den Chat verlassen\n";
+        chat_verwaltung.beenden();
         return true;
     }
 
@@ -55,6 +55,7 @@ bool Chat::pruefen_main() {
         verlauf_up( *nextUiThing.first <size_t>() );
         break;
     case UiThing::terminate: // Chat beenden
+        chat_verwaltung.beenden();
         return true;
     case UiThing::entfernt: // Ich wurde entfernt
         if ( flags[locked] ) { // Kann nicht entfernt werden, stattdessen diesen Benutzer entfernen
@@ -67,18 +68,15 @@ bool Chat::pruefen_main() {
             if ( entferner[0] == 'x' ) { // Pc-Nutzername gesperrt statt einfach nur entfernt
                 klog("Admin hat meinen Pc-Nutzernamen gesperrt!");
 
-                if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) { // Wenn Admin im gleichen Chat wie ich ist
-                    file_mtx_lock f_lock ( chatfile_all_mtx );
-                    chatfile_all->ostream( true ) << nextUiThing.first <std::string>()->c_str()+2 << " hat " << nutzer_ich.nutzername << " entfernt\n";
-                }
+                if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) // Wenn Admin im gleichen Chat wie ich ist
+                    chat_verwaltung.entfernt( nextUiThing.first <std::string>()->c_str()+2 );
 
                 SimpleDialog dialog ( "ARSCHLOCH", "Der Chat ist nicht für dich, Arschloch!!!", this );
                 dialog.setWindowModality( Qt::ApplicationModal );
                 dialog.exec();
             } else {
                 klog("entfernt");
-                file_mtx_lock f_lock ( chatfile_all_mtx );
-                chatfile_all->ostream( true ) << nextUiThing.first <std::string>()->c_str()+1 << " hat " << nutzer_ich.nutzername << " entfernt\n";
+                chat_verwaltung.entfernt( nextUiThing.first <std::string>()->c_str()+1 );
             }
 
             return true;
@@ -89,7 +87,7 @@ bool Chat::pruefen_main() {
         warn -> show();
     } break;
     case UiThing::ToAdmin: // Admin werden
-        ui.menuAdmin -> setEnabled( flags[chatall] ); // Nur im Klassenchat anzeigen
+        ui.menuAdmin -> setEnabled( chat_verwaltung.imKlassenchat() ); // Nur im Klassenchat anzeigen
         ui.action_berall_den_Chat_beenden -> setEnabled( true );
         break;
     case UiThing::FromAdmin: // normaler Nutzer werden
@@ -99,8 +97,8 @@ bool Chat::pruefen_main() {
     case UiThing::Dialog: // Dialog anzeigen
         createDialog( *nextUiThing.first <QString>(), *nextUiThing.second <QString>(), this );
         break;
-    case UiThing::Privatchat: // neue Chataction erstellen
-        new_chat( std::move( *nextUiThing.first <Datei>() ), std::move( *nextUiThing.second <std::string>() ) );
+    case UiThing::Privatchat: // neuen Privatchat erstellen
+        chat_verwaltung.newChat( std::move( *nextUiThing.first <Datei>() ), *nextUiThing.second <size_t>() );
     }
 
     nextUiThing.destruct();

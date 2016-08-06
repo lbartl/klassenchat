@@ -18,6 +18,7 @@
 // Diese Datei steuert die Erstellung und Zerstörung des Hauptfensters
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "pc_nutzername.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
@@ -30,8 +31,8 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.6.1" // Versions-Nummer
-#define BUILD   "0065"  // Build-Nummer
+#define VERSION "1.6.2" // Versions-Nummer
+#define BUILD   "0066"  // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren
@@ -39,9 +40,7 @@
 constexpr decltype( Chat::std_admins ) Chat::std_admins;
 ///\endcond
 
-Datei const Chat::chatfile_norm = "./verlauf.jpg", ///< Datei, in der der normale %Chat gespeichert ist
-            Chat::chatfile_plum = "./baum.jpg", ///< Datei, in der der Plum-Chat gespeichert ist
-            Chat::lockfile_norm = "./lock", ///< Datei, die existiert, wenn jemand im normalen %Chat ist
+Datei const Chat::lockfile_norm = "./lock", ///< Datei, die existiert, wenn jemand im normalen %Chat ist
             Chat::lockfile_plum = "./baum"; ///< Datei, die existiert, wenn jemand im Plum-Chat ist
 
 /**
@@ -51,11 +50,9 @@ Datei const Chat::chatfile_norm = "./verlauf.jpg", ///< Datei, in der der normal
 Chat::Chat( bool plum, QWidget* parent ) :
     QMainWindow( parent ),
     x_plum_anfang( plum ),
-    chatfile_all( plum ? &chatfile_plum : &chatfile_norm ),
     lockfile( plum ? &lockfile_plum : &lockfile_norm )
 {
     ui.setupUi( this );
-    ui_sep = ui.menuChats -> insertSeparator( ui.actionNeuer_Chat );
 
     ui.menuBar -> setVisible( false ); // Menüleiste ausblenden
     ui.MainStackedWidget -> setCurrentIndex( 0 ); // Anmelde-Fenster
@@ -92,13 +89,13 @@ Chat::Chat( bool plum, QWidget* parent ) :
     connect( ui.Senden, &QPushButton::clicked, [this] () { senden_pruef(); } );
 
     connect( ui.actionQuit, &QAction::triggered, this, &Chat::close ); // closeEvent aufrufen
-
     connect( ui.actionImmer_im_Vordergrund, &QAction::toggled, this, &Chat::vordergrund );
 
     connect( ui.actionHilfe,       &QAction::triggered, [this] () { hilfe_anz();   } );
-    connect( ui.actionKlassenchat, &QAction::triggered, [this] () { klassenchat(); } );
-    connect( ui.actionNeuer_Chat,  &QAction::triggered, [this] () { personal_op(); } );
 
+    connect( ui.actionKlassenchat, &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
+
+    connect( ui.actionNeuer_Chat,  &QAction::triggered, [this] () { personal_op(); } );
     connect( ui.actionEinen_Nutzer_entfernen,       &QAction::triggered, [this] () { entfernen();     } );
     connect( ui.actionChatverlauf_l_schen,          &QAction::triggered, [this] () { resetcv();       } );
     connect( ui.action_berall_den_Chat_beenden,     &QAction::triggered, [this] () { allt();          } );

@@ -22,8 +22,6 @@
 
 #include "ui_entfernen.h"
 
-class Hineinschreiben;
-
 /// Mit diesem Dialog kann ein %Admin einen %Nutzer entfernen.
 class Entfernen : public QDialog
 {

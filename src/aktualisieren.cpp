@@ -18,6 +18,7 @@
 // Diese Datei steuert das Aktualisieren des Chatverlaufs
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 #include <QScrollBar>
@@ -133,7 +134,7 @@ void Chat::verlauf_up( size_t pos ) {
             currtyp = Typ::info;
         else if ( std::equal( str_pos, doppos, nutzer_ich.nutzername.begin(), nutzer_ich.nutzername.end() ) ) // Nachricht stammt von mir selber
             currtyp = Typ::von_mir;
-        else if ( ! nutzer_ich.x_plum && flags[chatall] && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
+        else if ( ! nutzer_ich.x_plum && chat_verwaltung.imKlassenchat() && std::equal( str_pos, doppos, std::begin( oberadmin ), std::end( oberadmin ) - 1 ) ) // Nachricht stammt vom Oberadmin
             currtyp = Typ::von_oberadmin;
         else // Nachricht stammt von jemand anders
             currtyp = Typ::von_anders;

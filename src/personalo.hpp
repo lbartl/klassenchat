@@ -22,29 +22,16 @@
 
 #include "ui_personalo.h"
 
-class Chat;
-class Hineinschreiben;
-
 /// Mit diesem Dialog kann man einen neuen Privatchat starten. Es wird Chat::make_chat() mit dem ausgewählten Benutzernamen aufgerufen.
 class PersonalO : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PersonalO( std::string const& name_arg, Chat* parent ); ///< Konstruktor.
-
-    ///\cond
-    PersonalO( PersonalO const& ) = delete;
-    PersonalO& operator = ( PersonalO const& ) = delete;
-    ///\endcond
+    explicit PersonalO( std::string const& name_arg, QWidget* parent = nullptr ); ///< Konstruktor.
 
 private:
-    Chat* chat_par; ///< Parent
     Ui::PersonalO ui {}; ///< UI des Dialogs
-
-    ///\cond
-    void start();
-    ///\endcond
 };
 
 #endif // PERSONALO_HPP

@@ -24,6 +24,8 @@
 #include "global.hpp"
 #include "klog.hpp"
 
+#include "chatverwaltung.hpp"
+
 using namespace static_paths;
 using std::make_unique;
 
@@ -89,7 +91,7 @@ void Chat::start() {
             Lockfile( this ).exec();
             return;
         }
-    else if ( nutzer_verwaltung.getNutzer( x_plum_anfang, nutzername ) ) { // Prüfen ob Benutzername vergeben ist
+    else if ( nutzer_verwaltung.vorhanden( x_plum_anfang, nutzername ) ) { // Prüfen ob Benutzername vergeben ist
         checkfile.touch();
         this_thread::sleep_for( 500ms ); // Warten bis die Datei von dem Nutzer gelöscht wird
 
@@ -140,28 +142,22 @@ void Chat::passwort() {
  */
 void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
     nutzer_verwaltung.makeNutzerIch( x_plum_anfang, std::move( nutzername ) );
+    chat_verwaltung.init( ui.menuChats, ui.menuAdmin, ui.menuChats->insertSeparator( ui.actionNeuer_Chat ) );
 
     flags[x_oberadmin] = ! nutzer_ich.x_plum && nutzer_ich.nutzername == oberadmin; // Oberadmin
 
     terminatefile.remove();
     infofile.remove();
 
-    klassenchat();
     start_threads();
 
     this -> setWindowTitle( QString::fromStdString( nutzer_ich.nutzername + " - Chat" ) );
-
     ui.action_berall_den_Chat_beenden -> setEnabled( nutzer_ich.admin ); // Explizit abschalten, da Tastenkombination
     ui.actionNeues_Admin_Passwort -> setEnabled( nutzer_ich.admin );
     ui.actionWarnung_senden -> setEnabled( ! nutzer_ich.x_plum );
-
     ui.menuBar -> setVisible( true ); // Menüleiste einblenden
     ui.NachrichtB -> setFocus(); // Fokus auf Input
     ui.MainStackedWidget -> setCurrentIndex( 1 ); // Chatfenster
-
-    chatfile_all_mtx.lock();
-        chatfile_all->ostream( true ) << nutzer_ich.nutzername << " hat den Chat betreten\n";
-    chatfile_all_mtx.unlock();
 
     flags.set( x_main ); // Info an closeEvent, dass sich das Fenster nicht mehr einfach schließen lässt, sondern x_close gesetzt werden soll (chat.cpp)
     main_thread(); // aktualisieren.cpp
@@ -188,10 +184,8 @@ void Chat::stop() {
         ui.menuBar -> setVisible( false );
 
         flags.reset();
-        chats_ac.clear();
         inhalt.clear();
 
-        chatfile_all = x_plum_anfang ? &chatfile_plum : &chatfile_norm;
         lockfile = x_plum_anfang ? &lockfile_plum : &lockfile_norm;
 
         this -> setWindowTitle("Handout Kräuterhexe");

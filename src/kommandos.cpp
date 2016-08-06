@@ -18,6 +18,7 @@
 // Diese Datei steuert Kommandos
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "simpledialog.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
@@ -28,11 +29,7 @@ using std::string;
 /// Chatverlauf löschen (Admin).
 void Chat::resetcv() {
     klog("reset");
-
-    chatfile_all_mtx.lock();
-        chatfile_all -> reset();
-    chatfile_all_mtx.unlock();
-
+    chat_verwaltung.reset();
     alltfile.remove();
 
     if ( ! nutzer_ich.x_plum || flags[x_main] ) {
@@ -69,61 +66,39 @@ void Chat::plum_chat() {
     lock_guard l1 ( nutzer_mtx ),
                l2 ( pruefen_mtx );
 
-    if ( nutzer_verwaltung.getNutzer( ! nutzer_ich.x_plum, nutzer_ich.nutzername ) ) // Im anderen Chat ist jemand mit meinem Namen angemeldet
+    if ( nutzer_verwaltung.vorhanden( ! nutzer_ich.x_plum, nutzer_ich.nutzername ) ) {
+        createDialog( "Fehler", "Im anderen Chat ist bereits jemand mit diesem Nutzernamen angemeldet!" );
         return;
+    }
 
     lockfile_mtx.lock();
         lockfile -> remove();
     lockfile_mtx.unlock();
 
     nutzer_verwaltung.flip_x_plum();
-
-    string normtext, plumtext;
+    chat_verwaltung.flip_x_plum();
 
     if ( nutzer_ich.x_plum ) { // Kommt vom normalen Chat
-        chatfile_all = &chatfile_plum;
-        lockfile     = &lockfile_plum;
-
-        plumtext = nutzer_ich.nutzername + " hat den Chat betreten";
-        normtext = nutzer_ich.nutzername + " hat in den Plum-Chat gewechselt";
-
+        lockfile = &lockfile_plum;
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
    } else { // Kommt vom Plum-Chat
-        chatfile_all = &chatfile_norm;
-        lockfile     = &lockfile_norm;
-
-        plumtext = nutzer_ich.nutzername + " hat den Chat verlassen";
-        normtext = nutzer_ich.nutzername + " hat in diesen Chat gewechselt";
-
+        lockfile = &lockfile_norm;
         ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den Plum-Chat wechseln");
     }
 
     ui.actionWarnung_senden -> setEnabled( ! nutzer_ich.x_plum );
-    chats_ac.clear(); // alle Privatchats löschen (Chatdateien werden von Partnern gelöscht)
 
     if ( ! lockfile -> exist() )
         if ( this_thread::sleep_for( 200ms ), ! lockfile -> exist() ) // siehe start.cpp, lockfile_exist()
             resetcv();
 
-    {
-        Datei_Mutex other_file_mtx = std::move( chatfile_all_mtx ); // Datei_Mutex für chatfile_all des anderen Chats
-        chatfile_all_mtx = Datei_Mutex( *chatfile_all );
-        lockfile_mtx = Datei_Mutex( *lockfile );
-
-        file_mtx_lock l1 ( chatfile_all_mtx ),
-                      l2 ( other_file_mtx );
-        chatfile_norm.append( normtext );
-        chatfile_plum.append( plumtext );
-    }
-
+    lockfile_mtx = Datei_Mutex( *lockfile );
     checkfile = makeToNutzerDatei( checkdir, nutzer_ich );
     terminatefile = makeToNutzerDatei( terminatedir, nutzer_ich );
     infofile = makeToNutzerDatei( infodir, nutzer_ich );
 
     terminatefile.remove();
     infofile.remove();
-
-    klassenchat();
 }
 
 /// Ein neues %Passwort für mich setzen (#std_admin).

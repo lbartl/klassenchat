@@ -18,6 +18,7 @@
 // Diese Datei steuert das Öffnen der QDialogs
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "entfernen.hpp"
 #include "simpledialog.hpp"
 #include "nutzer_anz.hpp"
@@ -50,7 +51,7 @@ void Chat::hilfe_anz() {
 
         kommand_str += "/all: Überall den Chat beenden\n";
 
-        if ( flags[chatall] ) {
+        if ( chat_verwaltung.imKlassenchat() ) {
             kommand_str += "/terminate <name>: <name> entfernen\n"
                            "/info <name>: An <name> eine Information senden\n"
                            "/schreibeinfo <text>: <text> als Information (grüne Zeile) schreiben\n"

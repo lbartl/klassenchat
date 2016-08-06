@@ -18,6 +18,7 @@
 // Diese Datei steuert das Ausführen der Threads
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 
@@ -68,7 +69,7 @@ void Chat::aktualisieren_thread() {
 
             i = 0;
         } else {
-            std::string inhalt_new = chatfile->readAll(); // Datei einlesen
+            std::string inhalt_new = chat_verwaltung.einlesen(); // Datei einlesen
 
             if ( inhalt_new != inhalt ) { // Chatverlauf hat sich verändert
                 unique_lock lock ( nextUiThing.mtx );
@@ -97,20 +98,28 @@ void Chat::nutzer_thread() {
     UNTIL_STOP {
         lock_guard lock ( nutzer_mtx );
 
-        if ( ! lockfile -> exist() ) {
+        if ( ! lockfile->exist() ) {
             file_mtx_lock f_lock ( lockfile_mtx );
-            lockfile -> touch();
+            lockfile->touch();
         }
 
         if ( ++i == 5 ) {
             i = 0;
             nutzer_verwaltung.aktualisieren();
-            check_all_chats(); // privatchats.cpp
+            QString* text = chat_verwaltung.getText();
+
+            if ( text ) { // Ein Privatchat wurde gelöscht
+                unique_lock lock ( nextUiThing.mtx );
+                nextUiThing.newTyp( lock, UiThing::Dialog );
+
+                new ( nextUiThing.first() ) QString("Privatchat gelöscht");
+                new ( nextUiThing.second() ) QString( std::move( *text ) );
+            }
         }
     }
 
     lockfile_mtx.lock();
-        lockfile -> remove();
+        lockfile->remove();
     lockfile_mtx.unlock();
 
     nutzer_verwaltung.herausnehmen();
@@ -216,14 +225,14 @@ void Chat::pruefen_thread() {
             } break;
             default: // Neuer Chat, jemand lädt mich ein
                 Datei chatdatei;
-                string partner;
+                size_t partner;
                 infofile.istream() >> chatdatei >> partner;
 
                 unique_lock lock ( nextUiThing.mtx );
                 nextUiThing.newTyp( lock, UiThing::Privatchat );
 
                 new ( nextUiThing.first() ) Datei( std::move( chatdatei ) );
-                new ( nextUiThing.second() ) string( std::move( partner ) );
+                new ( nextUiThing.second() ) size_t { partner };
             }
 
             infofile.remove();

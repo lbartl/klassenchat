@@ -18,6 +18,7 @@
 // Diese Datei definiert das Singleton NutzerVerwaltung
 
 #include "chat.hpp"
+#include "chatverwaltung.hpp"
 #include "pc_nutzername.hpp"
 #include "global.hpp"
 #include "klog.hpp"
@@ -37,7 +38,13 @@ void NutzerVerwaltung::einlesen() {
 
         if ( is.get() == EOF ) { // Abbruchbedingung
             next_nummer = nummer;
-            alle_nutzer.erase( it, end() );
+
+            while ( it != end() ) {
+                KLOG << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername << ' ' << it->pc_nutzername << endl;
+                chat_verwaltung.nutzerGeloescht( *it );
+                it = alle_nutzer.erase( it );
+            }
+
             return;
         }
 
@@ -55,6 +62,7 @@ void NutzerVerwaltung::einlesen() {
                 it = alle_nutzer.emplace_hint( it, admin, x_plum, std::move( nutzername ), std::move( pc_nutzername ), nummer ); // Hinzufügen
             } else if ( *it < nummer ) { // Nutzer gelöscht
                 KLOG << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername << ' ' << it->pc_nutzername << endl;
+                chat_verwaltung.nutzerGeloescht( *it ); // Falls der Nutzer einen Privatchat mit mir hatte, wird dieser gelöscht
                 it = alle_nutzer.erase( it ); // Aktuelles Element löschen
                 vorher_geloescht = true;
             } else {
@@ -76,6 +84,10 @@ void NutzerVerwaltung::schreiben() {
     os << next_nummer;
 }
 
+/**
+ * @param x_plum Ob ich im Plum-Chat bin
+ * @param nutzername Mein Benutzername
+ */
 void NutzerVerwaltung::makeNutzerIch( bool const x_plum, std::string nutzername ) {
     lock_guard lock ( mtx );
     file_mtx_lock f_lock ( file_mtx );

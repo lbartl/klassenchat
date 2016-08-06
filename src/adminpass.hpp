@@ -34,6 +34,11 @@ public:
         return instance;
     }
 
+    ///\cond
+    AdminPass( AdminPass const& ) = delete;
+    AdminPass& operator = ( AdminPass const& ) = delete;
+    ///\endcond
+
     void setpass( std::string newpass ); ///< Setzt ein neues %Passwort für meinen Benutzernamen
     std::string getpass( std::string const& benutzername ) const; ///< %Passwort von einem Benutzernamen
 

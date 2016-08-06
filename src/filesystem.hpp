@@ -63,8 +63,6 @@ struct Ordner : public fs::path {
     }
 };
 
-struct Datei_Mutex;
-
 /// Statische Dateien und %Ordner.
 namespace static_paths { // definiert in definitions.cpp
     extern Ordner const terminatedir, senddir, infodir, checkdir;

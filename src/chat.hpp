@@ -79,7 +79,7 @@ protected:
 
 private:
     // statische Member in chat.cpp definiert
-    static Datei const chatfile_norm, chatfile_plum, lockfile_norm, lockfile_plum;
+    static Datei const lockfile_norm, lockfile_plum;
 
     bool const x_plum_anfang; ///< x_plum beim Chat öffnen (je nach Passwort)
 
@@ -88,7 +88,6 @@ private:
         locked, ///< Zeigt für #oberadmin an, ob Admins ihn entfernen dürfen
         std_admin, ///< Zeigt an ob man einer der #std_admins ist
         x_oberadmin, ///< Zeigt an ob man der #oberadmin ist
-        chatall, ///< Zeigt an ob man im Klassenchat ist
         x_close, ///< Zeigt an ob der %Chat geschlossen werden soll
         x_restart, ///< Zeigt an ob der %Chat neugestartet werden soll
         x_main, ///< Zeigt an ob man sich auf der Chat-Seite befindet
@@ -98,49 +97,11 @@ private:
 
     std::bitset <COUNT> flags {}; ///< Flags des Chats
     Ui::Chat ui {}; ///< UI des Chats
-    QAction* ui_sep {}; ///< Ein Seperator um "Neuer Privatchat..." von den Privatchats zu trennen
     std::string inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
     Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in start())
           infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in start())
           checkfile {}; ///< %Datei, mit der überprüft werden kann ob man noch im Chat ist (zugewiesen in start())
-    Datei const *chatfile_all, ///< Zeiger auf Klassenchat-Datei (entweder #chatfile_norm oder #chatfile_plum)
-                *lockfile;     ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
-
-    struct : public std::atomic <Datei const*> {
-        ///\cond
-        Datei const* operator -> () {
-            return *this;
-        }
-
-        auto& operator = ( Datei const*const other ) {
-            this -> store( other );
-            return *this;
-        }
-        ///\endcond
-    } chatfile {}; ///< Zeiger auf aktuelle Chatdatei (Privatchat oder Klassenchat)
-
-    /// Mit dem struct Chataction können Aktionen für Privatchats verwaltet werden.
-    struct Chataction {
-        QAction action; ///< QAction
-        Datei const datei; ///< Chatdatei
-        std::string const partner; ///< Chatpartner
-
-        /// Allgemeiner Konstruktor.
-        /**
-         * @param file Chatdatei
-         * @param chatpartner Chatpartner
-         *
-         * #action wird mit dem QString "&Chat mit <chatpartner>" und keinem Eltern-Objekt initialisiert.
-         */
-        Chataction( Datei file, std::string chatpartner ) :
-            action( QString::fromStdString( "&Chat mit " + chatpartner ), nullptr ),
-            datei( std::move( file ) ),
-            partner( std::move( chatpartner ) )
-        {}
-    };
-
-    /// Hier sind alle Chataction%s gespeichert.
-    std::forward_list <Chataction> chats_ac {}; // forward_list damit Zeiger gültig bleiben und nichts kopiert wird
+    Datei const* lockfile; ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
 
     /// Mit der Klasse UiThing können Threads Änderungen an #ui an pruefen_main() weitergeben.
     /**
@@ -159,7 +120,7 @@ private:
             ToAdmin, ///< Mich zum %Admin machen
             FromAdmin, ///< Mich zum normalen %Nutzer machen
             Dialog, ///< Ein SimpleDialog soll angezeigt werden, mit first()=Titel (QString) und second()=Text (QString)
-            Privatchat ///< new_chat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (std::string)
+            Privatchat ///< chat_verwaltung.newChat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (size_t)
         };
 
         mutex mtx {}; ///< Mutex für die Synchronisation
@@ -233,7 +194,6 @@ private:
                 break;
             case Privatchat:
                 first <Datei>() -> ~Datei();
-                second <std::string>() -> ~basic_string();
             default:
                 break;
             }
@@ -249,11 +209,9 @@ private:
     } nextUiThing {}; ///< Einziges Objekt von UiThing
 
     mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
-          pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
-          chats_ac_mtx {}; ///< Mutex für die Synchronisation von #chats_ac
+          pruefen_mtx {}; ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
 
-    Datei_Mutex lockfile_mtx { *lockfile }, ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
-                chatfile_all_mtx { *chatfile_all }; ///< Datei_Mutex, die das Schreiben von #chatfile_all kontrolliert
+    Datei_Mutex lockfile_mtx { *lockfile }; ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
 
     // aktualisieren.cpp
     void verlauf_up( size_t pos );
@@ -272,14 +230,6 @@ private:
     void allt();
     void warnung_send();
     void plum_chat();
-
-    // privatchats.cpp
-    bool exist_chat( std::string const& partner );
-    void new_chat( Datei dateichat, std::string partner );
-    void open_chat( Datei const*const chatdatei );
-    void klassenchat();
-    void ch_chat( std::string const& partner = "" );
-    void check_all_chats();
 
     // pruefen.cpp
     bool pruefen_main();

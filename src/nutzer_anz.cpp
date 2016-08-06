@@ -91,6 +91,8 @@ Admin_anz::Admin_anz( AdminPass const& admin_pass, QWidget* parent ) :
 
 ///\cond
 void Admin_anz::schreiben() const { // Information an Nutzer schreiben, dass sein Admin-Status sich ändert
+    shared_lock lock ( nutzer_verwaltung.read_lock() );
+
     for ( auto const& pair : anz_nutzer ) {
         ui.listWidget->takeItem( 0 ); // Entfernen, damit ui.listWidget nicht versucht es zu löschen
 
