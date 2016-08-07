@@ -18,13 +18,13 @@
 // Diese Datei steuert das Öffnen der QDialogs
 
 #include "chat.hpp"
-#include "chatverwaltung.hpp"
 #include "entfernen.hpp"
 #include "simpledialog.hpp"
 #include "nutzer_anz.hpp"
 #include "personalo.hpp"
 #include "infoopen.hpp"
 #include "passwort.hpp"
+#include "chatverwaltung.hpp"
 #include "klog.hpp"
 
 using std::string;
@@ -74,7 +74,7 @@ void Chat::hilfe_anz() {
 void Chat::nutzer_anz() {
     klog("Nutzer anzeigen...");
 
-    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( passwords.aktualisieren(), this ) ) // für Oberadmin
+    QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( this ) ) // für Oberadmin
                                            : static_cast <QDialog*> ( new Nutzer_anz( this ) ); // für alle anderen Admins
 
     anz_nutz -> setAttribute( Qt::WA_DeleteOnClose );

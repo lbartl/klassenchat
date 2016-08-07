@@ -24,10 +24,9 @@
 #include "ui_nutzer_anz.h"
 #include <vector>
 
-class AdminPass;
-
 /// Dieser Dialog zeigt alle %Nutzer mit ihrem Benutzernamen_str an. Bei Admins wird ein " (Admin)" angehängt.
-class Nutzer_anz : public QDialog {
+class Nutzer_anz : public QDialog
+{
     Q_OBJECT
 
 public:
@@ -42,11 +41,12 @@ private:
  * Dieser Dialog zeigt alle %Nutzer mit ihrem Benutzername_str an und (falls sie einer der Chat::std_admins sind) mit ihrem %Passwort.
  * Sie können dann zum %Admin gemacht werden oder entmachtet werden.
  */
-class Admin_anz : public QDialog {
+class Admin_anz : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit Admin_anz( AdminPass const& admin_pass, QWidget* parent = nullptr ); ///< Konstruktor
+    explicit Admin_anz( QWidget* parent = nullptr ); ///< Konstruktor
 
 private:
     Ui::Admin_anz ui {}; ///< UI des Dialogs

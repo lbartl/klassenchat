@@ -106,7 +106,7 @@ void ChatVerwaltung::changeChat( std::string const& partner ) {
     } else {
         klog("Existiert noch nicht, neuer Chat...");
 
-        PersonalO* p1 = new PersonalO( partner, menuChats );
+        PersonalO* p1 = new PersonalO( partner, dynamic_cast <QWidget*> ( menuChats->parent() ) );
         p1->setAttribute( Qt::WA_DeleteOnClose );
         p1->show();
     }

@@ -20,9 +20,7 @@
 #include "chat.hpp"
 #include "chatverwaltung.hpp"
 #include "pc_nutzername.hpp"
-#include "filesystem.hpp"
 #include "global.hpp"
-#include "klog.hpp"
 #include <QCloseEvent>
 
 // Verwalter
@@ -31,8 +29,8 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.6.2" // Versions-Nummer
-#define BUILD   "0066"  // Build-Nummer
+#define VERSION "1.6.3" // Versions-Nummer
+#define BUILD   "0068"  // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 
 // statische Member definieren
@@ -44,41 +42,41 @@ Datei const Chat::lockfile_norm = "./lock", ///< Datei, die existiert, wenn jema
             Chat::lockfile_plum = "./baum"; ///< Datei, die existiert, wenn jemand im Plum-Chat ist
 
 /**
- * @param plum ob ich im Plum-Chat bin
+ * @param x_plum ob ich im Plum-Chat bin
  * @param parent Eltern-Objekt
  */
-Chat::Chat( bool plum, QWidget* parent ) :
+Chat::Chat( bool const x_plum, QWidget* parent ) :
     QMainWindow( parent ),
-    x_plum_anfang( plum ),
-    lockfile( plum ? &lockfile_plum : &lockfile_norm )
+    x_plum_anfang( x_plum ),
+    lockfile( x_plum ? &lockfile_plum : &lockfile_norm )
 {
     ui.setupUi( this );
 
-    ui.menuBar -> setVisible( false ); // Menüleiste ausblenden
-    ui.MainStackedWidget -> setCurrentIndex( 0 ); // Anmelde-Fenster
-    ui.LineStackedWidget -> setCurrentIndex( 0 ); // Nutzername
+    ui.menuBar->setVisible( false ); // Menüleiste ausblenden
+    ui.MainStackedWidget->setCurrentIndex( 0 ); // Anmelde-Fenster
+    ui.LineStackedWidget->setCurrentIndex( 0 ); // Nutzername
 
-    ui.NutzernameA -> setValidator( new QRegExpValidator( regex_nutzername, ui.NutzernameA ) ); // Nur Buchstaben und Zahlen erlauben, keine Sonderzeichen und Leerzeichen
-    ui.NutzernameA -> setMaxLength( 20 );
-    ui.NutzernameA -> setFocus();
+    ui.NutzernameA->setValidator( new QRegExpValidator( regex_nutzername, ui.NutzernameA ) ); // Nur Buchstaben und Zahlen erlauben, keine Sonderzeichen und Leerzeichen
+    ui.NutzernameA->setMaxLength( 20 );
+    ui.NutzernameA->setFocus();
 
-    if ( plum ) { // Plum-Chat
-        ui.Copyright -> setText("Chat");
-        ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
+    if ( x_plum ) { // Plum-Chat
+        ui.Copyright->setText("Chat");
+        ui.actionIn_den_Plum_Chat_wechseln->setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
-        ui.Copyright -> setText( "Copyright (C) 2015-2016 Lukas Bartl<br>"
-                                 "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.<br>"
-                                 "Es gibt keinerlei Garantien.<br>"
-                                 "Lizenz GPLv3+: GNU GPL Version 3 oder höher: "
-                                 "<a href='https://www.gnu.org/licenses/gpl.html'>www.gnu.org/licenses/gpl.html</a><br><br>"
-                                 "Den Quellcode gibt es auf "
-                                 "<a href='https://www.github.com/hanswurst862/klassenchat'>www.github.com/hanswurst862/klassenchat</a><br><br>"
-                                 "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!<br><br>"
-                                 "Version: " VERSION "-" BUILD " " TYPE );
+        ui.Copyright->setText( "Copyright (C) 2015-2016 Lukas Bartl<br>"
+                               "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.<br>"
+                               "Es gibt keinerlei Garantien.<br>"
+                               "Lizenz GPLv3+: GNU GPL Version 3 oder höher: "
+                               "<a href='https://www.gnu.org/licenses/gpl.html'>www.gnu.org/licenses/gpl.html</a><br><br>"
+                               "Den Quellcode gibt es auf "
+                               "<a href='https://www.github.com/hanswurst862/klassenchat'>www.github.com/hanswurst862/klassenchat</a><br><br>"
+                               "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!<br><br>"
+                               "Version: " VERSION "-" BUILD " " TYPE );
 
-    ui.Copyright -> setTextFormat( Qt::RichText );
-    ui.Copyright -> setTextInteractionFlags( Qt::TextBrowserInteraction ); // Links können von Nutzer angeklickt werden
-    ui.Copyright -> setOpenExternalLinks( true ); // Links werden in Browser geöffnet
+    ui.Copyright->setTextFormat( Qt::RichText );
+    ui.Copyright->setTextInteractionFlags( Qt::TextBrowserInteraction ); // Links können von Nutzer angeklickt werden
+    ui.Copyright->setOpenExternalLinks( true ); // Links werden in Browser geöffnet
 
     connect( ui.NutzernameA, &QLineEdit::returnPressed, ui.Ok1,    &QPushButton::click );
     connect( ui.PasswortA,   &QLineEdit::returnPressed, ui.Ok2,    &QPushButton::click );
@@ -91,11 +89,11 @@ Chat::Chat( bool plum, QWidget* parent ) :
     connect( ui.actionQuit, &QAction::triggered, this, &Chat::close ); // closeEvent aufrufen
     connect( ui.actionImmer_im_Vordergrund, &QAction::toggled, this, &Chat::vordergrund );
 
-    connect( ui.actionHilfe,       &QAction::triggered, [this] () { hilfe_anz();   } );
 
     connect( ui.actionKlassenchat, &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
 
-    connect( ui.actionNeuer_Chat,  &QAction::triggered, [this] () { personal_op(); } );
+    connect( ui.actionHilfe,                        &QAction::triggered, [this] () { hilfe_anz();     } );
+    connect( ui.actionNeuer_Chat,                   &QAction::triggered, [this] () { personal_op();   } );
     connect( ui.actionEinen_Nutzer_entfernen,       &QAction::triggered, [this] () { entfernen();     } );
     connect( ui.actionChatverlauf_l_schen,          &QAction::triggered, [this] () { resetcv();       } );
     connect( ui.action_berall_den_Chat_beenden,     &QAction::triggered, [this] () { allt();          } );
@@ -110,12 +108,12 @@ Chat::Chat( bool plum, QWidget* parent ) :
 }
 
 void Chat::closeEvent( QCloseEvent* event ) {
-    event -> ignore();
+    event->ignore();
 
     if ( flags[x_main] ) // Im Chat-Fenster
         flags.set( x_close ); // an pruefen_main() (pruefen.cpp)
     else // Noch nicht im Chat-Fenster
-        event -> accept(); // Fenster schließen
+        event->accept(); // Fenster schließen
 }
 
 /// Fenster immer im Vordergrund anzeigen
@@ -125,9 +123,9 @@ void Chat::closeEvent( QCloseEvent* event ) {
  * Dieser Slot ist mit der QAction "Immer im Vordergrund" verbunden.
  */
 void Chat::vordergrund( bool const status ) { // Chatfenster immer im Vordergrund anzeigen
-    this -> setWindowFlags( status ? windowFlags() | Qt::WindowStaysOnTopHint : windowFlags() & ~Qt::WindowStaysOnTopHint );
+    this->setWindowFlags( status ? windowFlags() | Qt::WindowStaysOnTopHint : windowFlags() & ~Qt::WindowStaysOnTopHint );
 
     this_thread::sleep_for( 100ms ); // 0,1 Sekunden warten bis Window Manager Flag erkannt hat
 
-    this -> show();
+    this->show();
 }

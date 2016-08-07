@@ -17,11 +17,9 @@
 
 // Diese Datei definiert die Memberfunktion Datei::readAll(), die Konstanten von filesystem.hpp und die globalen Variablen von global.hpp
 
-#include "datei_mutex.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
 #include "klog.hpp"
-#include <iostream>
 
 /**
  * @returns Inhalt der %Datei.

@@ -72,14 +72,13 @@ namespace static_paths { // definiert in definitions.cpp
 /// Erstellt eine Datei für einen Nutzer.
 /**
  * @param folder der Ordner, in dem die Datei erstellt wird
- * @param plum ob der Nutzer im Plum-Chat ist
- * @param benutzername der Benutzername
+ * @param nummer Nummer des Nutzers
  * @returns Datei für Nutzer.
  *
- * Erstellt eine Datei in folder, die als Namen den Benutzernamen und danach "_1" für Plum-Chat und "_0" für normalen %Chat hat.
+ * Erstellt eine Datei in folder, die als Namen die Nummer des Nutzers hat.
  */
-inline Datei makeToNutzerDatei( Ordner const& folder, bool const plum, std::string const& benutzername ) {
-    return folder / benutzername + ( plum ? "_1" : "_0" );
+inline Datei makeToNutzerDatei( Ordner const& folder, size_t const nummer ) {
+    return folder / std::to_string( nummer );
 }
 
 /// Erstellt eine Datei für einen Nutzer.
@@ -88,10 +87,10 @@ inline Datei makeToNutzerDatei( Ordner const& folder, bool const plum, std::stri
  * @param nutzer der Nutzer
  * @returns Datei für Nutzer.
  *
- * Erstellt eine Datei in folder, die als Namen den Benutzernamen und danach "_1" für Plum-Chat und "_0" für normalen %Chat hat.
+ * Erstellt eine Datei in folder, die als Namen die Nummer des Nutzers hat.
  */
 inline Datei makeToNutzerDatei( Ordner const& folder, Nutzer const& nutzer ) {
-    return makeToNutzerDatei( folder, nutzer.x_plum, nutzer.nutzername );
+    return makeToNutzerDatei( folder, nutzer.nummer );
 }
 
 // Exceptions

@@ -57,21 +57,21 @@ InfoOpen::InfoOpen( std::string const& an, QWidget* parent ) :
 
 ///\cond
 void InfoOpen::schreiben() const { // Information an Nutzer schreiben
-    QString name_to = ui.comboBox -> currentText(); // Ausgewählter Benutzername
+    Nutzer const*const nutzer = nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, ui.comboBox->currentText().toStdString() ); // Ausgewählter Nutzer
 
-    if ( name_to == "" ) {
-        qWarning("Keinen Namen ausgewählt!");
+    if ( ! nutzer ) {
+        qWarning("Nutzer ist nicht mehr im Chat!");
         return;
     }
 
-    std::string const text = ui.plainTextEdit -> toPlainText().toStdString(); // Eingegebener Text
+    std::string const text = ui.plainTextEdit->toPlainText().toStdString(); // Eingegebener Text
 
-    if ( text == "" ) {
+    if ( text.empty() ) {
         qWarning("Keinen Text eingegeben!");
         return;
     }
 
-    makeToNutzerDatei( static_paths::infodir, nutzer_ich.x_plum, name_to.toStdString() ).ostream() << 'i' << nutzer_ich.nutzername << '\n' << text;
+    makeToNutzerDatei( static_paths::infodir, *nutzer ).ostream() << 'i' << nutzer_ich.nutzername << '\n' << text;
 
     klog("Information gesendet!");
 }

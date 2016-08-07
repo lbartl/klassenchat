@@ -19,7 +19,6 @@
 
 #include "nutzer_anz.hpp"
 #include "chat.hpp"
-#include "adminpass.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
 #include "klog.hpp"
@@ -53,10 +52,9 @@ Nutzer_anz::Nutzer_anz( QWidget* parent ) :
 }
 
 /**
- * @param admin_pass Chat::passwords
  * @param parent Parent
  */
-Admin_anz::Admin_anz( AdminPass const& admin_pass, QWidget* parent ) :
+Admin_anz::Admin_anz( QWidget* parent ) :
     QDialog( parent )
 {
     ui.setupUi( this );
@@ -64,8 +62,9 @@ Admin_anz::Admin_anz( AdminPass const& admin_pass, QWidget* parent ) :
 
     this->setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    shared_lock lock ( nutzer_verwaltung.read_lock() );
+    passwords.aktualisieren();
 
+    shared_lock lock ( nutzer_verwaltung.read_lock() );
     anz_nutzer.reserve( nutzer_verwaltung.size() ); // Genügend Speicherplatz reservieren
 
     for ( Nutzer const& currnutzer : nutzer_verwaltung ) {
@@ -75,7 +74,7 @@ Admin_anz::Admin_anz( AdminPass const& admin_pass, QWidget* parent ) :
             name += " (Plum-Chat)";
 
         if ( ! currnutzer.x_plum && enthaelt( Chat::std_admins, currnutzer.nutzername ) )
-            name += " (Passwort \"" + admin_pass.getpass( currnutzer.nutzername ) + "\")";
+            name += " (Passwort \"" + passwords.getpass( currnutzer.nutzername ) + "\")";
 
         anz_nutzer.emplace_back( currnutzer.nummer, QListWidgetItem( QString::fromStdString( name ) ) ); // Item erstellen und mit Nummer des Nutzers in anz_nutzer schreiben
         QListWidgetItem& curri = anz_nutzer.back().second; // Referenz auf das Item

@@ -19,7 +19,6 @@
 
 #include "chat.hpp"
 #include "chatverwaltung.hpp"
-#include "filesystem.hpp"
 #include "klog.hpp"
 #include <QScrollBar>
 #include <QTimer>
@@ -110,14 +109,14 @@ void Chat::verlauf_up( size_t pos ) {
         klog("Chatdatei neu anzeigen...");
 #endif
 
-    if ( pos == 0 ) ui.BrowseA -> setText(""); // Bisherigen Text löschen
+    if ( pos == 0 ) ui.BrowseA->setText(""); // Bisherigen Text löschen
 
-    int const scrollval = ui.BrowseA -> verticalScrollBar() -> value();
-    bool const mitscroll = scrollval == ui.BrowseA -> verticalScrollBar() -> maximum(); // Wenn Scrollbar am Ende ist true, sonst false
+    int const scrollval = ui.BrowseA->verticalScrollBar()->value();
+    bool const mitscroll = scrollval == ui.BrowseA->verticalScrollBar()->maximum(); // Wenn Scrollbar am Ende ist true, sonst false
 
-    if ( pos == 1 ) ui.BrowseA -> setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
+    if ( pos == 1 ) ui.BrowseA->setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
 
-    Qt::Alignment alignvorher = ui.BrowseA -> alignment(); // wie letzte Zeile alignt ist
+    Qt::Alignment alignvorher = ui.BrowseA->alignment(); // wie letzte Zeile alignt ist
 
     const_it const str_end = inhalt.cend();
     const_it str_pos = pos > 1 ? inhalt.cbegin() + pos : inhalt.cbegin(),
@@ -153,7 +152,7 @@ void Chat::verlauf_up( size_t pos ) {
 
     flushBuffer( typvorher, alignvorher, block_begin, str_end - 1, ui.BrowseA ); // Rest aus dem Buffer ausgeben
 
-    ui.BrowseA -> verticalScrollBar() -> setValue( mitscroll ? ui.BrowseA -> verticalScrollBar() -> maximum() : scrollval ); // Ans Ende scrollen bzw. zurück an den Punkt scrollen, wo man vorher war
+    ui.BrowseA->verticalScrollBar()->setValue( mitscroll ? ui.BrowseA->verticalScrollBar()->maximum() : scrollval ); // Ans Ende scrollen bzw. zurück an den Punkt scrollen, wo man vorher war
 }
 
 /// Dies ist die Hauptfunktion des Chats.

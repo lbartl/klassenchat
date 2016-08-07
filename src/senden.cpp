@@ -20,7 +20,6 @@
 #include "chat.hpp"
 #include "simpledialog.hpp"
 #include "pc_nutzername.hpp"
-#include "filesystem.hpp"
 #include "chatverwaltung.hpp"
 #include "klog.hpp"
 #include <boost/tokenizer.hpp>
@@ -34,8 +33,8 @@ using sep = boost::char_separator <char>;
  * Wenn nicht, wird die Eingabe als Nachricht interpretiert und sie wird in #chatfile geschrieben.
  */
 void Chat::senden_pruef() {
-    ui.NachrichtB -> setFocus(); // Fokus zurück auf Input
-    std::string const nachricht = ui.NachrichtB -> text().toStdString(); // Eingegebener Text
+    ui.NachrichtB->setFocus(); // Fokus zurück auf Input
+    std::string const nachricht = ui.NachrichtB->text().toStdString(); // Eingegebener Text
 
     if ( nachricht.find_first_not_of(' ') == nachricht.npos ) {// Keine Zeichen oder nur Leerzeichen eingegeben
         qWarning("Keine Nachricht eingegeben!");
@@ -60,7 +59,7 @@ void Chat::senden_pruef() {
         else if ( kommando == "/help" )
             hilfe_anz(); // dialog.cpp
         else if ( kommando == "/vordergrund" )
-            ui.actionImmer_im_Vordergrund -> toggle();
+            ui.actionImmer_im_Vordergrund->toggle();
         else if ( kommando == "/chat" )
             chat_verwaltung.changeChat( argument );
         else if ( nutzer_ich.admin && kommando == "/all" ) // Strg+T und /all geht in jedem Chat (als Admin)

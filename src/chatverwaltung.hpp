@@ -112,7 +112,7 @@ public:
     void nutzerGeloescht( Nutzer const& nutzer );
 
 private:
-    ChatVerwaltung() {}
+    ChatVerwaltung() = default;
     void neuerChat( Datei chatdatei, Nutzer const& partner );
 
     QMenu *menuChats {},

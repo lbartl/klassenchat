@@ -18,9 +18,9 @@
 // Diese Datei wird regelmäßig von aktualisieren.cpp aufgerufen und prüft, ob alles im Chat noch "normal" ist
 
 #include "chat.hpp"
-#include "chatverwaltung.hpp"
 #include "warnung.hpp"
 #include "simpledialog.hpp"
+#include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 

@@ -23,7 +23,6 @@
 #include "ui_chat.h"
 #include "adminpass.hpp"
 #include <bitset>
-#include <forward_list>
 
 /// Wichtigste Klasse des Chats.
 /**
@@ -35,7 +34,7 @@ class Chat : public QMainWindow {
 
 public:
     /// Allgemeiner Konstruktor.
-    explicit Chat( bool plum, QWidget* parent = nullptr );
+    explicit Chat( bool const x_plum, QWidget* parent = nullptr );
 
     ///\cond
     // gelöscht, damit keine Compiler-Warnung (wäre auch implizit gelöscht)

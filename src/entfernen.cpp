@@ -54,14 +54,14 @@ Entfernen::Entfernen( std::string const& ter_name, QWidget* parent ) :
 
 ///\cond
 void Entfernen::schreiben() const { // Den Nutzer entfernen
-    QString name_t = ui.comboBox -> currentText();
+    Nutzer const*const nutzer = nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, ui.comboBox->currentText().toStdString() );
 
-    if ( name_t == "" ) {
-        qWarning("Keinen Namen ausgewählt!");
+    if ( ! nutzer ) {
+        qWarning("Nutzer ist nicht mehr im Chat!");
         return;
     }
 
-    makeToNutzerDatei( static_paths::terminatedir, nutzer_ich.x_plum, name_t.toStdString() ).ostream() << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
+    makeToNutzerDatei( static_paths::terminatedir, *nutzer ).ostream() << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
 
     klog("Terminate-Datei erstellt!");
 }

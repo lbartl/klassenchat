@@ -18,13 +18,12 @@
 // Diese Datei steuert Kommandos
 
 #include "chat.hpp"
-#include "chatverwaltung.hpp"
 #include "simpledialog.hpp"
+#include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
 
 using namespace static_paths;
-using std::string;
 
 /// Chatverlauf löschen (Admin).
 void Chat::resetcv() {
@@ -108,7 +107,7 @@ void Chat::plum_chat() {
  * Ruft AdminPass::setpass auf.
  * Wenn das neue %Passwort ungültig ist, wird ein Dialog angezeigt.
  */
-void Chat::set_pass( string newpass ) try {
+void Chat::set_pass( std::string newpass ) try {
     passwords.setpass( std::move( newpass ) );
 } catch ( std::invalid_argument const& exc ) {
     createDialog( "Fehler", exc.what(), this, true );

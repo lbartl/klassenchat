@@ -106,7 +106,7 @@ void Chat::nutzer_thread() {
         if ( ++i == 5 ) {
             i = 0;
             nutzer_verwaltung.aktualisieren();
-            QString* text = chat_verwaltung.getText();
+            QString*const text = chat_verwaltung.getText();
 
             if ( text ) { // Ein Privatchat wurde gelöscht
                 unique_lock lock ( nextUiThing.mtx );

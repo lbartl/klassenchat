@@ -18,7 +18,6 @@
 // Diese Datei definiert das Singleton AdminPass
 
 #include "adminpass.hpp"
-#include "filesystem.hpp"
 #include "klog.hpp"
 
 using std::string;
@@ -70,7 +69,7 @@ string AdminPass::getpass( string const& benutzername ) const {
  * Wirft std::invalid_argument, falls das newpass leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält.
  */
 void AdminPass::setpass( string newpass ) {
-    if ( newpass == "" )
+    if ( newpass.empty() )
         throw std::invalid_argument("Kein Passwort eingegeben!");
     else if ( newpass.find('\n') != newpass.npos || newpass.find('\0') != newpass.npos )
         throw std::invalid_argument("Neues Passwort enthält ungültige Zeichen!\nBitte ein anderes Passwort verwenden!");

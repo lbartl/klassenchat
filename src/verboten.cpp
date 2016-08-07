@@ -57,7 +57,6 @@ private slots:
 };
 
 #include "verboten.moc"
-#include "filesystem.hpp"
 #include "global.hpp"
 #include "klog.hpp"
 #include <QPushButton>
@@ -111,7 +110,7 @@ Verboten::Verboten( QWidget* parent ) :
     ui.buttonBox -> button( QDialogButtonBox::Save )   -> setText("Speichern");
     ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
 
-    if ( std_admins[0] == "" ) // noch nicht initialisiert
+    if ( std_admins[0].isEmpty() ) // noch nicht initialisiert
         std::copy( Chat::std_admins.begin(), Chat::std_admins.end(), std_admins.begin() );
 
     this -> setWindowTitle("Verbotene Nutzernamen");
