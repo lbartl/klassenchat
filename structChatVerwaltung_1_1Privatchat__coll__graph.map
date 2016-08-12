@@ -1,0 +1,8 @@
+<map id="ChatVerwaltung::Privatchat" name="ChatVerwaltung::Privatchat">
+<area shape="rect" id="node2" href="$structChatVerwaltung_1_1Chatfile.html" title="Mit dem struct Chatfile kann eine Chatdatei verwaltet werden. " alt="" coords="49,405,217,432"/>
+<area shape="rect" id="node3" href="$classDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="49,316,145,343"/>
+<area shape="rect" id="node5" href="$classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="164,207,217,234"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="188,96,268,123"/>
+<area shape="rect" id="node8" href="$classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. " alt="" coords="224,265,285,292"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="165,5,291,47"/>
+</map>

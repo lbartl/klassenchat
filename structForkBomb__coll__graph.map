@@ -1,0 +1,11 @@
+<map id="ForkBomb" name="ForkBomb">
+<area shape="rect" id="node2" href="$classChat.html" title="Wichtigste Klasse des Chats. " alt="" coords="1517,369,1568,396"/>
+<area shape="rect" id="node4" href="$structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="707,67,803,93"/>
+<area shape="rect" id="node7" href="$classAdminPass.html" title="Mit der Klasse AdminPass können die Passwörter der Chat::std_admins verwaltet werden. Einziges Objekt ist Chat::passwords. " alt="" coords="921,148,1011,175"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="181,317,261,344"/>
+<area shape="rect" id="node13" href="$classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="409,317,463,344"/>
+<area shape="rect" id="node16" href="$structChat_1_1Chataction.html" title="Mit dem struct Chataction können Aktionen für Privatchats verwaltet werden. " alt="" coords="695,379,816,405"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="5,310,132,351"/>
+<area shape="rect" id="node11" href="$classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="720,233,791,260"/>
+<area shape="rect" id="node14" href="$classChat_1_1UiThing.html" title="Mit der Klasse UiThing können Threads Änderungen an ui an pruefen_main() weitergeben. " alt="" coords="1244,431,1347,457"/>
+</map>

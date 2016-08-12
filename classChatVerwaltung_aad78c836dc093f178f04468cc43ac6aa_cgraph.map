@@ -1,0 +1,5 @@
+<map id="ChatVerwaltung::newChat" name="ChatVerwaltung::newChat">
+<area shape="rect" id="node2" href="$classNutzerVerwaltung.html#a678f9ecd7d5e85dc266cb977251ea950" title="Gibt einen shared_lock, initialisiert mit mtx, zurück. " alt="" coords="228,5,419,32"/>
+<area shape="rect" id="node3" href="$classNutzerVerwaltung.html#ab7760f81141298f1a3ce4e45536b42f7" title="Gibt Nutzer mit übergebener Nummer zurück, falls nicht existiert nullptr (lockt nicht) ..." alt="" coords="228,56,419,83"/>
+<area shape="rect" id="node4" href="$classChatVerwaltung.html#a49f8055ba57bcde20c6e7fcf607b5412" title="Einen neues Objekt von Privatchat erstellen und in privatchats speichern. " alt="" coords="232,107,415,133"/>
+</map>
