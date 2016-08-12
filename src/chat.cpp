@@ -29,17 +29,17 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.6.3" // Versions-Nummer
-#define BUILD   "0068"  // Build-Nummer
-#define TYPE    "alpha"  // Build-Typ
+#define VERSION "1.6.4" // Versions-Nummer
+#define BUILD   "0070"  // Build-Nummer
+#define TYPE    "beta"  // Build-Typ
 
 // statische Member definieren
 ///\cond
 constexpr decltype( Chat::std_admins ) Chat::std_admins;
 ///\endcond
 
-Datei const Chat::lockfile_norm = "./lock", ///< Datei, die existiert, wenn jemand im normalen %Chat ist
-            Chat::lockfile_plum = "./baum"; ///< Datei, die existiert, wenn jemand im Plum-Chat ist
+Datei const Chat::lockfile_norm {"./lock"}, ///< %Datei, die existiert, wenn jemand im normalen %Chat ist
+            Chat::lockfile_plum {"./baum"}; ///< %Datei, die existiert, wenn jemand im Plum-Chat ist
 
 /**
  * @param x_plum ob ich im Plum-Chat bin
@@ -89,7 +89,6 @@ Chat::Chat( bool const x_plum, QWidget* parent ) :
     connect( ui.actionQuit, &QAction::triggered, this, &Chat::close ); // closeEvent aufrufen
     connect( ui.actionImmer_im_Vordergrund, &QAction::toggled, this, &Chat::vordergrund );
 
-
     connect( ui.actionKlassenchat, &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
 
     connect( ui.actionHilfe,                        &QAction::triggered, [this] () { hilfe_anz();     } );
@@ -112,7 +111,7 @@ void Chat::closeEvent( QCloseEvent* event ) {
 
     if ( flags[x_main] ) // Im Chat-Fenster
         flags.set( x_close ); // an pruefen_main() (pruefen.cpp)
-    else // Noch nicht im Chat-Fenster
+    else // Nicht im Chat-Fenster
         event->accept(); // Fenster schließen
 }
 

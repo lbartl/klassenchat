@@ -27,7 +27,7 @@
 # include "mingw-threads/mingw.thread.h"
 # include <boost/thread/shared_mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
-
+# include <atomic>
 
 using boost::mutex;
 using unique_lock = boost::unique_lock <mutex>;

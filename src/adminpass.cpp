@@ -59,12 +59,11 @@ void AdminPass::toFile() { // Passwörter schreiben
  */
 string AdminPass::getpass( string const& benutzername ) const {
     auto pass_it = allpass.find( benutzername ); // Iterator zum Passwort von benutzername
-
-    return pass_it == allpass.end() ? std_pass : pass_it -> second; // Passwort oder Standard-Passwort zurückgeben
+    return pass_it == allpass.end() ? std_pass : pass_it->second; // Passwort oder Standard-Passwort zurückgeben
 }
 
 /**
- * @param newpass neues Passwort (unverschlüsselt)
+ * @param newpass neues %Passwort (unverschlüsselt)
  *
  * Wirft std::invalid_argument, falls das newpass leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält.
  */

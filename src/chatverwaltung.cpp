@@ -25,8 +25,11 @@
 
 ChatVerwaltung& chat_verwaltung = ChatVerwaltung::getInstance();
 
+ChatVerwaltung::Chatfile ChatVerwaltung::chatfile_norm {"./verlauf.jpg"}, ///< %Datei, in der der normale %Chat gespeichert ist.
+                         ChatVerwaltung::chatfile_plum {"./baum.jpg"}; ///< %Datei, in der der Plum-Chat gespeichert ist.
+
 /**
- * @param partner Chatpartner
+ * @param partner Nutzername des Chatpartners
  *
  * Neuen Privatchat mit diesem Chatpartner erstellen und öffnen.
  *
@@ -50,16 +53,21 @@ void ChatVerwaltung::makeChat( std::string const& partner ) {
         return;
     }
 
-    Datei file = static_paths::senddir / partner + '_' + nutzer_ich.nutzername;
-    file += nutzer_ich.x_plum ? "_1.jpg" : "_0.jpg";
-
+    Datei file = static_paths::senddir / std::to_string( chatpartner->nummer ) + '_' + std::to_string( nutzer_ich.nummer ) + ".jpg";
     file.ostream() << "Privatchat von " << nutzer_ich.nutzername << " und " << partner << '\n';
-
     makeToNutzerDatei( static_paths::infodir, *chatpartner ).ostream() << file << nutzer_ich.nummer; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
 
     neuerChat( std::move( file ), *chatpartner );
 }
 
+/**
+ * @param chatdatei Chatdatei des Privatchats
+ * @param partner_nummer Nummer des Chatpartners
+ *
+ * Neuen Privatchat mit diesem Chatpartner öffnen.
+ *
+ * \callgraph
+ */
 void ChatVerwaltung::newChat( Datei chatdatei, size_t const partner_nummer ) {
     shared_lock l1 ( nutzer_verwaltung.read_lock() );
     lock_guard l2 ( privatchats_mtx );
@@ -70,15 +78,14 @@ void ChatVerwaltung::newChat( Datei chatdatei, size_t const partner_nummer ) {
         neuerChat( std::move( chatdatei ), *partner );
 }
 
-/// Eine neue Chataction erstellen. Aufgerufen von make_chat() und pruefen2()
 /**
- * @param dateichat Chatdatei des Privatchats
- * @param partner Chatpartner des Privatchats
+ * @param chatdatei Chatdatei des Privatchats
+ * @param partner Chatpartner
  *
- * Erstellt eine neue Chataction in #chats_ac und öffnet dann diesen Privatchat.
+ * Erstellt ein neues Objekt von Privatchat, speichert es in #privatchats und öffnet dann diesen %Privatchat.
  */
-void ChatVerwaltung::neuerChat( Datei dateichat, Nutzer const& partner ) {
-    privatchats.emplace_back( std::move( dateichat ), partner ); // In Liste speichern
+void ChatVerwaltung::neuerChat( Datei chatdatei, Nutzer const& partner ) {
+    privatchats.emplace_back( std::move( chatdatei ), partner ); // In Liste speichern
     Privatchat*const chat = &*privatchats.rbegin(); // Zeiger auf das letzte Element
 
     menuChats->insertAction( ui_sep, &chat->action ); // Aktion vor den Seperator stellen
@@ -89,11 +96,11 @@ void ChatVerwaltung::neuerChat( Datei dateichat, Nutzer const& partner ) {
     KLOG << "Neuen Privatchat mit " << partner.nutzername << " erstellt!" << endl;
 }
 
-/// Privatchat öffnen oder erstellen.
 /**
- * @param partner Chatpartner
+ * @param partner Nutzername des Chatpartners
  *
- * Öffnet den Privatchat mit diesem Chatpartner, wenn er nicht existiert, wird personal_op() mit diesem Chatpartner aufgerufen.
+ * Öffnet den %Privatchat mit diesem Chatpartner.
+ * Wenn dieser %Privatchat noch nicht existiert, wird ein neues Objekt von PersonalO mit diesem Chatpartner erstellt.
  */
 void ChatVerwaltung::changeChat( std::string const& partner ) {
     lock_guard lock ( privatchats_mtx );
@@ -116,9 +123,9 @@ void ChatVerwaltung::schreibeNachricht( std::string const& nachricht ) {
     lock_guard lock ( chatfile_mtx );
     file_mtx_lock f_lock ( chatfile->file_mtx );
 
-    std::string::const_iterator str_pos = nachricht.cbegin();
+    std::string::const_iterator str_pos = nachricht.cbegin(),
+                                line_end;
     std::string::const_iterator const str_end = nachricht.cend();
-    std::string::const_iterator line_end;
     bool first = true;
 
     std::ofstream chatdatei = chatfile->file.ostream( true );

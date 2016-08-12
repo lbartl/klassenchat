@@ -104,7 +104,7 @@ void Chat::plum_chat() {
 /**
  * @param newpass neues %Passwort
  *
- * Ruft AdminPass::setpass auf.
+ * Ruft AdminPass::setpass() auf.
  * Wenn das neue %Passwort ungültig ist, wird ein Dialog angezeigt.
  */
 void Chat::set_pass( std::string newpass ) try {

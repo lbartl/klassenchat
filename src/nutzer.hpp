@@ -82,7 +82,7 @@ inline bool operator < ( size_t const nummer, Nutzer const& nutzer ) {
 
 // nutzer.cpp
 
-/// Dieses Singleton verwaltet alle Nutzer, die gerade im %Chat sind
+/// Dieses Singleton verwaltet alle Nutzer, die gerade im %Chat sind.
 class NutzerVerwaltung {
     using iterator = std::set<Nutzer, std::less<>>::const_iterator; ///< Kurzform
     using lock_guard = std::lock_guard <shared_mutex> const; ///< Kurzform

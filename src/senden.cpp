@@ -30,7 +30,7 @@ using sep = boost::char_separator <char>;
 /**
  * Wird nach Eingabe einer Nachricht aufgerufen und wertet das Eingegebene aus.
  * Wenn die Eingabe mit einem '/' beginnt, wird sie als Kommando interpretiert und die entsprechende Aktion wird ausgeführt.
- * Wenn nicht, wird die Eingabe als Nachricht interpretiert und sie wird in #chatfile geschrieben.
+ * Wenn nicht, wird die Eingabe als Nachricht interpretiert und ChatVerwaltung::schreibeNachricht() wird aufgerufen.
  */
 void Chat::senden_pruef() {
     ui.NachrichtB->setFocus(); // Fokus zurück auf Input

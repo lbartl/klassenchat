@@ -51,8 +51,8 @@ void Chat::stop_threads() {
 
 /// Aktualisiert den Chatverlauf.
 /**
- * Alle 0,1 Sekunden wird #chatfile eingelesen und mit #inhalt verglichen.
- * Wenn #inhalt identisch mit dem ersten Teil von #chatfile is, wird inhalt.length() in #nextUiThing geschrieben.
+ * Alle 0,1 Sekunden wird ChatVerwaltung::einlesen() aufgerufen und mit #inhalt verglichen.
+ * Wenn #inhalt identisch mit dem ersten Teil ist, wird inhalt.length() in #nextUiThing (UiThing::aktualisieren) geschrieben.
  * Andernfalls wird 0 in #nextUiThing geschrieben.
  *
  * Alle 100 Sekunden wird 1 in #nextUiThing geschrieben.
@@ -88,7 +88,7 @@ void Chat::aktualisieren_thread() {
 /**
  * Alle 0,1 Sekunden wird überprüft, ob #lockfile existiert, wenn nicht, wird es erstellt.
  *
- * Alle 0,5 Sekunden wird #nutzer_verwaltung aktualisiert und check_all_chats() aufgerufen.
+ * Alle 0,5 Sekunden wird NutzerVerwaltung::aktualisieren() aufgerufen und überprüft ob ein Privatchat gelöscht wurde.
  *
  * Beim Beenden wird #lockfile gelöscht und NutzerVerwaltung::herausnehmen() aufgerufen.
  */

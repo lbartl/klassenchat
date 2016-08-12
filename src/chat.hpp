@@ -29,12 +29,12 @@
  * Beim Aufruf des Programms wird, nach dem Passwort-Dialog, ein Objekt der Klasse Chat erzeugt, das die ganze Verwaltung des Chats übernimmt.
  * Dieses stellt gleichzeitig auch das Haupt-Fenster da.
  */
-class Chat : public QMainWindow {
+class Chat : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    /// Allgemeiner Konstruktor.
-    explicit Chat( bool const x_plum, QWidget* parent = nullptr );
+    explicit Chat( bool const x_plum, QWidget* parent = nullptr ); ///< Konstruktor.
 
     ///\cond
     // gelöscht, damit keine Compiler-Warnung (wäre auch implizit gelöscht)
@@ -42,13 +42,10 @@ public:
     Chat& operator = ( Chat const& ) = delete;
     ///\endcond
 
-    /// Einen neuen Privatchat erstellen.
-    void make_chat( Nutzer const& partner ); // privatchats.cpp
-
 #ifndef OBERADMIN
 # define OBERADMIN "LukasB"
 #endif
-    /// Der Oberadmin des Chats. Er kann am meisten machen, wie zum Beispiel Objekte der Klasse Admin erstellen.
+    /// Der Oberadmin des Chats. Er kann am meisten machen, wie zum Beispiel Objekte der Klasse Admin_anz erstellen.
     /**
      * Der Oberadmin kann beim Kompilieren in der %Datei "config/oberadmin" festgelegt werden.
      * Es darf nur der Name des Oberadmins und nichts anderes in der %Datei stehen!
@@ -77,29 +74,28 @@ protected:
     void closeEvent( QCloseEvent* event ) override final; // chat.cpp
 
 private:
-    // statische Member in chat.cpp definiert
-    static Datei const lockfile_norm, lockfile_plum;
+    static Datei const lockfile_norm, lockfile_plum; // chat.cpp
 
-    bool const x_plum_anfang; ///< x_plum beim Chat öffnen (je nach Passwort)
+    bool const x_plum_anfang; ///< x_plum beim Öffnen des Chats (je nach %Passwort)
 
     /// Enumerator für #flags.
     enum {
         locked, ///< Zeigt für #oberadmin an, ob Admins ihn entfernen dürfen
-        std_admin, ///< Zeigt an ob man einer der #std_admins ist
-        x_oberadmin, ///< Zeigt an ob man der #oberadmin ist
-        x_close, ///< Zeigt an ob der %Chat geschlossen werden soll
-        x_restart, ///< Zeigt an ob der %Chat neugestartet werden soll
-        x_main, ///< Zeigt an ob man sich auf der Chat-Seite befindet
-        x_reload, ///< Zeigt an ob der Chat-Verlauf neu geladen werden soll
+        std_admin, ///< Zeigt an, ob man einer der #std_admins ist
+        x_oberadmin, ///< Zeigt an, ob man der #oberadmin ist
+        x_close, ///< Zeigt an, ob der %Chat geschlossen werden soll
+        x_restart, ///< Zeigt an, ob der %Chat neugestartet werden soll
+        x_main, ///< Zeigt an, ob man sich auf der Chat-Seite befindet
+        x_reload, ///< Zeigt an, ob der Chat-Verlauf neu geladen werden soll
         COUNT ///< Anzahl an Flags
     };
 
     std::bitset <COUNT> flags {}; ///< Flags des Chats
     Ui::Chat ui {}; ///< UI des Chats
-    std::string inhalt {}; ///< Aktueller Inhalt von #chatfile, benutzt von aktualisieren_thread() und verlauf_up()
-    Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in start())
-          infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in start())
-          checkfile {}; ///< %Datei, mit der überprüft werden kann ob man noch im Chat ist (zugewiesen in start())
+    std::string inhalt {}; ///< Aktueller Inhalt von ChatVerwaltung::einlesen(), benutzt von aktualisieren_thread() und verlauf_up()
+    Datei terminatefile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass jemand mich entfernt hat (zugewiesen in start2())
+          infofile {}, ///< %Datei, die, wenn sie existiert, anzeigt, dass etwas mit mir geschehen soll (zugewiesen in start2())
+          checkfile {}; ///< %Datei, mit der überprüft werden kann ob man noch im %Chat ist (zugewiesen in start2())
     Datei const* lockfile; ///< Zeiger auf eigenes lockfile  (entweder #lockfile_norm oder #lockfile_plum)
 
     /// Mit der Klasse UiThing können Threads Änderungen an #ui an pruefen_main() weitergeben.
@@ -114,29 +110,28 @@ private:
             nichts, ///< Nichts soll geschehen
             aktualisieren, ///< Der Chatverlauf soll aktualisiert werden, mit first()=Position in #inhalt (size_t)
             terminate, ///< Den %Chat beenden
-            entfernt, ///< Ich wurde entfernt, nötige Informationen in #chatfile_all schreiben, first()=Entferner (std::string)
+            entfernt, ///< Ich wurde entfernt, ChatVerwaltung::entfernt() aufrufen, first()=Entferner (std::string)
             Warnung, ///< Eine Warnung soll angezeigt werden
             ToAdmin, ///< Mich zum %Admin machen
             FromAdmin, ///< Mich zum normalen %Nutzer machen
             Dialog, ///< Ein SimpleDialog soll angezeigt werden, mit first()=Titel (QString) und second()=Text (QString)
-            Privatchat ///< chat_verwaltung.newChat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (size_t)
+            Privatchat ///< ChatVerwaltung::newChat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (size_t)
         };
 
         mutex mtx {}; ///< Mutex für die Synchronisation
 
+        ///\cond
         UiThing() = default;
+        UiThing( UiThing const& ) = delete;
+        UiThing& operator = ( UiThing const& ) = delete;
+        ///\endcond
 
         /// Destruktor. Ruft destruct() auf.
         ~UiThing() {
             destruct();
         }
 
-        ///\cond
-        UiThing( UiThing const& ) = delete;
-        UiThing& operator = ( UiThing const& ) = delete;
-        ///\endcond
-
-        /// Gibt Zeiger auf erstes Objekt zurück, siehe #entfernt, #Dialog und #Privatchat.
+        /// Gibt Zeiger auf erstes Objekt zurück, siehe #aktualisieren, #entfernt, #Dialog und #Privatchat.
         /**
          * \code
          * return reinterpret_cast <T*> ( speicher );
@@ -201,7 +196,7 @@ private:
             cond.notify_one();
         }
     private:
-        static constexpr size_t size_one = std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei) }); ///< Maximale Größe eines Objekts
+        static constexpr size_t size_one = std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }); ///< Maximale Größe eines Objekts
         unsigned char speicher [2*size_one]; ///< Speicher für first() und second()
         Typ typ = nichts; ///< Zeigt was geschehen soll
         condition_variable cond {}; ///< Condition-Variable für die Synchronisation

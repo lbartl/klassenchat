@@ -70,7 +70,7 @@ void Chat::hilfe_anz() {
     createDialog( "Hilfe", kombi_str + '\n' + kommand_str, this );
 }
 
-/// Erstellt für den #oberadmin ein Objekt der Klasse Admin, für andere Admins ein Objekt der Klasse Nutzer.
+/// Erstellt für den #oberadmin ein Objekt der Klasse Admin_anz, für andere Admins ein Objekt der Klasse Nutzer_anz.
 void Chat::nutzer_anz() {
     klog("Nutzer anzeigen...");
 

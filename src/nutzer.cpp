@@ -56,7 +56,8 @@ void NutzerVerwaltung::einlesen() {
             if ( it == end() ) { // Neuer Nutzer
                 bool x_plum = is.get() == '1';
                 std::string nutzername, pc_nutzername;
-                is >> nutzername >> pc_nutzername;
+                is >> nutzername;
+                std::getline( is, pc_nutzername ); // Pc-Nutzername kann auch Leerzeichen enthalten
 
                 KLOG << "Neuer Nutzer: " << nummer << ' ' << admin << x_plum << nutzername << ' ' << pc_nutzername << endl;
                 it = alle_nutzer.emplace_hint( it, admin, x_plum, std::move( nutzername ), std::move( pc_nutzername ), nummer ); // Hinzufügen

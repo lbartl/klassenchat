@@ -93,7 +93,7 @@ inline bool toNextLine( const_it& str_pos, const_it& line_end, const_it const st
 /**
  * @param pos Position in #inhalt, bei 0 wird alles neu angezeigt, bei 1 wird auch alles neu angezeigt, die Scrollbar allerdings an die alte Stelle zurückgesetzt.
  *
- * Diese Funktion zeigt #inhalt an, indem es Zeile für Zeile durchgegangen wird:\n
+ * Diese Funktion zeigt #inhalt an, indem #inhalt Zeile für Zeile durchgegangen wird:\n
  * Wenn die Zeile keinen Doppelpunkt enthält, wird sie grün ausgegeben.\n
  * Wenn die Zeile vor dem Doppelpunkt meinen Benutzernamen stehen hat, wird dieser durch "Ich" ersetzt und die Zeile blau ausgegeben.\n
  * Wenn die Zeile vor dem Doppelpunkt #oberadmin stehen hat, wird sie rot ausgegeben.\n

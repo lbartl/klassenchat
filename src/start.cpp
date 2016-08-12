@@ -45,9 +45,8 @@ namespace {
  * 1. Überprüfen, ob mein Benutzername verboten ist, wenn ja, dann nochmal einen Namen eingeben.
  * 2. Prüft ob mein Benutzername in #std_admins vorhanden ist, und setzt danach #std_admin.
  * 3. Überprüfen, ob jemand im %Chat ist, wenn nicht lösche ich den Chatverlauf (#std_admin) oder verlasse den %Chat (Lockfile).
- * 4. Setzen von #checkfile, #terminatefile und #infofile.
- * 5. Überprüfen, ob mein Benutzername vergeben ist, wenn ja, dann nochmal einen Namen eingeben.
- * 6. Wenn ich ein #std_admin bin, wird das Passwort-Feld geöffnet, wenn nicht, wird start2() aufgerufen.
+ * 4. Überprüfen, ob mein Benutzername vergeben ist, wenn ja, dann nochmal einen Namen eingeben.
+ * 5. Wenn ich ein #std_admin bin, wird das Passwort-Feld geöffnet, wenn nicht, wird start2() aufgerufen.
  */
 void Chat::start() {
     nutzername = ui.NutzernameA->text().toStdString(); // mein Benutzername
@@ -65,10 +64,9 @@ void Chat::start() {
         return;
     }
 
-    bool lock = lockfile_exist( *lockfile );
     flags[std_admin] = enthaelt( Chat::std_admins, nutzername ); // Standard-Admin
 
-    if ( ! lock ) // Niemand ist im Chat
+    if ( ! lockfile_exist( *lockfile ) ) // Niemand ist im Chat
         if ( flags[std_admin] || x_plum_anfang ) {
             resetcv();
 
@@ -116,7 +114,7 @@ void Chat::start() {
         start2();
 }
 
-/// Überprüft das %Passwort. Aufgerufen nach Eingabe des Passworts.
+/// Überprüft das %Passwort. Aufgerufen nach Eingabe des Passworts (#std_admin).
 /**
  * Wenn das eingegebene %Passwort richtig war, wird start2() aufgerufen, wenn nicht, wird der %Chat beendet.
  */
@@ -134,9 +132,9 @@ void Chat::passwort() {
 /// Starten des Chats. Aufgerufen durch start() oder passwort().
 /**
  * 1. Ruft NutzerVerwaltung::makeNutzerIch() auf.
- * 2. Setzt #oberadmin und ruft klassenchat() und start_threads() auf.
- * 3. Öffnet das Chatfenster.
- * 4. Schreibt in #chatfile_all, dass ich den Chat betreten habe.
+ * 2. Ruft ChatVerwaltung::init() auf.
+ * 3. Setzen von #oberadmin, #checkfile, #terminatefile und #infofile.
+ * 4. Ruft start_threads() auf und öffnet das Chatfenster.
  * 5. Ruft main_thread() auf.
  */
 void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
@@ -169,7 +167,7 @@ void Chat::start2() { // Nachdem Admin Passwort eingegeben hat
 /// %Chat beenden oder neustarten.
 /**
  * Beendet den %Chat oder startet ihn neu, je nachdem ob #x_restart gesetzt wurde.
- * Wird von verlauf_up() aufgerufen, wenn pruefen_main() true zurückgibt.
+ * Wird von main_thread() aufgerufen, wenn pruefen_main() true zurückgibt.
  *
  * Schließt zuerst das Fenster und ruft dann stop_threads() auf.
  * Bei einem Neustart wird anschließend alles auf den Zustand nach dem Konstruktor-Aufruf gesetzt und dann das Fenster wieder angezeigt.
