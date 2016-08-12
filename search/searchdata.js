@@ -1,15 +1,17 @@
 var indexSectionsWithContent =
 {
   0: "abcdefghiklmnoprstuvwx~",
-  1: "acdeghilnopsuv",
+  1: "acdefilnopsuv",
   2: "s",
-  3: "dfhst",
+  3: "acdfgknpst",
   4: "abcdefghiklmnoprstvw~",
-  5: "acdfiklmnopstuvwx",
-  6: "flsu",
+  5: "acfiklmnoprstuwx",
+  6: "filsu",
   7: "t",
   8: "acdeflnpstwx",
-  9: "o"
+  9: "o",
+  10: "kn",
+  11: "k"
 };
 
 var indexSectionNames =
@@ -23,7 +25,9 @@ var indexSectionNames =
   6: "typedefs",
   7: "enums",
   8: "enumvalues",
-  9: "related"
+  9: "related",
+  10: "defines",
+  11: "pages"
 };
 
 var indexSectionLabels =
@@ -37,6 +41,8 @@ var indexSectionLabels =
   6: "Typdefinitionen",
   7: "Aufzählungen",
   8: "Aufzählungswerte",
-  9: "Freundbeziehungen"
+  9: "Freundbeziehungen",
+  10: "Makrodefinitionen",
+  11: "Seiten"
 };
 

@@ -1,3 +1,3 @@
 <map id="Grafische Darstellung der Klassenhierarchie" name="Grafische Darstellung der Klassenhierarchie">
-<area shape="rect" id="node1" href="$classAdminPass.html" title="Mit der Klasse AdminPass können die Passwörter der Chat::std_admins verwaltet werden. Einziges Objekt ist Chat::passwords. " alt="" coords="5,5,95,32"/>
+<area shape="rect" id="node1" href="$classAdminPass.html" title="Dieses Singleton verwaltet die Passwörter der Chat::std_admins. " alt="" coords="5,5,95,32"/>
 </map>

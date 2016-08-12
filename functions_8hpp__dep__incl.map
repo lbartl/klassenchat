@@ -1,7 +1,6 @@
 <map id="src/functions.hpp" name="src/functions.hpp">
-<area shape="rect" id="node2" href="$hineinschreiben_8hpp.html" title="src/hineinschreiben.hpp" alt="" coords="102,80,261,107"/>
-<area shape="rect" id="node3" href="$admin_8hpp_source.html" title="src/admin.hpp" alt="" coords="5,155,109,181"/>
-<area shape="rect" id="node4" href="$chat_8hpp_source.html" title="src/chat.hpp" alt="" coords="134,155,229,181"/>
-<area shape="rect" id="node6" href="$nutzer_8hpp_source.html" title="src/nutzer.hpp" alt="" coords="253,155,358,181"/>
-<area shape="rect" id="node5" href="$verboten_8hpp_source.html" title="src/verboten.hpp" alt="" coords="122,229,241,256"/>
+<area shape="rect" id="node2" href="$hineinschreiben_8hpp.html" title="src/hineinschreiben.hpp" alt="" coords="55,80,213,107"/>
+<area shape="rect" id="node3" href="$chat_8hpp_source.html" title="src/chat.hpp" alt="" coords="17,155,112,181"/>
+<area shape="rect" id="node5" href="$nutzer__anz_8hpp_source.html" title="src/nutzer_anz.hpp" alt="" coords="137,155,270,181"/>
+<area shape="rect" id="node4" href="$verboten_8hpp_source.html" title="src/verboten.hpp" alt="" coords="5,229,124,256"/>
 </map>

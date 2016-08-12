@@ -1,6 +1,4 @@
 <map id="Cryptfile::encrypt" name="Cryptfile::encrypt">
-<area shape="rect" id="node2" href="$classCryptfile.html#a5350c973fcc1e2662e45f94169aa2dd7" title="Inhalt der Datei löschen. " alt="" coords="176,5,284,32"/>
-<area shape="rect" id="node5" href="$classCryptfile.html#aa78bea059eb8e89438449cade30c0776" title="Ans Ende der Datei schreiben. " alt="" coords="332,56,453,83"/>
-<area shape="rect" id="node3" href="$classDatei.html#a2457c6c07a36a012bb9314336f196563" title="Inhalt der Datei löschen. " alt="" coords="347,5,438,32"/>
-<area shape="rect" id="node4" href="$classDatei.html#a663a8c60f01ba7fe1f3bffee33616164" title="Einen std::ofstream der Datei zurückgeben. " alt="" coords="501,31,609,57"/>
+<area shape="rect" id="node2" href="$classCryptfile.html#a5350c973fcc1e2662e45f94169aa2dd7" title="Inhalt der Datei löschen. " alt="" coords="183,5,291,32"/>
+<area shape="rect" id="node3" href="$classCryptfile.html#aa78bea059eb8e89438449cade30c0776" title="Ans Ende der Datei schreiben. " alt="" coords="176,56,297,83"/>
 </map>

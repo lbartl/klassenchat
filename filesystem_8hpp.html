@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.10"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
 <title>Klassenchat: src/filesystem.hpp-Dateireferenz</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klassenchat
-   &#160;<span id="projectnumber">1.5</span>
+   &#160;<span id="projectnumber">1.6</span>
    </div>
   </td>
  </tr>
@@ -32,7 +32,7 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Erzeugt von Doxygen 1.8.10 -->
+<!-- Erzeugt von Doxygen 1.8.11 -->
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 </script>
@@ -94,14 +94,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="title">filesystem.hpp-Dateireferenz</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="datei_8hpp_source.html">datei.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="nutzer_8hpp_source.html">nutzer.hpp</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include-Abhängigkeitsdiagramm für filesystem.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="filesystem_8hpp__incl.png" border="0" usemap="#src_2filesystem_8hpp" alt=""/></div>
 <map name="src_2filesystem_8hpp" id="src_2filesystem_8hpp">
-<area shape="rect" id="node2" href="datei_8hpp.html" title="datei.hpp" alt="" coords="103,80,178,107"/>
+<area shape="rect" id="node2" href="nutzer_8hpp.html" title="nutzer.hpp" alt="" coords="555,80,638,107"/>
+<area shape="rect" id="node3" href="datei__mutex_8hpp.html" title="datei_mutex.hpp" alt="" coords="485,155,604,181"/>
+<area shape="rect" id="node4" href="datei_8hpp.html" title="datei.hpp" alt="" coords="217,237,291,263"/>
+<area shape="rect" id="node8" href="thread_8hpp.html" title="thread.hpp" alt="" coords="430,237,513,263"/>
 </map>
 </div>
 </div>
@@ -121,16 +124,12 @@ Namensbereiche</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Funktionen</h2></td></tr>
-<tr class="memitem:a7fc5bfdb4549fef2976088a3eea50b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a7fc5bfdb4549fef2976088a3eea50b40">chDir</a> (<a class="el" href="structOrdner.html">Ordner</a> const &amp;ordner)</td></tr>
-<tr class="memdesc:a7fc5bfdb4549fef2976088a3eea50b40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aktuelles Verzeichnis wechseln.  <a href="#a7fc5bfdb4549fef2976088a3eea50b40">Mehr ...</a><br /></td></tr>
-<tr class="separator:a7fc5bfdb4549fef2976088a3eea50b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a762460314be262b16ecbac23c09ae395"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDatei.html">Datei</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395">makeToNutzerDatei</a> (<a class="el" href="structOrdner.html">Ordner</a> const &amp;folder, bool const plum, std::string const &amp;benutzername)</td></tr>
-<tr class="memdesc:a762460314be262b16ecbac23c09ae395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen Nutzer.  <a href="#a762460314be262b16ecbac23c09ae395">Mehr ...</a><br /></td></tr>
-<tr class="separator:a762460314be262b16ecbac23c09ae395"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8686229791c9b87bd789a8ff31ce58dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8686229791c9b87bd789a8ff31ce58dd"></a>
-<a class="el" href="classDatei.html">Datei</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a8686229791c9b87bd789a8ff31ce58dd">makeToNutzerDatei</a> (<a class="el" href="structOrdner.html">Ordner</a> const &amp;folder, std::pair&lt; bool, std::string &gt; const &amp;paar)</td></tr>
-<tr class="memdesc:a8686229791c9b87bd789a8ff31ce58dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ruft <a class="el" href="filesystem_8hpp.html#a8686229791c9b87bd789a8ff31ce58dd">makeToNutzerDatei</a> auf. Sinnvoll in Kombination mit <a class="el" href="hineinschreiben_8hpp.html#a9a7c88b84fd51e9db68b3e729f60cde7" title="Benutzername_str zurück umwandeln. ">fromBenutzername_str()</a> <br /></td></tr>
-<tr class="separator:a8686229791c9b87bd789a8ff31ce58dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a087970b7c50c72fc7e7682598c9d75cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDatei.html">Datei</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a087970b7c50c72fc7e7682598c9d75cb">makeToNutzerDatei</a> (<a class="el" href="structOrdner.html">Ordner</a> const &amp;folder, size_t const nummer)</td></tr>
+<tr class="memdesc:a087970b7c50c72fc7e7682598c9d75cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>.  <a href="#a087970b7c50c72fc7e7682598c9d75cb">Mehr ...</a><br /></td></tr>
+<tr class="separator:a087970b7c50c72fc7e7682598c9d75cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a711150ee8c13d0a1ea8d09bbb2690fe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDatei.html">Datei</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a711150ee8c13d0a1ea8d09bbb2690fe1">makeToNutzerDatei</a> (<a class="el" href="structOrdner.html">Ordner</a> const &amp;folder, <a class="el" href="classNutzer.html">Nutzer</a> const &amp;nutzer)</td></tr>
+<tr class="memdesc:a711150ee8c13d0a1ea8d09bbb2690fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>.  <a href="#a711150ee8c13d0a1ea8d09bbb2690fe1">Mehr ...</a><br /></td></tr>
+<tr class="separator:a711150ee8c13d0a1ea8d09bbb2690fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ebaa26f91ac115f8f26f0fb04c5abb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filesystem_8hpp.html#a07ebaa26f91ac115f8f26f0fb04c5abb">fstreamExcAusgabe</a> (<a class="el" href="datei_8hpp.html#ab1037d806c99eb8714dec825edb210df">fstream_exc</a> const &amp;exc, char const *const msg)</td></tr>
 <tr class="memdesc:a07ebaa26f91ac115f8f26f0fb04c5abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gibt Informationen zu einem fstream-Fehler aus.  <a href="#a07ebaa26f91ac115f8f26f0fb04c5abb">Mehr ...</a><br /></td></tr>
 <tr class="separator:a07ebaa26f91ac115f8f26f0fb04c5abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,38 +145,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="file
 <tr class="separator:a8474ef885e6b5bd5843691d7b07daba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Dokumentation der Funktionen</h2>
-<a class="anchor" id="a7fc5bfdb4549fef2976088a3eea50b40"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void chDir </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structOrdner.html">Ordner</a> const &amp;&#160;</td>
-          <td class="paramname"><em>ordner</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Aktuelles Verzeichnis wechseln. </p>
-<dl class="params"><dt>Parameter</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ordner</td><td>In diesen Ordner wird gewechselt </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a07ebaa26f91ac115f8f26f0fb04c5abb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -259,7 +226,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="file
 
 </div>
 </div>
-<a class="anchor" id="a762460314be262b16ecbac23c09ae395"></a>
+<a class="anchor" id="a087970b7c50c72fc7e7682598c9d75cb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -275,14 +242,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="file
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>plum</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>benutzername</em>&#160;</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>nummer</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -297,17 +258,61 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="file
 </table>
 </div><div class="memdoc">
 
-<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen Nutzer. </p>
+<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>. </p>
 <dl class="params"><dt>Parameter</dt><dd>
   <table class="params">
     <tr><td class="paramname">folder</td><td>der <a class="el" href="structOrdner.html" title="Mit der Klasse Ordner können Verzeichnisse verwaltet werden. ">Ordner</a>, in dem die <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> erstellt wird </td></tr>
-    <tr><td class="paramname">plum</td><td>ob der Nutzer im Plum-Chat ist </td></tr>
-    <tr><td class="paramname">benutzername</td><td>der Benutzername </td></tr>
+    <tr><td class="paramname">nummer</td><td>Nummer des Nutzers </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Rückgabe</dt><dd><a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für Nutzer.</dd></dl>
-<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> in folder, die als Namen den Benutzernamen und danach "_1" für Plum-Chat und "_0" für normalen Chat hat. </p>
+<dl class="section return"><dt>Rückgabe</dt><dd><a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>.</dd></dl>
+<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> in folder, die als Namen die Nummer des Nutzers hat. </p>
+
+</div>
+</div>
+<a class="anchor" id="a711150ee8c13d0a1ea8d09bbb2690fe1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDatei.html">Datei</a> makeToNutzerDatei </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structOrdner.html">Ordner</a> const &amp;&#160;</td>
+          <td class="paramname"><em>folder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classNutzer.html">Nutzer</a> const &amp;&#160;</td>
+          <td class="paramname"><em>nutzer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für einen <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>. </p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">folder</td><td>der <a class="el" href="structOrdner.html" title="Mit der Klasse Ordner können Verzeichnisse verwaltet werden. ">Ordner</a>, in dem die <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> erstellt wird </td></tr>
+    <tr><td class="paramname">nutzer</td><td>der <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Rückgabe</dt><dd><a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> für <a class="el" href="classNutzer.html" title="Die Klasse Nutzer repräsentiert einen Nutzer des Chats. ">Nutzer</a>.</dd></dl>
+<p>Erstellt eine <a class="el" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. ">Datei</a> in folder, die als Namen die Nummer des Nutzers hat. </p>
 
 </div>
 </div>
@@ -353,7 +358,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="file
 <hr class="footer"/><address class="footer"><small>
 Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.10
+</a> 1.8.11
 </small></address>
 </body>
 </html>

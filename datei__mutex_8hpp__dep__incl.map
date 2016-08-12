@@ -1,8 +1,7 @@
 <map id="src/datei_mutex.hpp" name="src/datei_mutex.hpp">
-<area shape="rect" id="node2" href="$hineinschreiben_8hpp.html" title="src/hineinschreiben.hpp" alt="" coords="95,80,254,107"/>
-<area shape="rect" id="node7" href="$adminpass_8hpp_source.html" title="src/adminpass.hpp" alt="" coords="278,80,410,107"/>
-<area shape="rect" id="node3" href="$admin_8hpp_source.html" title="src/admin.hpp" alt="" coords="5,155,109,181"/>
-<area shape="rect" id="node4" href="$chat_8hpp_source.html" title="src/chat.hpp" alt="" coords="274,155,369,181"/>
-<area shape="rect" id="node6" href="$nutzer_8hpp_source.html" title="src/nutzer.hpp" alt="" coords="134,155,239,181"/>
-<area shape="rect" id="node5" href="$verboten_8hpp_source.html" title="src/verboten.hpp" alt="" coords="262,229,381,256"/>
+<area shape="rect" id="node2" href="$nutzer_8hpp.html" title="src/nutzer.hpp" alt="" coords="188,80,293,107"/>
+<area shape="rect" id="node3" href="$adminpass_8hpp.html" title="src/adminpass.hpp" alt="" coords="5,155,137,181"/>
+<area shape="rect" id="node5" href="$chatverwaltung_8hpp.html" title="src/chatverwaltung.hpp" alt="" coords="162,155,319,181"/>
+<area shape="rect" id="node6" href="$filesystem_8hpp.html" title="src/filesystem.hpp" alt="" coords="344,155,473,181"/>
+<area shape="rect" id="node4" href="$chat_8hpp_source.html" title="src/chat.hpp" alt="" coords="24,229,119,256"/>
 </map>

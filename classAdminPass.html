@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.8.10"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
 <title>Klassenchat: AdminPass Klassenreferenz</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Klassenchat
-   &#160;<span id="projectnumber">1.5</span>
+   &#160;<span id="projectnumber">1.6</span>
    </div>
   </td>
  </tr>
@@ -32,7 +32,7 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Erzeugt von Doxygen 1.8.10 -->
+<!-- Erzeugt von Doxygen 1.8.11 -->
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 </script>
@@ -86,16 +86,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Öffentliche Methoden</a> &#124;
-<a href="#pub-static-attribs">Statische öffentliche Attribute</a> &#124;
+<a href="#pub-static-methods">Öffentliche, statische Methoden</a> &#124;
 <a href="#pri-methods">Private Methoden</a> &#124;
 <a href="#pri-attribs">Private Attribute</a> &#124;
+<a href="#pri-static-attribs">Statische, private Attribute</a> &#124;
 <a href="classAdminPass-members.html">Aufstellung aller Elemente</a>  </div>
   <div class="headertitle">
 <div class="title">AdminPass Klassenreferenz</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Mit der Klasse <a class="el" href="classAdminPass.html" title="Mit der Klasse AdminPass können die Passwörter der Chat::std_admins verwaltet werden. Einziges Objekt ist Chat::passwords. ">AdminPass</a> können die Passwörter der <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a> verwaltet werden. Einziges Objekt ist <a class="el" href="classChat.html#af135583df364fcea47541850c609d0c9" title="Die Passwörter der std_admins. ">Chat::passwords</a>.  
+<p>Dieses Singleton verwaltet die Passwörter der <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a>.  
  <a href="classAdminPass.html#details">Mehr ...</a></p>
 
 <p><code>#include &lt;<a class="el" href="adminpass_8hpp_source.html">adminpass.hpp</a>&gt;</code></p>
@@ -104,20 +105,16 @@ Zusammengehörigkeiten von AdminPass:</div>
 <div class="dyncontent">
 <div class="center"><img src="classAdminPass__coll__graph.png" border="0" usemap="#AdminPass_coll__map" alt="Collaboration graph"/></div>
 <map name="AdminPass_coll__map" id="AdminPass_coll__map">
-<area shape="rect" id="node2" href="structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="33,345,129,372"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="371,96,451,123"/>
-<area shape="rect" id="node9" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="384,207,437,234"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="347,5,474,47"/>
-<area shape="rect" id="node7" href="classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="251,345,322,372"/>
+<area shape="rect" id="node2" href="classDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="256,345,352,372"/>
+<area shape="rect" id="node4" href="classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="176,207,229,234"/>
+<area shape="rect" id="node8" href="classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="155,345,226,372"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="328,96,408,123"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="305,5,431,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">Legende</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Öffentliche Methoden</h2></td></tr>
-<tr class="memitem:a4b9342ec31e54bf7a89f51fd45c2a49d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b9342ec31e54bf7a89f51fd45c2a49d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a4b9342ec31e54bf7a89f51fd45c2a49d">AdminPass</a> (std::string const &amp;benutzername)</td></tr>
-<tr class="memdesc:a4b9342ec31e54bf7a89f51fd45c2a49d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allgemeiner Konstruktor. <br /></td></tr>
-<tr class="separator:a4b9342ec31e54bf7a89f51fd45c2a49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e2ca2345f42cf9c97a7a43e61ac2676"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a1e2ca2345f42cf9c97a7a43e61ac2676">setpass</a> (std::string newpass)</td></tr>
 <tr class="memdesc:a1e2ca2345f42cf9c97a7a43e61ac2676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setzt ein neues Passwort für meinen Benutzernamen.  <a href="#a1e2ca2345f42cf9c97a7a43e61ac2676">Mehr ...</a><br /></td></tr>
 <tr class="separator:a1e2ca2345f42cf9c97a7a43e61ac2676"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,45 +130,48 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memdesc:afa546d81f7962444b6cd70429062f239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ruft <a class="el" href="classAdminPass.html#a8dd945c4985761cdf5309b1e6b1ad62a" title="passfile entschlüsseln und in allpass schreiben ">fromFile()</a> auf und gibt dann *this zurück. <br /></td></tr>
 <tr class="separator:afa546d81f7962444b6cd70429062f239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Statische öffentliche Attribute</h2></td></tr>
-<tr class="memitem:a3bf787cd110b0e790b4e269fb5245e72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bf787cd110b0e790b4e269fb5245e72"></a>
-static constexpr char const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a3bf787cd110b0e790b4e269fb5245e72">std_pass</a> {&quot;ichbinboss&quot;}</td></tr>
-<tr class="memdesc:a3bf787cd110b0e790b4e269fb5245e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard-Passwort. <br /></td></tr>
-<tr class="separator:a3bf787cd110b0e790b4e269fb5245e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Öffentliche, statische Methoden</h2></td></tr>
+<tr class="memitem:ad6ff977c8263b1400c16c450de28c814"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6ff977c8263b1400c16c450de28c814"></a>
+static <a class="el" href="classAdminPass.html">AdminPass</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#ad6ff977c8263b1400c16c450de28c814">getInstance</a> ()</td></tr>
+<tr class="memdesc:ad6ff977c8263b1400c16c450de28c814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gibt die einzige Instanz von <a class="el" href="classAdminPass.html" title="Dieses Singleton verwaltet die Passwörter der Chat::std_admins. ">AdminPass</a> zurück. <br /></td></tr>
+<tr class="separator:ad6ff977c8263b1400c16c450de28c814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Methoden</h2></td></tr>
 <tr class="memitem:aec72e3952279e11ea9af721707b1061e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec72e3952279e11ea9af721707b1061e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#aec72e3952279e11ea9af721707b1061e">toFile</a> ()</td></tr>
-<tr class="memdesc:aec72e3952279e11ea9af721707b1061e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdminPass.html#a6846d3114d9074718b8523fec549df42" title="Alle Benutzernamen und Passwörter unverschlüsselt. ">allpass</a> verschlüsseln und in <a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen ">passfile</a> schreiben <br /></td></tr>
+<tr class="memdesc:aec72e3952279e11ea9af721707b1061e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdminPass.html#a6846d3114d9074718b8523fec549df42" title="Alle Benutzernamen und Passwörter unverschlüsselt. ">allpass</a> verschlüsseln und in <a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen. ">passfile</a> schreiben <br /></td></tr>
 <tr class="separator:aec72e3952279e11ea9af721707b1061e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dd945c4985761cdf5309b1e6b1ad62a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dd945c4985761cdf5309b1e6b1ad62a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a8dd945c4985761cdf5309b1e6b1ad62a">fromFile</a> ()</td></tr>
-<tr class="memdesc:a8dd945c4985761cdf5309b1e6b1ad62a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen ">passfile</a> entschlüsseln und in <a class="el" href="classAdminPass.html#a6846d3114d9074718b8523fec549df42" title="Alle Benutzernamen und Passwörter unverschlüsselt. ">allpass</a> schreiben <br /></td></tr>
+<tr class="memdesc:a8dd945c4985761cdf5309b1e6b1ad62a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen. ">passfile</a> entschlüsseln und in <a class="el" href="classAdminPass.html#a6846d3114d9074718b8523fec549df42" title="Alle Benutzernamen und Passwörter unverschlüsselt. ">allpass</a> schreiben <br /></td></tr>
 <tr class="separator:a8dd945c4985761cdf5309b1e6b1ad62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attribute</h2></td></tr>
-<tr class="memitem:a87cd8782e56a216b5c4ba8310334787d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87cd8782e56a216b5c4ba8310334787d"></a>
-std::string const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a87cd8782e56a216b5c4ba8310334787d">nutzername</a></td></tr>
-<tr class="memdesc:a87cd8782e56a216b5c4ba8310334787d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mein Benutzername. <br /></td></tr>
-<tr class="separator:a87cd8782e56a216b5c4ba8310334787d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b02ff7d5312c5f7c25c8174eca8d0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06b02ff7d5312c5f7c25c8174eca8d0a"></a>
-<a class="el" href="classCryptfile.html">Cryptfile</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a">passfile</a></td></tr>
-<tr class="memdesc:a06b02ff7d5312c5f7c25c8174eca8d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">verschlüsselte Datei, in der die Passwörter stehen <br /></td></tr>
+<a class="el" href="classCryptfile.html">Cryptfile</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a">passfile</a> { &quot;./pass.jpg&quot;, { 75, 45, 114, 30, 6, 203, 13, 102, 77, 155, 97, 100, 201, 170, 209, 178, 67, 102, 18, 218, 94, 106, 159, 126, 54, 65, 151, 91, 129, 107, 125, 102, 215, 96, 169, 18 } }</td></tr>
+<tr class="memdesc:a06b02ff7d5312c5f7c25c8174eca8d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">verschlüsselte Datei, in der die Passwörter stehen. <br /></td></tr>
 <tr class="separator:a06b02ff7d5312c5f7c25c8174eca8d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0223ce47d512f070823493abf5c712bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0223ce47d512f070823493abf5c712bc"></a>
-<a class="el" href="structDatei__Mutex.html">Datei_Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a0223ce47d512f070823493abf5c712bc">file_mtx</a></td></tr>
-<tr class="memdesc:a0223ce47d512f070823493abf5c712bc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. ">Datei_Mutex</a> für <a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen ">passfile</a>. <br /></td></tr>
+<a class="el" href="classDatei__Mutex.html">Datei_Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a0223ce47d512f070823493abf5c712bc">file_mtx</a> {&quot;./pass.jpg&quot;}</td></tr>
+<tr class="memdesc:a0223ce47d512f070823493abf5c712bc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. ">Datei_Mutex</a> für <a class="el" href="classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a" title="verschlüsselte Datei, in der die Passwörter stehen. ">passfile</a>. <br /></td></tr>
 <tr class="separator:a0223ce47d512f070823493abf5c712bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6846d3114d9074718b8523fec549df42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6846d3114d9074718b8523fec549df42"></a>
 std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a6846d3114d9074718b8523fec549df42">allpass</a> {}</td></tr>
 <tr class="memdesc:a6846d3114d9074718b8523fec549df42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alle Benutzernamen und Passwörter unverschlüsselt. <br /></td></tr>
 <tr class="separator:a6846d3114d9074718b8523fec549df42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Statische, private Attribute</h2></td></tr>
+<tr class="memitem:a3bf787cd110b0e790b4e269fb5245e72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bf787cd110b0e790b4e269fb5245e72"></a>
+static constexpr char const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminPass.html#a3bf787cd110b0e790b4e269fb5245e72">std_pass</a> {&quot;ichbinboss&quot;}</td></tr>
+<tr class="memdesc:a3bf787cd110b0e790b4e269fb5245e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard-Passwort. <br /></td></tr>
+<tr class="separator:a3bf787cd110b0e790b4e269fb5245e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Ausführliche Beschreibung</h2>
-<div class="textblock"><p>Mit der Klasse <a class="el" href="classAdminPass.html" title="Mit der Klasse AdminPass können die Passwörter der Chat::std_admins verwaltet werden. Einziges Objekt ist Chat::passwords. ">AdminPass</a> können die Passwörter der <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a> verwaltet werden. Einziges Objekt ist <a class="el" href="classChat.html#af135583df364fcea47541850c609d0c9" title="Die Passwörter der std_admins. ">Chat::passwords</a>. </p>
+<div class="textblock"><p>Dieses Singleton verwaltet die Passwörter der <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a>. </p>
 </div><h2 class="groupheader">Dokumentation der Elementfunktionen</h2>
 <a class="anchor" id="af4479bdc3e177674b0b83f0175dad5b5"></a>
 <div class="memitem">
@@ -216,7 +216,7 @@ std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memIte
 <p>Setzt ein neues Passwort für meinen Benutzernamen. </p>
 <dl class="params"><dt>Parameter</dt><dd>
   <table class="params">
-    <tr><td class="paramname">newpass</td><td>neues <a class="el" href="classPasswort.html" title="Mit der Klasse Passwort kann ein Passwort-Dialog erzeugt werden. ">Passwort</a> (unverschlüsselt)</td></tr>
+    <tr><td class="paramname">newpass</td><td>neues Passwort (unverschlüsselt)</td></tr>
   </table>
   </dd>
 </dl>
@@ -233,7 +233,7 @@ std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memIte
 <hr class="footer"/><address class="footer"><small>
 Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.10
+</a> 1.8.11
 </small></address>
 </body>
 </html>

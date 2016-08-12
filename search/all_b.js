@@ -1,7 +1,10 @@
 var searchData=
 [
   ['main_5fthread',['main_thread',['../classChat.html#a655eabd6656d9349e3a21f03e2d70b38',1,'Chat']]],
-  ['make_5fchat',['make_chat',['../classChat.html#a17c8a4553ce376fdf0162aa0b22a185f',1,'Chat']]],
-  ['maketonutzerdatei',['makeToNutzerDatei',['../filesystem_8hpp.html#a762460314be262b16ecbac23c09ae395',1,'makeToNutzerDatei(Ordner const &amp;folder, bool const plum, std::string const &amp;benutzername):&#160;filesystem.hpp'],['../filesystem_8hpp.html#a8686229791c9b87bd789a8ff31ce58dd',1,'makeToNutzerDatei(Ordner const &amp;folder, std::pair&lt; bool, std::string &gt; const &amp;paar):&#160;filesystem.hpp']]],
-  ['mtx',['mtx',['../classChat_1_1UiThing.html#a1564f1091ba3bde82fae79c32b4519d2',1,'Chat::UiThing']]]
+  ['makechat',['makeChat',['../classChatVerwaltung.html#acbbc3ce4d8e2e667adf1d5a71af48726',1,'ChatVerwaltung']]],
+  ['makenutzerich',['makeNutzerIch',['../classNutzerVerwaltung.html#a6d7d37404b9cab12236dd62e06ebe12b',1,'NutzerVerwaltung']]],
+  ['maketonutzerdatei',['makeToNutzerDatei',['../filesystem_8hpp.html#a087970b7c50c72fc7e7682598c9d75cb',1,'makeToNutzerDatei(Ordner const &amp;folder, size_t const nummer):&#160;filesystem.hpp'],['../filesystem_8hpp.html#a711150ee8c13d0a1ea8d09bbb2690fe1',1,'makeToNutzerDatei(Ordner const &amp;folder, Nutzer const &amp;nutzer):&#160;filesystem.hpp']]],
+  ['menuadmin',['menuAdmin',['../classChatVerwaltung.html#a90f83ecfdf441daa080d010bd5b03a6f',1,'ChatVerwaltung']]],
+  ['menuchats',['menuChats',['../classChatVerwaltung.html#a4b5dddcdec4b6540b3cc5bfb73f625ac',1,'ChatVerwaltung']]],
+  ['mtx',['mtx',['../classChat_1_1UiThing.html#a619a42960c9605a3ff451b9fa85f430f',1,'Chat::UiThing::mtx()'],['../classNutzerVerwaltung.html#a494807a58560088f0fe246a315cd02fc',1,'NutzerVerwaltung::mtx()']]]
 ];

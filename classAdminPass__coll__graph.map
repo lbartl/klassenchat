@@ -1,7 +1,7 @@
 <map id="AdminPass" name="AdminPass">
-<area shape="rect" id="node2" href="$structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="33,345,129,372"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="371,96,451,123"/>
-<area shape="rect" id="node9" href="$classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="384,207,437,234"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="347,5,474,47"/>
-<area shape="rect" id="node7" href="$classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="251,345,322,372"/>
+<area shape="rect" id="node2" href="$classDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="256,345,352,372"/>
+<area shape="rect" id="node4" href="$classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="176,207,229,234"/>
+<area shape="rect" id="node8" href="$classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="155,345,226,372"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="328,96,408,123"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="305,5,431,47"/>
 </map>

@@ -1,12 +1,2 @@
 <map id="PersonalO" name="PersonalO">
-<area shape="rect" id="node3" href="$classChat.html" title="Wichtigste Klasse des Chats. " alt="" coords="1625,412,1676,439"/>
-<area shape="rect" id="node5" href="$structDatei__Mutex.html" title="Ein file_lock, benutzbar wie eine Mutex. " alt="" coords="723,287,819,313"/>
-<area shape="rect" id="node8" href="$classAdminPass.html" title="Mit der Klasse AdminPass können die Passwörter der Chat::std_admins verwaltet werden. Einziges Objekt ist Chat::passwords. " alt="" coords="981,183,1070,209"/>
-<area shape="rect" id="node19" href="$classHineinschreiben.html" title="Mit der Klasse Hineinschreiben können Dateien verwaltet werden, in der Benutzernamen stehen..." alt="" coords="968,307,1083,333"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="181,169,261,196"/>
-<area shape="rect" id="node14" href="$classDatei.html" title="Mit der Klasse Datei können Dateien verwaltet werden. " alt="" coords="409,404,463,431"/>
-<area shape="rect" id="node17" href="$structChat_1_1Chataction.html" title="Mit dem struct Chataction können Aktionen für Privatchats verwaltet werden. " alt="" coords="710,537,831,564"/>
-<area shape="rect" id="node11" title="STL class. " alt="" coords="5,162,132,203"/>
-<area shape="rect" id="node12" href="$classCryptfile.html" title="Mit der Klasse Cryptfile können verschlüsselte Dateien verwaltet werden. " alt="" coords="735,220,806,247"/>
-<area shape="rect" id="node15" href="$classChat_1_1UiThing.html" title="Mit der Klasse UiThing können Threads Änderungen an ui an pruefen_main() weitergeben. " alt="" coords="1329,556,1432,583"/>
 </map>

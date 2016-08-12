@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['begin',['begin',['../classHineinschreiben.html#a2f09f7e328ee3fcff08a0f5b6de027f4',1,'Hineinschreiben']]]
+  ['beenden',['beenden',['../classChatVerwaltung.html#a5ac0973356c0ccca7c24d2a0f9148861',1,'ChatVerwaltung']]],
+  ['begin',['begin',['../classNutzerVerwaltung.html#a4f9290d79b92e95fc1d62a04f1f4d1d9',1,'NutzerVerwaltung']]]
 ];

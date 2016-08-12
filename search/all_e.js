@@ -1,15 +1,21 @@
 var searchData=
 [
-  ['partner',['partner',['../structChat_1_1Chataction.html#ac99f8df926901139ab055215c3e86a39',1,'Chat::Chataction']]],
+  ['partner',['partner',['../structChatVerwaltung_1_1Privatchat.html#ab79b5d72fc7a74e30e9193964ae65524',1,'ChatVerwaltung::Privatchat']]],
   ['passein',['passein',['../classPasswort.html#a8f2b8efac3d5c90fedce83c411a673fe',1,'Passwort']]],
-  ['passfile',['passfile',['../classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a',1,'AdminPass::passfile()'],['../namespacestatic__paths.html#acc19cded7bc6d310564c68aaa5932b00',1,'static_paths::passfile()']]],
-  ['passwords',['passwords',['../classChat.html#af135583df364fcea47541850c609d0c9',1,'Chat']]],
+  ['passfile',['passfile',['../classAdminPass.html#a06b02ff7d5312c5f7c25c8174eca8d0a',1,'AdminPass']]],
+  ['passwords',['passwords',['../adminpass_8hpp.html#af3f1f9aad40b3cf47d50d3d52147097c',1,'adminpass.cpp']]],
   ['passwort',['Passwort',['../classPasswort.html',1,'Passwort'],['../classPasswort.html#aa6692f3cacea84fd8b23eead2ea07ee0',1,'Passwort::Passwort()'],['../classChat.html#a39c245dc999d053576861c8cf1287acf',1,'Chat::passwort()']]],
+  ['pc_5fnutzername',['pc_nutzername',['../classNutzer.html#ae8124a2cfdb9373ee2faa16c4e6c638d',1,'Nutzer']]],
+  ['pc_5fnutzername_2ehpp',['pc_nutzername.hpp',['../pc__nutzername_8hpp.html',1,'']]],
+  ['pc_5fnutzername_5fverboten',['pc_nutzername_verboten',['../pc__nutzername_8hpp.html#a36437f8c150e6fb45db0ccd620770b5f',1,'pc_nutzername.cpp']]],
   ['personal_5fop',['personal_op',['../classChat.html#ac54e4d82b127dd45e91739f8dcba68bc',1,'Chat']]],
-  ['personalo',['PersonalO',['../classPersonalO.html',1,'PersonalO'],['../classPersonalO.html#a0b888999c7523325e30f4f7919ecb919',1,'PersonalO::PersonalO()']]],
+  ['personalo',['PersonalO',['../classPersonalO.html',1,'PersonalO'],['../classPersonalO.html#a02e187263a1656d826770b0e79a4f56e',1,'PersonalO::PersonalO()']]],
   ['plum_5fchat',['plum_chat',['../classChat.html#a3ffe50ba9d257fb1d91e96a6cfa1bf63',1,'Chat']]],
-  ['privatchat',['Privatchat',['../classChat_1_1UiThing.html#a9d628f5a386903b65b3b20593972f597ad43878f3d0fd265410d2c90dde41cf89',1,'Chat::UiThing']]],
+  ['privatchat',['Privatchat',['../classChat_1_1UiThing.html#a9d628f5a386903b65b3b20593972f597ad43878f3d0fd265410d2c90dde41cf89',1,'Chat::UiThing::Privatchat()'],['../structChatVerwaltung_1_1Privatchat.html#a4926f98ce6623a9cec0179b0bd6b8e65',1,'ChatVerwaltung::Privatchat::Privatchat()']]],
+  ['privatchat',['Privatchat',['../structChatVerwaltung_1_1Privatchat.html',1,'ChatVerwaltung']]],
+  ['privatchats',['privatchats',['../classChatVerwaltung.html#a9438b75ad2de3ddbca771b782cfd7d9f',1,'ChatVerwaltung']]],
+  ['privatchats_5fmtx',['privatchats_mtx',['../classChatVerwaltung.html#ad3e5dae4ec2290c6a44bf3fe0eab080b',1,'ChatVerwaltung']]],
   ['pruefen_5fmain',['pruefen_main',['../classChat.html#a57fb0b7c684bcddfaa108c3399086dea',1,'Chat']]],
-  ['pruefen_5fmtx',['pruefen_mtx',['../classChat.html#ae649645714cebf32504c2e9c1148ab5a',1,'Chat']]],
+  ['pruefen_5fmtx',['pruefen_mtx',['../classChat.html#ad7b46d1cfbc4145c9bfa1ad5737daaf5',1,'Chat']]],
   ['pruefen_5fthread',['pruefen_thread',['../classChat.html#abf5addf46b2606200ed062b3201627e7',1,'Chat']]]
 ];
