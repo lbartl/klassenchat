@@ -144,13 +144,13 @@ public:
         return it == end() ? nullptr : &*it;
     }
 
-    /// Gibt true zurück, wenn ein Nutzer mit dieser Nummer im Chat ist, ansonsten false (lockt)
+    /// Gibt true zurück, wenn ein Nutzer mit dieser Nummer im %Chat ist, ansonsten false (lockt)
     bool vorhanden( size_t const nummer ) {
         shared_lock lock ( mtx );
         return getNutzer( nummer );
     }
 
-    /// Gibt true zurück, wenn ein Nutzer mit diesem x_plum und diesem Nutzernamen im Chat ist, ansonsten false (lockt)
+    /// Gibt true zurück, wenn ein Nutzer mit diesem x_plum und diesem Nutzernamen im %Chat ist, ansonsten false (lockt)
     bool vorhanden( bool const x_plum, std::string const& nutzername ) {
         shared_lock lock ( mtx );
         return getNutzer( x_plum, nutzername );

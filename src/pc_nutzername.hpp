@@ -45,7 +45,7 @@ inline std::string get_pc_nutzername() {
 }
 #endif
 
-/// Prüft ob mein Pc-Nutzername verboten ist
+/// Prüft, ob mein Pc-Nutzername verboten ist
 bool pc_nutzername_verboten();
 void verbotene_pc_nutzernamen_dialog( QWidget* parent = nullptr );
 

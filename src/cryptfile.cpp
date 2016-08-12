@@ -32,7 +32,7 @@ Cryptfile::Cryptfile( Datei datei, std::vector <uint8_t> schluessel ) :
 }
 
 /**
- * @returns entschlüsselten Text
+ * @returns entschlüsselter Text
  */
 std::string Cryptfile::decrypt() const {
     size_t index = 0;
@@ -49,7 +49,7 @@ std::string Cryptfile::decrypt() const {
 }
 
 /**
- * @param text normaler Text, der dann verschlüsselt ans Ender der %Datei geschrieben wird
+ * @param text normaler Text, der dann verschlüsselt ans Ende der %Datei geschrieben wird
  */
 void Cryptfile::append( std::string text ) const {
     for ( char& currc : text ) {

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Lukas Bartl
+/* Copyright (C) 2015,2016 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ class Passwort : public QDialog
 public:
     explicit Passwort( QWidget* parent = nullptr ); ///< Konstruktor
 
-    /// Eingegebenes Passwort zurückgeben.
+    /// Eingegebenes %Passwort zurückgeben.
     std::string const& getpass() const {
         return passein;
     }
@@ -47,12 +47,12 @@ public:
 
 private:
     Ui::Passwort ui {}; ///< UI des Dialogs
-    std::string passein {}; ///< Eingegbenes Passwort
+    std::string passein {}; ///< Eingegbenes %Passwort
 
     void setzen(); ///< Setzt #passein, aufgerufen wenn der Ok-Button angeklickt wurde
 
 signals:
-    void eingegeben( std::string const& newpass ); ///< Ein Signal mit dem eingegebenem Passwort, von setzen() gesendet
+    void eingegeben( std::string const& newpass ); ///< Ein Signal mit dem eingegebenem %Passwort, von setzen() gesendet
 };
 
 #endif // PASSWORT_HPP

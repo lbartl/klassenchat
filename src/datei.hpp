@@ -119,7 +119,7 @@ public:
         return os;
     }
 
-    /// Prüfen ob %Datei existiert.
+    /// Prüfen, ob %Datei existiert.
     bool exist() const {
         struct stat buffer;
         return stat( file.c_str(), &buffer ) == 0;

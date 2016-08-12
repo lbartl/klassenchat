@@ -32,7 +32,7 @@ public:
     /// Allgemeiner Konstruktor.
     explicit Cryptfile( Datei datei, std::vector <uint8_t> schluessel );
 
-    /// Prüfen ob %Datei existiert.
+    /// Prüfen, ob %Datei existiert.
     bool exist() const {
         return file.exist();
     }
@@ -63,6 +63,8 @@ public:
     /// Text veschlüsseln und in %Datei schreiben.
     /**
      * @param plaintext normaler Text, der dann verschlüsselt in %Datei geschrieben wird
+     *
+     * \callgraph
      */
     void encrypt( std::string plaintext ) const {
         reset();
@@ -70,7 +72,7 @@ public:
     }
 
 private:
-    Datei const file; ///< verschlüsselte %Datei
+    Datei const file; ///< verschlüsselte %Datei.
     std::vector <uint8_t> key; ///< Schlüssel
 
     ///\cond

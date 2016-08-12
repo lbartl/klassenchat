@@ -24,7 +24,11 @@
 #include "ui_nutzer_anz.h"
 #include <vector>
 
-/// Dieser Dialog zeigt alle %Nutzer mit ihrem Benutzernamen_str an. Bei Admins wird ein " (Admin)" angehängt.
+/// Dieser Dialog zeigt alle %Nutzer mit ihrem Nutzernamen an.
+/**
+ * Bei Leuten aus dem Plum-Chat wird " (Plum-Chat)" angehängt.
+ * Bei Admins wird " (Admin)" angehängt.
+ */
 class Nutzer_anz : public QDialog
 {
     Q_OBJECT
@@ -38,8 +42,12 @@ private:
 
 /// Dieser Dialog ist nur für den Chat::oberadmin
 /**
- * Dieser Dialog zeigt alle %Nutzer mit ihrem Benutzername_str an und (falls sie einer der Chat::std_admins sind) mit ihrem %Passwort.
- * Sie können dann zum %Admin gemacht werden oder entmachtet werden.
+ * Dieser Dialog zeigt alle %Nutzer mit ihrem Nutzernamen an.
+ * Bei Leuten aus dem Plum-Chat wird " (Plum-Chat)" angehängt.
+ * Bei Chat::std_admin%s wird ihr %Passwort angezeigt.
+ * Admins werden mit einer markierten CheckBox versehen.
+ *
+ * Die %Nutzer können dann zum %Admin gemacht werden oder entmachtet werden.
  */
 class Admin_anz : public QDialog
 {
@@ -50,7 +58,7 @@ public:
 
 private:
     Ui::Admin_anz ui {}; ///< UI des Dialogs
-    std::vector <std::pair<size_t, QListWidgetItem>> anz_nutzer {}; ///< Alle angezeigten Nutzer
+    std::vector <std::pair<size_t, QListWidgetItem>> anz_nutzer {}; ///< Alle angezeigten %Nutzer
 
     ///\cond
     void schreiben() const;

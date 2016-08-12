@@ -72,8 +72,7 @@ Admin_anz::Admin_anz( QWidget* parent ) :
 
         if ( currnutzer.x_plum )
             name += " (Plum-Chat)";
-
-        if ( ! currnutzer.x_plum && enthaelt( Chat::std_admins, currnutzer.nutzername ) )
+        else if ( enthaelt( Chat::std_admins, currnutzer.nutzername ) )
             name += " (Passwort \"" + passwords.getpass( currnutzer.nutzername ) + "\")";
 
         anz_nutzer.emplace_back( currnutzer.nummer, QListWidgetItem( QString::fromStdString( name ) ) ); // Item erstellen und mit Nummer des Nutzers in anz_nutzer schreiben

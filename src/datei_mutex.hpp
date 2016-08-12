@@ -85,7 +85,7 @@ private:
  */
 class Datei_Mutex : public boost::interprocess::file_lock {
 public:
-    /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue Datei mit namen "<file>.lock" angelegt und als Lock genutzt
+    /// Allgemeiner Konstruktor mit Datei als Argument. Es wird eine neue %Datei mit dem Namen "<file>.lock" erstellt und als Lock genutzt
     explicit Datei_Mutex( Datei file ) :
         boost::interprocess::file_lock( [&file] () { file += ".lock"; if ( ! file.exist() ) file.touch(); return file.getpath(); } () ), // Datei erstellen
         lockdatei( std::move( file ) )

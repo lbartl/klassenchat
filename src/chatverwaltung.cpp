@@ -31,7 +31,7 @@ ChatVerwaltung::Chatfile ChatVerwaltung::chatfile_norm {"./verlauf.jpg"}, ///< %
 /**
  * @param partner Nutzername des Chatpartners
  *
- * Neuen Privatchat mit diesem Chatpartner erstellen und öffnen.
+ * Neuen %Privatchat mit diesem Chatpartner erstellen und öffnen.
  *
  * \callgraph
  */
@@ -64,7 +64,7 @@ void ChatVerwaltung::makeChat( std::string const& partner ) {
  * @param chatdatei Chatdatei des Privatchats
  * @param partner_nummer Nummer des Chatpartners
  *
- * Neuen Privatchat mit diesem Chatpartner öffnen.
+ * Neuen %Privatchat mit diesem Chatpartner öffnen.
  *
  * \callgraph
  */
@@ -186,12 +186,12 @@ void ChatVerwaltung::nutzerGeloescht( Nutzer const& nutzer ) {
     if ( chata_it == privatchats.end() ) // gelöschter Nutzer hatte keinen Privatchat mit mit
         return;
 
-    if ( &chata_it->file == chatfile ) { // Ich befinde mich gerade im Chat mit dem gelöschten Nutzer, in den Klassenchat wechseln
+    if ( &chata_it->chatfile == chatfile ) { // Ich befinde mich gerade im Chat mit dem gelöschten Nutzer, in den Klassenchat wechseln
         menuAdmin->setEnabled( nutzer_ich.admin );
         chatfile = chatfile_all;
     }
 
-    chata_it->file.remove(); // Chatdatei löschen
+    chata_it->chatfile.remove(); // Chatdatei löschen
     privatchats.erase( chata_it ); // Aus Liste löschen
 
     text.first = true;

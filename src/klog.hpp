@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+///\file
 // Dieser Header definiert die Log-Funktionen, mit denen etwas im Debug-Mode ausgegeben werden kann
 
 #ifndef LOG_HPP
@@ -23,21 +24,21 @@
 #include <iostream>
 
 using std::endl;
-using std::ios_base;
 
-#ifdef DEBUG
+#if defined DEBUG || defined DOXYGEN_RUN
 
-inline void klog( char const* msg ) { // Ausgeben eines C-Strings
-    ios_base::sync_with_stdio( false );
+/// Ausgeben eines C-Strings im Debug-Mode
+inline void klog( char const* msg ) {
+    std::ios_base::sync_with_stdio( false );
     std::clog << msg << endl;
 }
 
-#define KLOG ( ios_base::sync_with_stdio( false ), std::clog ) // Ausgeben eines Streams
+/// Ausgeben eines Streams im Debug-Mode
+#define KLOG ( std::ios_base::sync_with_stdio( false ), std::clog )
 
 #else // DEBUG
 
 inline void klog( char const* ) {} // Leere Funktion, nichts tun
-
 #define KLOG if ( false ) std::clog // Nichts ausgeben
 
 #endif // DEBUG

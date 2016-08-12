@@ -23,7 +23,7 @@
 
 #include <QRegExp>
 
-/// Prüfen ob Container einen Wert enthält.
+/// Prüfen, ob Container einen Wert enthält.
 /**
  * @param container Container
  * @param value Wert
@@ -35,7 +35,7 @@ constexpr bool enthaelt( Container const& container, T const& value ) {
     return std::find( std::begin( container ), std::end( container ), value ) != std::end( container );
 }
 
-/// Prüfen ob Cotainer nur aus Elementen besteht, die gleich einem Wert sind.
+/// Prüfen, ob Cotainer nur aus Elementen besteht, die gleich einem Wert sind.
 /**
  * @param first Iterator des ersten Elements
  * @param last Iterator zum Element nach dem letzten Element
@@ -49,7 +49,7 @@ constexpr bool enthaelt_nur( InputIt first, InputIt last, T const& value ) {
     return std::all_of( first, last, [&value] ( T const& currval ) { return currval == value; } );
 }
 
-/// Prüfen ob die Buchstaben von zwei QStrings gleich sind, sie aber evtl. eine andere Groß-/Kleinschreibung haben.
+/// Prüfen, ob die Buchstaben von zwei QStrings gleich sind, sie aber evtl. eine andere Groß-/Kleinschreibung haben.
 /**
  * @param a erster String
  * @param b zweiter String

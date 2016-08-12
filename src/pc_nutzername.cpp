@@ -22,8 +22,8 @@
 /// Dieser Dialog zeigt alle verbotenen und aktuell sich im Chat befindenden Pc-Nutzernamen an. Er wird mit der Funktion verbotene_pc_nutzernamen_dialog() erstellt.
 /**
  * Es werden zuerst alle verbotenen Pc-Nutzernamen angezeigt und mit einer markierten CheckBox versehen.
- * Anschließend werden alle aktuell sich im Chat befindenden Pc-Nutzernamen angezeigt und mit einer nicht markierten CheckBox versehen.
- * Wenn die CheckBox entmakiert wird, wird der Pc-Nutzername wieder freigegeben, wird sie markiert, wird der Pc-Nutzername aus dem Chat entfernt und ist nun verboten.
+ * Anschließend werden alle aktuell sich im %Chat befindenden Pc-Nutzernamen angezeigt und mit einer nicht markierten CheckBox versehen.
+ * Wenn die CheckBox entmakiert wird, wird der Pc-Nutzername wieder freigegeben, wird sie markiert, wird der Pc-Nutzername aus dem %Chat entfernt und ist nun verboten.
  */
 class VerbotenPc : public QDialog {
     Q_OBJECT

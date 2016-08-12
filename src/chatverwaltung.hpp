@@ -145,6 +145,9 @@ private:
         Datei_Mutex file_mtx { file }; ///< Datei_Mutex für #file
 
         /// Konstruktor.
+        /**
+         * @param file Chatdatei
+         */
         Chatfile( Datei file ) :
             file( std::move( file ) )
         {}
@@ -164,7 +167,7 @@ private:
     /// Mit dem struct Privatchat können Privatchats verwaltet werden.
     struct Privatchat {
         QAction action; ///< QAction
-        Chatfile file; ///< Chatdatei
+        Chatfile chatfile; ///< Chatdatei
         Nutzer const& partner; ///< Chatpartner
 
         /// Konstruktor.
@@ -176,7 +179,7 @@ private:
          */
         Privatchat( Datei chatdatei, Nutzer const& partner ) :
             action( QString::fromStdString( "&Chat mit " + partner.nutzername ), nullptr ),
-            file( std::move( chatdatei ) ),
+            chatfile( std::move( chatdatei ) ),
             partner( partner )
         {}
     };
@@ -191,7 +194,7 @@ private:
     void openChat( Privatchat*const chat ) {
         lock_guard lock ( chatfile_mtx );
         menuAdmin->setEnabled( false );
-        chatfile = &chat->file;
+        chatfile = &chat->chatfile;
     }
 };
 

@@ -22,7 +22,7 @@
 
 #include "ui_personalo.h"
 
-/// Mit diesem Dialog kann man einen neuen Privatchat starten. Es wird Chat::make_chat() mit dem ausgewählten Benutzernamen aufgerufen.
+/// Mit diesem Dialog kann man einen neuen Privatchat starten. Es wird ChatVerwaltung::makeChat() mit dem ausgewählten Benutzernamen aufgerufen.
 class PersonalO : public QDialog
 {
     Q_OBJECT
