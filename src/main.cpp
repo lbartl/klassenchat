@@ -29,7 +29,7 @@ using std::cerr;
 #ifdef DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const& context, QString const& msg ) { // Für Debugging
-    ios_base::sync_with_stdio( false );
+    std::ios_base::sync_with_stdio( false );
 
     switch ( type ) {
     case QtDebugMsg:
@@ -56,7 +56,7 @@ void messageOutput( QtMsgType type, QMessageLogContext const& context, QString c
 #else // DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const&, QString const& msg ) { // Für Release
-    ios_base::sync_with_stdio( false );
+    std::ios_base::sync_with_stdio( false );
 
     switch ( type ) {
     case QtDebugMsg: // wird nicht angezeigt
