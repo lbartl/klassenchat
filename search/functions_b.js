@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['main_5fthread',['main_thread',['../classChat.html#a655eabd6656d9349e3a21f03e2d70b38',1,'Chat']]],
-  ['makechat',['makeChat',['../classChatVerwaltung.html#acbbc3ce4d8e2e667adf1d5a71af48726',1,'ChatVerwaltung']]],
-  ['makenutzerich',['makeNutzerIch',['../classNutzerVerwaltung.html#a6d7d37404b9cab12236dd62e06ebe12b',1,'NutzerVerwaltung']]],
-  ['maketonutzerdatei',['makeToNutzerDatei',['../filesystem_8hpp.html#a087970b7c50c72fc7e7682598c9d75cb',1,'makeToNutzerDatei(Ordner const &amp;folder, size_t const nummer):&#160;filesystem.hpp'],['../filesystem_8hpp.html#a711150ee8c13d0a1ea8d09bbb2690fe1',1,'makeToNutzerDatei(Ordner const &amp;folder, Nutzer const &amp;nutzer):&#160;filesystem.hpp']]]
+  ['neuerchat',['neuerChat',['../classChatVerwaltung.html#a49f8055ba57bcde20c6e7fcf607b5412',1,'ChatVerwaltung']]],
+  ['newchat',['newChat',['../classChatVerwaltung.html#aad78c836dc093f178f04468cc43ac6aa',1,'ChatVerwaltung']]],
+  ['newtyp',['newTyp',['../classChat_1_1UiThing.html#a67eb774e05d3809d0ab4ae0128b99691',1,'Chat::UiThing::newTyp(unique_lock &amp;lock, Typ const neuer_typ)'],['../classChat_1_1UiThing.html#a2fe347ac4e0d13990a62279c4c4b7089',1,'Chat::UiThing::newTyp(Typ const neuer_typ)']]],
+  ['nutzer',['Nutzer',['../classNutzer.html#a39230594e9e8003b64ae507488323d4a',1,'Nutzer']]],
+  ['nutzer_5fanz',['Nutzer_anz',['../classNutzer__anz.html#a5bc257399b63c698240fe672623182ca',1,'Nutzer_anz::Nutzer_anz()'],['../classChat.html#ae89df92801e0552f186dee3737d0fd34',1,'Chat::nutzer_anz()']]],
+  ['nutzer_5fthread',['nutzer_thread',['../classChat.html#a07ab60adaa8e95b1e61c71d3c342b8a2',1,'Chat']]],
+  ['nutzergeloescht',['nutzerGeloescht',['../classChatVerwaltung.html#adc71317036cf22d18fbf962fa938ff2f',1,'ChatVerwaltung']]]
 ];
