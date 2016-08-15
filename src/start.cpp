@@ -18,7 +18,6 @@
 // Diese Datei steuert den Start und das Beenden des Chats
 
 #include "chat.hpp"
-#include "lockfile.hpp"
 #include "simpledialog.hpp"
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
@@ -86,7 +85,7 @@ void Chat::start() {
         Nutzer const*const nutzer = nutzer_verwaltung.getNutzer( x_plum_anfang, nutzername );
 
         if ( nutzer ) { // Jemand hat meinen Benutzernamen
-            Datei checkdatei = makeToNutzerDatei( checkdir, *nutzer ); // checkfile des Nutzers
+            Datei const checkdatei = makeToNutzerDatei( checkdir, *nutzer ); // checkfile des Nutzers
             checkdatei.touch();
             this_thread::sleep_for( 500ms ); // Warten bis die Datei von dem Nutzer gelöscht wird
 
