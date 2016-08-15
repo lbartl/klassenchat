@@ -46,6 +46,6 @@ using shared_mutex = std::shared_timed_mutex; ///< Unter Windows boost::shared_m
 using lock_guard = std::lock_guard <mutex> const; ///< meistens wird std::lock_guard mit mutex genutzt
 using shared_lock = std::shared_lock <shared_mutex>; ///< meistens wird std::shared_lock mit #shared_mutex genutzt
 
-using namespace std::literals; // Damit z.B. 0.5s, 50ms oder "baum"s geschrieben werden kann
+using namespace std::literals; // Damit z.B. 2s, 50ms oder "baum"s geschrieben werden kann
 namespace this_thread = std::this_thread;
 #endif // THREAD_HPP

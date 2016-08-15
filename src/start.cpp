@@ -43,7 +43,7 @@ namespace {
 /**
  * 1. Überprüfen, ob mein Benutzername verboten ist, wenn ja, dann nochmal einen Namen eingeben.
  * 2. Prüft ob mein Benutzername in #std_admins vorhanden ist, und setzt danach #std_admin.
- * 3. Überprüfen, ob jemand im %Chat ist, wenn nicht lösche ich den Chatverlauf (#std_admin) oder verlasse den %Chat (Lockfile).
+ * 3. Überprüfen, ob jemand im %Chat ist, wenn nicht lösche ich den Chatverlauf.
  * 4. Überprüfen, ob mein Benutzername vergeben ist, wenn ja, dann nochmal einen Namen eingeben.
  * 5. Wenn ich ein #std_admin bin, wird das Passwort-Feld geöffnet, wenn nicht, wird start2() aufgerufen.
  */

@@ -134,15 +134,12 @@ namespace {
 }
 #endif
 
-/// Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in #nextUiThing.
+/// Prüft, ob spezielle Dinge gemacht werden sollen.
 /**
- * Schreibt Informationen zum Beenden des Chats, zu Warnungen, Informationen, Änderungen von Nutzer::admin und zur Erstellung eines neuen Privatchats in #nextUiThing.
- * Diese werden dann von pruefen_main() verarbeitet und die entsprechende Aktion ausgeführt.
+ * Prüft, ob der %Chat nach einem Signal beendet werden soll oder ob ein Admin überall den %Chat geschlossen hat.
+ * Wenn beides nicht zutrifft, wird pruefen_files() aufgerufen.
  */
 void Chat::pruefen_thread() {
-    using namespace static_paths;
-    using std::string;
-
 #ifndef WIN32
     struct sigaction sig_ac;
     sig_ac.sa_handler = [] ( int ) { signal_stop = true; };
@@ -164,79 +161,13 @@ void Chat::pruefen_thread() {
             break; // Thread beenden
         }
 #endif
-        if ( alltfile.exist() ) { // Admin hat überall den Chat geschlossen
+        if ( static_paths::alltfile.exist() ) { // Admin hat überall den Chat geschlossen
             klog("terminate-all");
             nextUiThing.newTyp( UiThing::terminate );
-            break; // Thread beenden
-        } else if ( terminatefile.exist() ) { // Admin hat meinen Benutzernamen entfernt
-            unique_lock lock ( nextUiThing.mtx );
-            nextUiThing.newTyp( lock, UiThing::entfernt );
-
-            new ( nextUiThing.first() ) string( terminatefile.readLine() ); // wer mich entfernt hat
-
-            terminatefile.remove();
-        } else if ( checkfile.exist() ) { // Zeigen, dass ich noch im Chat bin, indem die Datei entfernt wird
-            klog("Lösche checkfile...");
-            checkfile.remove();
-        } else if ( ! nutzer_ich.x_plum && warnfile.exist() ) { // Warnung
-            std::ifstream is = warnfile.istream();
-
-            while ( true ) {
-                size_t currnummer;
-                is >> currnummer;
-                if ( currnummer == nutzer_ich.nummer ) // bereits empfangen
-                    break;
-                else if ( ! is ) { // noch nicht empfangen
-                    is.close();
-                    warnfile.ostream( true ) << nutzer_ich.nummer << ' ';
-                    klog("Warnung empfangen!");
-                    nextUiThing.newTyp( UiThing::Warnung );
-                    break;
-                }
-            }
+            break;
         }
 
-        if ( infofile.exist() ) { // andere Info an mich
-            switch ( infofile.readChar() ) {
-            case '1': // Zum Admin werden
-                klog("Werde zum Admin...");
-                nutzer_verwaltung.flip_admin();
-                nextUiThing.newTyp( UiThing::ToAdmin );
-                break;
-            case '0': // Zum normalen Nutzer werden
-                klog("Werde zum normalen Nutzer...");
-                nutzer_verwaltung.flip_admin();
-                nextUiThing.newTyp( UiThing::FromAdmin );
-                break;
-            case 'i': { // Admin hat mir eine Info gesendet
-                klog("Info von Admin empfangen!");
-
-                string const inhalt = infofile.readAll();
-                size_t const line_end = inhalt.find('\n');
-
-                QString text = "Der Administrator " + QString::fromUtf8( inhalt.c_str() + 1, line_end - 1 ) + " schreibt:\n\n"
-                              + QString::fromUtf8( inhalt.c_str() + line_end + 1, inhalt.length() - line_end - 1 );
-
-                unique_lock lock ( nextUiThing.mtx );
-                nextUiThing.newTyp( lock, UiThing::Dialog );
-
-                new ( nextUiThing.first() ) QString("Information");
-                new ( nextUiThing.second() ) QString( std::move( text ) );
-            } break;
-            default: // Neuer Chat, jemand lädt mich ein
-                Datei chatdatei;
-                size_t partner;
-                infofile.istream() >> chatdatei >> partner;
-
-                unique_lock lock ( nextUiThing.mtx );
-                nextUiThing.newTyp( lock, UiThing::Privatchat );
-
-                new ( nextUiThing.first() ) Datei( std::move( chatdatei ) );
-                new ( nextUiThing.second() ) size_t { partner };
-            }
-
-            infofile.remove();
-        }
+        pruefen_files();
     }
 
     ++threads_stop;

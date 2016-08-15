@@ -30,11 +30,11 @@ Entfernen::Entfernen( std::string const& ter_name, QWidget* parent ) :
     QDialog( parent )
 {
     ui.setupUi( this );
-    ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
+    ui.buttonBox->button( QDialogButtonBox::Cancel )->setText("Abbrechen");
 
-    this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
+    this->setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    ui.comboBox -> insertItem( 0, "" );
+    ui.comboBox->insertItem( 0, "" );
 
     shared_lock lock ( nutzer_verwaltung.read_lock() );
 
@@ -42,18 +42,19 @@ Entfernen::Entfernen( std::string const& ter_name, QWidget* parent ) :
         if ( currnutzer.x_plum != nutzer_ich.x_plum )
             continue;
         else if ( currnutzer.nutzername == ter_name )
-            ui.comboBox -> setItemText( 0, QString::fromStdString( currnutzer.nutzername ) );
+            ui.comboBox->setItemText( 0, QString::fromStdString( currnutzer.nutzername ) );
         else if ( &currnutzer != &nutzer_ich )
-            ui.comboBox -> addItem( QString::fromStdString( currnutzer.nutzername ) );
+            ui.comboBox->addItem( QString::fromStdString( currnutzer.nutzername ) );
 
-    ui.comboBox -> setCurrentIndex( 0 );
-    ui.comboBox -> model() -> sort( 0 ); // Alphabetisch sortieren
+    ui.comboBox->setCurrentIndex( 0 );
+    ui.comboBox->model()->sort( 0 ); // Alphabetisch sortieren
 
     connect( this, &Entfernen::accepted, [this] () { schreiben(); } );
 }
 
 ///\cond
 void Entfernen::schreiben() const { // Den Nutzer entfernen
+    shared_lock lock ( nutzer_verwaltung.read_lock() );
     Nutzer const*const nutzer = nutzer_verwaltung.getNutzer( nutzer_ich.x_plum, ui.comboBox->currentText().toStdString() );
 
     if ( ! nutzer ) {

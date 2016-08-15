@@ -109,7 +109,12 @@ void Admin_anz::schreiben() const { // Information an Nutzer schreiben, dass sei
         else // Nichts tun
             continue;
 
-        makeToNutzerDatei( static_paths::infodir, *currnutzer ).ostream() << to_admin;
+        Datei infodatei = makeToNutzerDatei( static_paths::infodir, *currnutzer );
+
+        for ( size_t i = 0; infodatei.exist() && i < 50; ++i ) // Nach 5s ist der Nutzer wohl nicht mehr im Chat
+            this_thread::sleep_for( 100ms );
+
+        infodatei.ostream() << to_admin;
         KLOG << ( currnutzer->x_plum ? currnutzer->nutzername + " (Plum-Chat)" : currnutzer->nutzername ) << ( to_admin ? " zum Admin gemacht!" : " zum normalen Nutzer gemacht!" ) << endl;
     }
 }

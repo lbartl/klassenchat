@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Diese Datei wird regelmäßig von aktualisieren.cpp aufgerufen und prüft, ob alles im Chat noch "normal" ist
+// Diese Datei wird regelmäßig aufgerufen und prüft, ob alles im Chat noch "normal" ist
 
 #include "chat.hpp"
 #include "warnung.hpp"
@@ -24,7 +24,86 @@
 #include "filesystem.hpp"
 #include "klog.hpp"
 
-using namespace static_paths;
+/// Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in #nextUiThing.
+/**
+ * Wird alle 0,1 Sekunden von pruefen_thread() aufgerufen.
+ *
+ * Schreibt Informationen zum Beenden des Chats, zu Warnungen, Informationen, Änderungen von Nutzer::admin und zur Erstellung eines neuen Privatchats in #nextUiThing.
+ * Diese werden dann von pruefen_main() verarbeitet und die entsprechende Aktion ausgeführt.
+ */
+void Chat::pruefen_files() {
+    using static_paths::warnfile;
+
+    if ( terminatefile.exist() ) { // Admin hat meinen Benutzernamen entfernt
+        unique_lock lock ( nextUiThing.mtx );
+        nextUiThing.newTyp( lock, UiThing::entfernt );
+
+        new ( nextUiThing.first() ) std::string( terminatefile.readLine() ); // wer mich entfernt hat
+
+        terminatefile.remove();
+    } else if ( checkfile.exist() ) { // Zeigen, dass ich noch im Chat bin, indem die Datei entfernt wird
+        klog("Lösche checkfile...");
+        checkfile.remove();
+    } else if ( ! nutzer_ich.x_plum && warnfile.exist() ) { // Warnung
+        std::ifstream is = warnfile.istream();
+
+        while ( true ) {
+            size_t currnummer;
+            is >> currnummer;
+            if ( currnummer == nutzer_ich.nummer ) // bereits empfangen
+                break;
+            else if ( ! is ) { // noch nicht empfangen
+                is.close();
+                warnfile.ostream( true ) << nutzer_ich.nummer << ' ';
+                klog("Warnung empfangen!");
+                nextUiThing.newTyp( UiThing::Warnung );
+                break;
+            }
+        }
+    }
+
+    if ( infofile.exist() ) { // andere Info an mich
+        switch ( infofile.readChar() ) {
+        case '1': // Zum Admin werden
+            klog("Werde zum Admin...");
+            nutzer_verwaltung.flip_admin();
+            nextUiThing.newTyp( UiThing::ToAdmin );
+            break;
+        case '0': // Zum normalen Nutzer werden
+            klog("Werde zum normalen Nutzer...");
+            nutzer_verwaltung.flip_admin();
+            nextUiThing.newTyp( UiThing::FromAdmin );
+            break;
+        case 'i': { // Admin hat mir eine Info gesendet
+            klog("Info von Admin empfangen!");
+
+            std::string const inhalt = infofile.readAll();
+            size_t const line_end = inhalt.find('\n');
+
+            QString text = "Der Administrator " + QString::fromUtf8( inhalt.c_str() + 1, line_end - 1 ) + " schreibt:\n\n"
+                          + QString::fromUtf8( inhalt.c_str() + line_end + 1, inhalt.length() - line_end - 1 );
+
+            unique_lock lock ( nextUiThing.mtx );
+            nextUiThing.newTyp( lock, UiThing::Dialog );
+
+            new ( nextUiThing.first() ) QString("Information");
+            new ( nextUiThing.second() ) QString( std::move( text ) );
+        } break;
+        default: // Neuer Chat, jemand lädt mich ein
+            Datei chatdatei;
+            size_t partner;
+            infofile.istream() >> chatdatei >> partner;
+
+            unique_lock lock ( nextUiThing.mtx );
+            nextUiThing.newTyp( lock, UiThing::Privatchat );
+
+            new ( nextUiThing.first() ) Datei( std::move( chatdatei ) );
+            new ( nextUiThing.second() ) size_t { partner };
+        }
+
+        infofile.remove();
+    }
+}
 
 /// Aktionen, die von Threads in #nextUiThing festgelegt wurden, ausführen.
 /**
@@ -32,7 +111,7 @@ using namespace static_paths;
  *
  * Wird alle 0,1 Sekunden von main_thread() aufgerufen.
  *
- * Überprüft nextUiThing.typ und führt dann die entsprechende Aktion aus.
+ * Überprüft #nextUiThing und führt dann die entsprechende Aktion aus.
  */
 bool Chat::pruefen_main() {
     if ( flags[x_restart] || flags[x_close] ) { // Ich beende selbst
@@ -83,16 +162,16 @@ bool Chat::pruefen_main() {
         }
     case UiThing::Warnung: { // Warnung anzeigen
         Warnung*const warn = new Warnung( this );
-        warn -> setAttribute( Qt::WA_DeleteOnClose );
-        warn -> show();
+        warn->setAttribute( Qt::WA_DeleteOnClose );
+        warn->show();
     } break;
     case UiThing::ToAdmin: // Admin werden
-        ui.menuAdmin -> setEnabled( chat_verwaltung.imKlassenchat() ); // Nur im Klassenchat anzeigen
-        ui.action_berall_den_Chat_beenden -> setEnabled( true );
+        ui.menuAdmin->setEnabled( chat_verwaltung.imKlassenchat() ); // Nur im Klassenchat anzeigen
+        ui.action_berall_den_Chat_beenden->setEnabled( true );
         break;
     case UiThing::FromAdmin: // normaler Nutzer werden
-        ui.menuAdmin -> setEnabled( false );
-        ui.action_berall_den_Chat_beenden -> setEnabled( false );
+        ui.menuAdmin->setEnabled( false );
+        ui.action_berall_den_Chat_beenden->setEnabled( false );
         break;
     case UiThing::Dialog: // Dialog anzeigen
         createDialog( *nextUiThing.first <QString>(), *nextUiThing.second <QString>(), this );

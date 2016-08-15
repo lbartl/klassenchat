@@ -225,6 +225,7 @@ private:
     void plum_chat();
 
     // pruefen.cpp
+    void pruefen_files();
     bool pruefen_main();
 
     // senden.cpp

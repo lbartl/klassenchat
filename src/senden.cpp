@@ -41,7 +41,7 @@ void Chat::senden_pruef() {
         return;
     }
 
-    ui.NachrichtB -> setText("");
+    ui.NachrichtB->setText("");
 
     if ( nachricht[0] == '/' ) { // Kommando
         boost::tokenizer <sep> tokens ( nachricht, sep(" ") );

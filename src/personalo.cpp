@@ -29,11 +29,11 @@ PersonalO::PersonalO( std::string const& name_arg, QWidget* parent ) :
     QDialog( parent )
 {
     ui.setupUi( this );
-    ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
+    ui.buttonBox->button( QDialogButtonBox::Cancel )->setText("Abbrechen");
 
-    this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
+    this->setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
 
-    ui.comboBox -> insertItem( 0, "" );
+    ui.comboBox->insertItem( 0, "" );
 
     shared_lock lock ( nutzer_verwaltung.read_lock() );
 
@@ -41,12 +41,12 @@ PersonalO::PersonalO( std::string const& name_arg, QWidget* parent ) :
         if ( currnutzer.x_plum != nutzer_ich.x_plum )
             continue;
         else if ( currnutzer.nutzername == name_arg )
-            ui.comboBox -> setItemText( 0, QString::fromStdString( name_arg ) );
+            ui.comboBox->setItemText( 0, QString::fromStdString( name_arg ) );
         else if ( &currnutzer != &nutzer_ich )
-            ui.comboBox -> addItem( QString::fromStdString( currnutzer.nutzername ) );
+            ui.comboBox->addItem( QString::fromStdString( currnutzer.nutzername ) );
 
-    ui.comboBox -> setCurrentIndex( 0 );
-    ui.comboBox -> model() -> sort( 0 );
+    ui.comboBox->setCurrentIndex( 0 );
+    ui.comboBox->model()->sort( 0 );
 
     connect( this, &PersonalO::accepted, [this] () { chat_verwaltung.makeChat( ui.comboBox->currentText().toStdString() ); } );
 }
