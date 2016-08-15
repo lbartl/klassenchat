@@ -25,18 +25,6 @@
 
 using namespace static_paths;
 
-/// Chatverlauf löschen (Admin).
-void Chat::resetcv() {
-    klog("reset");
-    chat_verwaltung.reset();
-    alltfile.remove();
-
-    if ( ! nutzer_ich.x_plum || flags[x_main] ) {
-        warnfile.remove();
-        terminatedir.removeInhalt();
-    }
-}
-
 /// Überall den %Chat beenden (Admin).
 void Chat::allt() {
     klog("++terminate-all++");
@@ -71,7 +59,7 @@ void Chat::plum_chat() {
     }
 
     lockfile_mtx.lock();
-        lockfile -> remove();
+        lockfile->remove();
     lockfile_mtx.unlock();
 
     nutzer_verwaltung.flip_x_plum();
@@ -79,17 +67,17 @@ void Chat::plum_chat() {
 
     if ( nutzer_ich.x_plum ) { // Kommt vom normalen Chat
         lockfile = &lockfile_plum;
-        ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den normalen Chat wechseln");
+        ui.actionIn_den_Plum_Chat_wechseln->setText("&In den normalen Chat wechseln");
    } else { // Kommt vom Plum-Chat
         lockfile = &lockfile_norm;
-        ui.actionIn_den_Plum_Chat_wechseln -> setText("&In den Plum-Chat wechseln");
+        ui.actionIn_den_Plum_Chat_wechseln->setText("&In den Plum-Chat wechseln");
     }
 
-    ui.actionWarnung_senden -> setEnabled( ! nutzer_ich.x_plum );
+    ui.actionWarnung_senden->setEnabled( ! nutzer_ich.x_plum );
 
-    if ( ! lockfile -> exist() )
-        if ( this_thread::sleep_for( 200ms ), ! lockfile -> exist() ) // siehe start.cpp, lockfile_exist()
-            resetcv();
+    if ( ! lockfile->exist() )
+        if ( this_thread::sleep_for( 200ms ), ! lockfile->exist() ) // siehe start.cpp, lockfile_exist()
+            chat_verwaltung.reset();
 
     lockfile_mtx = Datei_Mutex( *lockfile );
     checkfile = makeToNutzerDatei( checkdir, nutzer_ich );

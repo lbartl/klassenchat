@@ -38,3 +38,4 @@
 1.3           Dokumentation mit doxygen, neues Kompilier- und Installier-System und Möglichkeit zum Konfigurieren (config-Ordner)
 1.4           Multi-Threading, Optimierungen, Fehlerausbesserungen
 1.5           GPL, GitHub, Optimierungen, Fehlerausbesserungen
+1.6           Pc-Nutzernamen anzeigen und sperren, Optimierungen, Fehlerausbesserungen

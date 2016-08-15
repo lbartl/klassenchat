@@ -74,7 +74,7 @@ void Chat::senden_pruef() {
             else if ( kommando == "/verbotenpc" )
                 verbotene_pc_nutzernamen_dialog( this );
             else if ( kommando == "/reset" )
-                resetcv(); // kommandos.cpp
+                chat_verwaltung.reset();
             else if ( kommando == "/warnung" )
                 warnung_send(); // kommandos.cpp
             else if ( kommando == "/drin" )

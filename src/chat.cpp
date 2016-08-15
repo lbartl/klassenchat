@@ -29,9 +29,9 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.6.5" // Versions-Nummer
-#define BUILD   "0072"  // Build-Nummer
-#define TYPE    "beta"  // Build-Typ
+#define VERSION "1.7" // Versions-Nummer
+#define BUILD   "0073"  // Build-Nummer
+#define TYPE    "rc1"  // Build-Typ
 
 // statische Member definieren
 ///\cond
@@ -89,12 +89,12 @@ Chat::Chat( bool const x_plum, QWidget* parent ) :
     connect( ui.actionQuit, &QAction::triggered, this, &Chat::close ); // closeEvent aufrufen
     connect( ui.actionImmer_im_Vordergrund, &QAction::toggled, this, &Chat::vordergrund );
 
-    connect( ui.actionKlassenchat, &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
+    connect( ui.actionKlassenchat,         &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
+    connect( ui.actionChatverlauf_l_schen, &QAction::triggered, [] () { chat_verwaltung.reset();       } );
 
     connect( ui.actionHilfe,                        &QAction::triggered, [this] () { hilfe_anz();     } );
     connect( ui.actionNeuer_Chat,                   &QAction::triggered, [this] () { personal_op();   } );
     connect( ui.actionEinen_Nutzer_entfernen,       &QAction::triggered, [this] () { entfernen();     } );
-    connect( ui.actionChatverlauf_l_schen,          &QAction::triggered, [this] () { resetcv();       } );
     connect( ui.action_berall_den_Chat_beenden,     &QAction::triggered, [this] () { allt();          } );
     connect( ui.actionWarnung_senden,               &QAction::triggered, [this] () { warnung_send();  } );
     connect( ui.actionWer_ist_alles_im_Chat,        &QAction::triggered, [this] () { nutzer_anz();    } );

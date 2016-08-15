@@ -110,23 +110,11 @@ public:
         chatfile_all->file.ostream( true ) << nutzer_ich.nutzername << " hat den Chat verlassen\n";
     }
 
-    /// Inhalt von #chatfile_all löschen
-    void reset() {
-        if ( chatfile_all ) {
-            file_mtx_lock f_lock ( chatfile_all->file_mtx );
-            chatfile_all->file.reset();
-        } else {
-            file_mtx_lock l1 ( chatfile_norm.file_mtx ),
-                          l2 ( chatfile_plum.file_mtx );
-            chatfile_norm.file.reset();
-            chatfile_plum.file.reset();
-        }
-    }
-
     void makeChat( std::string const& partner ); ///< Einen neuen %Privatchat erstellen
     void newChat( Datei chatdatei, size_t const partner_nummer ); ///< Einen neuen %Privatchat öffnen
     void changeChat( std::string const& partner ); ///< %Privatchat öffnen oder erstellen
     void schreibeNachricht( std::string const& nachricht ); ///< Eine Nachricht in #chatfile schreiben
+    void reset(); ///< Inhalt von #chatfile_all löschen
     void flip_x_plum(); ///< Sollte nach NutzerVerwaltung::flip_x_plum() aufgerufen werden
     void nutzerGeloescht( Nutzer const& nutzer ); ///< Ein %Nutzer ist nicht mehr im %Chat, überprüfen, ob dieser einen %Privatchat mit mir hatte
 

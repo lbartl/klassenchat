@@ -4,3 +4,9 @@
 [submodule "mxe"]
 	path = mxe
 	url = https://github.com/mxe/mxe.git
+[submodule "qtbase"]
+	path = qtbase
+	url = https://github.com/qt/qtbase.git
+	branch = 5.7.0
+        ignore = dirty
+

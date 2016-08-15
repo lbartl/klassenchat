@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2016 Lukas Bartl
 # Diese Datei ist Teil des Klassenchats.
@@ -19,16 +19,4 @@
 # Dieses Skript steuert das Aktualisieren des Quellcodes
 
 git pull
-cd mxe
-make --jobs=2
-cd ..
-
-until [ "$compile" == "j" ] || [ "$compile" == "n" ]; do
-    echo -n "Kompilieren? (j|n) "
-    read -n1 compile
-    echo
-done
-
-if [ "$compile" == "j" ]; then
-    ./compile all
-fi
+./configure no-config

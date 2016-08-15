@@ -48,7 +48,6 @@ HEADERS = datei.hpp \
           chat.hpp \
           passwort.hpp \
           warnung.hpp \
-          lockfile.hpp \
           nutzer.hpp \
           personalo.hpp \
           entfernen.hpp \
@@ -76,7 +75,6 @@ SOURCES = main.cpp \
           chat.cpp \
           passwort.cpp \
           warnung.cpp \
-          lockfile.cpp \
           personalo.cpp \
           entfernen.cpp \
           infoopen.cpp \
@@ -90,7 +88,6 @@ SOURCES = main.cpp \
 FORMS   = chat.ui \
           passwort.ui \
           warnung.ui \
-          lockfile.ui \
           personalo.ui \
           entfernen.ui \
           infoopen.ui \
@@ -150,6 +147,8 @@ QMAKE_LFLAGS_RELEASE += -flto # Link Time Optimization
 
 win32 {
     LIBS += -lboost_system-mt -lboost_filesystem-mt -lboost_thread_win32-mt
-} else {
+} else:native {
     LIBS += -lboost_system -lboost_filesystem
+} else {
+    LIBS += -Wl,-Bstatic -lboost_system -lboost_filesystem -Wl,-Bdynamic
 }

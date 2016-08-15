@@ -22,18 +22,19 @@ set -e # Beenden wenn fehlschägt
 
 # Ordner erstellen
 
-for i in unix win32; do
+if [ ! -e bin ]; then
+    mkdir bin
+fi
+
+for i in native unix win32; do
     if [ ! -e $i ]; then
         mkdir $i
         mkdir $i/bin
     fi
+    if [ ! -e bin/$i ]; then
+        ln -rs $i/bin bin/$i
+    fi
 done
-
-if [ ! -e bin ]; then
-    mkdir bin
-    ln -rs unix/bin bin/unix
-    ln -rs win32/bin bin/win32
-fi
 
 # MXE-Config
 cd mxe
@@ -47,42 +48,51 @@ LOCAL_PKG_LIST := boost qtbase
 EOF
 echo 'local-pkg-list: $(LOCAL_PKG_LIST)' >> settings.mk
 
-# MXE Kompilieren
+# MXE kompilieren
 make --jobs=2
 cd ..
 
-# Config
+# QtBase-Config
+cd qtbase
+./configure -prefix $PWD -opensource -confirm-license -static -no-qml-debug -qt-zlib -no-mtdev -qt-libjpeg -qt-libpng -qt-doubleconversion -qt-harfbuzz -no-openssl -no-libproxy -qt-pcre -qt-xcb -qt-xkbcommon-x11
 
-oberadmin=' '
-until [[ "$oberadmin" != *' '* ]]; do # keine Leerzeichen
-    echo
-    echo -n "Oberadmin (leer für \"LukasB\"): "
-    read oberadmin
-done
-
-echo -n "Verwalter (leer für \"Lukas Bartl\"): "
-read verwalter
-
-echo "Standard-Admins, getrennt durch Whitespaces (leer für \"Oberlusche\", \"Patiboy\" und \"Jaguar\"): "
-read std_admins
-
-if [ ! -e config ]; then
-    mkdir config
-fi
-
-cd config
-
-if [ "$oberadmin" != "" ]; then
-    echo "$oberadmin" > oberadmin
-fi
-if [ "$verwalter" != "" ]; then
-    echo "$verwalter" > verwalter
-fi
-if [ "$std_admins" != "" ]; then
-    echo "$std_admins" > std_admins
-fi
-
+# QtBase kompilieren
+make --jobs=$(($(nproc)*2))
 cd ..
+
+# Config
+if [ "$1" != "no-config" ]; then
+    oberadmin=' '
+    until [[ "$oberadmin" != *' '* ]]; do # keine Leerzeichen
+        echo
+        echo -n "Oberadmin (leer für \"LukasB\"): "
+        read oberadmin
+    done
+
+    echo -n "Verwalter (leer für \"Lukas Bartl\"): "
+    read verwalter
+
+    echo "Standard-Admins, getrennt durch Whitespaces (leer für \"Oberlusche\", \"Patiboy\" und \"Jaguar\"): "
+    read std_admins
+
+    if [ ! -e config ]; then
+        mkdir config
+    fi
+
+    cd config
+
+    if [ "$oberadmin" != "" ]; then
+    echo "$oberadmin" > oberadmin
+    fi
+    if [ "$verwalter" != "" ]; then
+        echo "$verwalter" > verwalter
+    fi
+    if [ "$std_admins" != "" ]; then
+        echo "$std_admins" > std_admins
+    fi
+
+    cd ..
+fi
 
 until [ "$compile" == "j" ] || [ "$compile" == "n" ]; do
     echo -n "Kompilieren? (j|n) "

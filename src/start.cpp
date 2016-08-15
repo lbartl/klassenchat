@@ -66,24 +66,22 @@ void Chat::start() {
 
     flags[std_admin] = enthaelt( Chat::std_admins, nutzername ); // Standard-Admin
 
-    if ( ! lockfile_exist( *lockfile ) ) // Niemand ist im Chat
-        if ( flags[std_admin] || x_plum_anfang ) {
-            resetcv();
+    if ( ! lockfile_exist( *lockfile ) ) { // Niemand ist im Chat
+        chat_verwaltung.reset();
+        alltfile.remove();
 
-            if ( ! lockfile_exist( x_plum_anfang ? lockfile_norm : lockfile_plum ) ) { // Lockfile des anderen Chats
-                nutzer_verwaltung.reset();
+        if ( ! x_plum_anfang )
+            warnfile.remove();
 
-                senddir.removeInhalt();
-                infodir.removeInhalt();
-                terminatedir.removeInhalt();
-                checkdir.removeInhalt();
-            }
-        } else {
-            klog("Kein Admin im Chat!");
-            Lockfile( this ).exec();
-            return;
+        if ( ! lockfile_exist( x_plum_anfang ? lockfile_norm : lockfile_plum ) ) { // Lockfile des anderen Chats
+            nutzer_verwaltung.reset();
+
+            senddir.removeInhalt();
+            infodir.removeInhalt();
+            terminatedir.removeInhalt();
+            checkdir.removeInhalt();
         }
-    else  { // Prüfen ob Benutzername vergeben ist
+    } else  { // Prüfen ob Benutzername vergeben ist
         shared_lock lock ( nutzer_verwaltung.aktualisieren().read_lock() );
         Nutzer const*const nutzer = nutzer_verwaltung.getNutzer( x_plum_anfang, nutzername );
 

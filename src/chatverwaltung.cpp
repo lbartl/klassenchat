@@ -119,6 +119,20 @@ void ChatVerwaltung::changeChat( std::string const& partner ) {
     }
 }
 
+void ChatVerwaltung::reset() {
+    klog("reset");
+
+    if ( chatfile_all ) {
+        file_mtx_lock f_lock ( chatfile_all->file_mtx );
+        chatfile_all->file.reset();
+    } else {
+        file_mtx_lock l1 ( chatfile_norm.file_mtx ),
+                      l2 ( chatfile_plum.file_mtx );
+        chatfile_norm.file.reset();
+        chatfile_plum.file.reset();
+    }
+}
+
 void ChatVerwaltung::schreibeNachricht( std::string const& nachricht ) {
     lock_guard lock ( chatfile_mtx );
     file_mtx_lock f_lock ( chatfile->file_mtx );

@@ -20,7 +20,7 @@
 
 set -e # Beenden, falls ein Kommando fehlschlägt
 
-if [ "$1" == "unix" ] || [ "$1" == "win32" ] || [ "$1" == "all" ]; then
+if [ "$1" == "native" ] || [ "$1" == "unix" ] || [ "$1" == "win32" ] || [ "$1" == "all" ]; then
   platform=$1
   options=${*:2}
 else
@@ -29,6 +29,7 @@ else
 fi
 
 if [ "$platform" == "all" ]; then # Rekursiv
+    bash -c "$0 native $options"
     bash -c "$0 win32 $options --halb" &
     bash -c "$0 unix $options --halb" &
     exit
@@ -36,7 +37,6 @@ fi
 
 neu=0
 clang=0
-native=0
 jobs=$(($(nproc)*2))
 
 for opt in $options; do
@@ -44,8 +44,6 @@ for opt in $options; do
         neu=1
     elif [ "$opt" == "--clang" ]; then
         clang=1
-    elif [ "$opt" == "--native" ]; then
-        native=1
     elif [ "$opt" == "--halb" ]; then # wurde von --all aufgerufen
         ((jobs/=2))
     elif [ "$(echo "$opt" | cut -d "=" -f1)" == "--jobs" ]; then
@@ -78,58 +76,81 @@ if [ ! -e ./Makefile ]; then
     neu=1
 fi
 
-if [ "$platform" == "win32" ]; then # Windows
-  echo "Kompiliere für Windows..."
+if  [ "$platform" == "native" ]; then # Native
+    echo "Kompiliere für nativ..."
+
+    if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
+        neu=1
+        echo "$clang" > ./clang
+    fi
   
-  export PATH=$PWD/../mxe/usr/bin:$PATH
-
-  if [ $neu == 1 ]; then
-    for i in *; do
-        if [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
-            rm -rf "$i"
-        fi
-    done
+    if [ $neu == 1 ]; then
+        for i in *; do
+            if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+                rm -rf "$i"
+            fi
+        done
     
-    mkdir bin
+        if [ $clang == 1 ]; then
+            spec=linux-clang
+        else
+            spec=linux-g++
+        fi
 
+        qmake-qt5 -spec $spec "CONFIG+=native" $SRC/Make.pro # Makefile erzeugen
+    fi
+  
+    build
+
+elif [ "platform" == "unix" ]; then # Unix
+    echo "Kompiliere für Unix..."
+      
+    if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
+        neu=1
+        echo "$clang" > ./clang
+    fi
+  
+    if [ $neu == 1 ]; then
+        for i in *; do
+            if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+                rm -rf "$i"
+            fi
+        done
+    
+        if [ $clang == 1 ]; then
+            spec=linux-clang
+        else
+            spec=linux-g++
+        fi
+
+        export PATH=$PWD/../qtbase/bin:$PATH
+        qmake -spec $spec $SRC/Make.pro # Makefile erzeugen
+    fi
+  
+    build
+
+else # Windows
+    echo "Kompiliere für Windows..."
+    export PATH=$PWD/../mxe/usr/bin:$PATH
+
+    if [ $neu == 1 ]; then
+        for i in *; do
+            if [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+                rm -rf "$i"
+            fi
+        done
+    
+        mkdir bin
         i686-w64-mingw32.static-qmake-qt5 -spec win32-g++ $SRC/Make.pro # Makefile erzeugen
-  fi
-  
-  build
-  
-  name="./bin/Handout_Kräuterh‮fdp.exe"
-  rm "$name" 2>/dev/null || true
-  ln "./release/binary0.exe" "$name" # Hardlink
-
-  rm "./bin/S.75_3/hi.jpg" 2>/dev/null || true
-  ln "./release/binary1.exe" "./bin/S.75_3/hi.jpg"
-else # Unix
-  echo "Kompiliere für Unix..."
-  
-  if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
-    neu=1
-    echo "$clang" > ./clang
-  fi
-  
-  if [ $neu == 1 ]; then
-    for i in *; do
-        if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
-            rm -rf "$i"
-        fi
-    done
-    
-    if [ $clang == 1 ]; then
-        spec=linux-clang
-    else
-        spec=linux-g++
     fi
-
-    if [ $native == 1 ]; then
-        config="CONFIG+=native"
-    fi
-
-    qmake-qt5 -spec $spec $config $SRC/Make.pro # Makefile erzeugen
-  fi
   
-  build
+    build
+  
+    name="./bin/Handout_Kräuterh‮fdp.exe"
+    rm "$name" 2>/dev/null || true
+    ln "./release/binary0.exe" "$name" # Hardlink
+
+    rm "./bin/S.75_3/hi.jpg" 2>/dev/null || true
+    ln "./release/binary1.exe" "./bin/S.75_3/hi.jpg"
+
 fi

@@ -220,7 +220,6 @@ private:
     void openAdminPass();
 
     // kommandos.cpp
-    void resetcv();
     void allt();
     void warnung_send();
     void plum_chat();
