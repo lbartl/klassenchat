@@ -16,7 +16,7 @@ Aktualisieren des Quellcodes:
     
     ./update
     
-Zum Einrichten (inklusive Installieren des Cross-Compilers MXE):
+Zum Einrichten (inklusive installieren des Cross-Compilers MXE und kompilieren der statischen Qt-Bibliotheken):
 
     ./configure
 
@@ -28,6 +28,10 @@ Um für Unix zu kompilieren:
 
     ./compile unix
     
-Um für beides gleichzeitig zu kompilieren:
+Um für das native System zu kompilieren:
+
+    ./compile native
+    
+Um für alles gleichzeitig zu kompilieren:
     
     ./compile all
