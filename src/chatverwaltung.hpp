@@ -179,10 +179,10 @@ private:
           privatchats_mtx {}; ///< Mutex für die Synchronisation von #privatchats
 
     /// In einen %Privatchat wechseln
-    void openChat( Privatchat*const chat ) {
+    void openChat( Privatchat& chat ) {
         lock_guard lock ( chatfile_mtx );
         menuAdmin->setEnabled( false );
-        chatfile = &chat->chatfile;
+        chatfile = &chat.chatfile;
     }
 };
 

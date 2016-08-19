@@ -38,7 +38,7 @@ public:
     /// Allgemeiner Konstruktor.
     explicit SimpleDialog( QString const& titel, QString const& text, QWidget* parent = nullptr );
 
-private:
+protected:
     Ui::SimpleDialog ui {}; ///< UI des Dialogs
 };
 

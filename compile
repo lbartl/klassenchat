@@ -70,6 +70,7 @@ if [ "$(cat ./config 2>/dev/null)" != "$(ls -1 ../config/)" ]; then
     ls -1 ../config/ > ./config
     touch "$SRC/Chat.pro"
     touch "$SRC/chat.hpp"
+    touch "$SRC/ueber.hpp"
 fi
 
 if [ ! -e ./Makefile ]; then
@@ -86,7 +87,7 @@ if  [ "$platform" == "native" ]; then # Native
   
     if [ $neu == 1 ]; then
         for i in *; do
-            if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+            if [ "$i" != "clang" ] && [ "$i" != "config" ]; then
                 rm -rf "$i"
             fi
         done
@@ -102,7 +103,7 @@ if  [ "$platform" == "native" ]; then # Native
   
     build
 
-elif [ "platform" == "unix" ]; then # Unix
+elif [ "$platform" == "unix" ]; then # Unix
     echo "Kompiliere für Unix..."
       
     if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
@@ -112,7 +113,7 @@ elif [ "platform" == "unix" ]; then # Unix
   
     if [ $neu == 1 ]; then
         for i in *; do
-            if [ "$i" != "clang" ] && [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+            if [ "$i" != "clang" ] && [ "$i" != "config" ]; then
                 rm -rf "$i"
             fi
         done
@@ -135,7 +136,7 @@ else # Windows
 
     if [ $neu == 1 ]; then
         for i in *; do
-            if [ "$i" != "oberadmin" ] && [ "$i" != "std_admins" ]; then
+            if [ "$i" != "config" ]; then
                 rm -rf "$i"
             fi
         done

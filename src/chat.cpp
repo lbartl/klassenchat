@@ -18,20 +18,11 @@
 // Diese Datei steuert die Erstellung und Zerstörung des Hauptfensters
 
 #include "chat.hpp"
+#include "ueber.hpp"
 #include "chatverwaltung.hpp"
 #include "pc_nutzername.hpp"
 #include "global.hpp"
 #include <QCloseEvent>
-
-// Verwalter
-#ifndef VERWALTER
-# define VERWALTER "Lukas Bartl"
-#endif
-
-// Versions Makros
-#define VERSION "1.7" // Versions-Nummer
-#define BUILD   "0074"  // Build-Nummer
-#define TYPE    "rc1"  // Build-Typ
 
 // statische Member definieren
 ///\cond
@@ -64,15 +55,7 @@ Chat::Chat( bool const x_plum, QWidget* parent ) :
         ui.Copyright->setText("Chat");
         ui.actionIn_den_Plum_Chat_wechseln->setText("&In den normalen Chat wechseln");
     } else // Normaler Chat
-        ui.Copyright->setText( "Copyright (C) 2015-2016 Lukas Bartl<br>"
-                               "Dieses Programm ist freie Software. Es darf verändert und weitergegeben werden.<br>"
-                               "Es gibt keinerlei Garantien.<br>"
-                               "Lizenz GPLv3+: GNU GPL Version 3 oder höher: "
-                               "<a href='https://www.gnu.org/licenses/gpl.html'>www.gnu.org/licenses/gpl.html</a><br><br>"
-                               "Den Quellcode gibt es auf "
-                               "<a href='https://www.github.com/hanswurst862/klassenchat'>www.github.com/hanswurst862/klassenchat</a><br><br>"
-                               "Wenn jemand Verbesserungsvorschläge hat, kann er sich bei " VERWALTER " melden!<br><br>"
-                               "Version: " VERSION "-" BUILD " " TYPE );
+        ui.Copyright->setText( Ueber::kurztext );
 
     ui.Copyright->setTextFormat( Qt::RichText );
     ui.Copyright->setTextInteractionFlags( Qt::TextBrowserInteraction ); // Links können von Nutzer angeklickt werden
@@ -89,10 +72,12 @@ Chat::Chat( bool const x_plum, QWidget* parent ) :
     connect( ui.actionQuit, &QAction::triggered, this, &Chat::close ); // closeEvent aufrufen
     connect( ui.actionImmer_im_Vordergrund, &QAction::toggled, this, &Chat::vordergrund );
 
+    connect( ui.actionHilfe, &QAction::triggered, [this] () { hilfe_anz();          } );
+    connect( ui.action_ber,  &QAction::triggered, [this] () { ueber_dialog( this ); } );
+
     connect( ui.actionKlassenchat,         &QAction::triggered, [] () { chat_verwaltung.klassenchat(); } );
     connect( ui.actionChatverlauf_l_schen, &QAction::triggered, [] () { chat_verwaltung.reset();       } );
 
-    connect( ui.actionHilfe,                        &QAction::triggered, [this] () { hilfe_anz();     } );
     connect( ui.actionNeuer_Chat,                   &QAction::triggered, [this] () { personal_op();   } );
     connect( ui.actionEinen_Nutzer_entfernen,       &QAction::triggered, [this] () { entfernen();     } );
     connect( ui.action_berall_den_Chat_beenden,     &QAction::triggered, [this] () { allt();          } );

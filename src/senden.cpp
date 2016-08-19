@@ -18,7 +18,7 @@
 // Diese Datei steuert Kommandos und Nachrichten, die eingegeben wurden
 
 #include "chat.hpp"
-#include "simpledialog.hpp"
+#include "ueber.hpp"
 #include "pc_nutzername.hpp"
 #include "chatverwaltung.hpp"
 #include "klog.hpp"
@@ -58,6 +58,8 @@ void Chat::senden_pruef() {
             flags.set( x_reload ); // an verlauf_up(), aktualisieren.cpp
         else if ( kommando == "/help" )
             hilfe_anz(); // dialog.cpp
+        else if ( kommando == "/über" )
+            ueber_dialog( this ); // ueber.hpp
         else if ( kommando == "/vordergrund" )
             ui.actionImmer_im_Vordergrund->toggle();
         else if ( kommando == "/chat" )

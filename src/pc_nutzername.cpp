@@ -19,7 +19,7 @@
 
 #include "ui_verboten.h"
 
-/// Dieser Dialog zeigt alle verbotenen und aktuell sich im Chat befindenden Pc-Nutzernamen an. Er wird mit der Funktion verbotene_pc_nutzernamen_dialog() erstellt.
+/// Dieser Dialog zeigt alle verbotenen und aktuell sich im %Chat befindenden Pc-Nutzernamen an. Er wird mit der Funktion verbotene_pc_nutzernamen_dialog() erstellt.
 /**
  * Es werden zuerst alle verbotenen Pc-Nutzernamen angezeigt und mit einer markierten CheckBox versehen.
  * Anschließend werden alle aktuell sich im %Chat befindenden Pc-Nutzernamen angezeigt und mit einer nicht markierten CheckBox versehen.

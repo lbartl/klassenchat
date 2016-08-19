@@ -192,6 +192,7 @@
      <string>P&amp;rogramm</string>
     </property>
     <addaction name="actionHilfe"/>
+    <addaction name="action_ber"/>
     <addaction name="actionImmer_im_Vordergrund"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -320,6 +321,11 @@
   <action name="actionVerbotene_Pc_Nutzernamen">
    <property name="text">
     <string>Ve&amp;rbotene Pc-Nutzernamen...</string>
+   </property>
+  </action>
+  <action name="action_ber">
+   <property name="text">
+    <string>Über...</string>
    </property>
   </action>
  </widget>

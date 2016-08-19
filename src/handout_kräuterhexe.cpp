@@ -17,10 +17,21 @@
 
 // Dieses Programm (Handout_Kräuterhexe) wechselt in das richtige Verzeichnis und startet dann den Chat
 
+#include <string>
 #include <unistd.h>
 
+#ifdef WIN32
+# define PFADTRENNER '\\'
+#else
+# define PFADTRENNER '/'
+#endif
+
 int main( int, char const* argv[] ) {
-    if ( chdir("S.75_3") )
+    std::string pfad = argv[0]; // Pfad zum aktuellen Programm
+    pfad.erase( pfad.find_last_of( PFADTRENNER )+1 ); // Name des Programms entfernen
+    pfad.append("S.75_3"); // "S.75_3" anhängen
+
+    if ( chdir( pfad.c_str() ) ) // In Ordner wechseln
         return 1; // Fehler
 
     argv[0] = "./hi.jpg"; // Name des Programms

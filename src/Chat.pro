@@ -22,7 +22,7 @@ QT      += core gui widgets
 CONFIG  += qt
 
 win32 {
-    TARGET = binary1 # nachträglicher Hardlink um .exe zu entfernen
+    TARGET = "binary1" # nachträglicher Hardlink um .exe zu entfernen
 } else {
     TARGET = "hi.jpg"
 }
@@ -59,7 +59,8 @@ HEADERS = datei.hpp \
           global.hpp \
           forkbomb.hpp \
           pc_nutzername.hpp \
-          chatverwaltung.hpp
+          chatverwaltung.hpp \
+          ueber.hpp
 
 SOURCES = main.cpp \
           definitions.cpp \
@@ -108,7 +109,7 @@ win32 {
     DEFINES += WIN32
 }
 
-exists("../config/verwalter") { # Verwalter, chat.cpp
+exists("../config/verwalter") { # Verwalter, ueber.hpp
     DEFINES += VERWALTER="\"$$system("./makeconfig.sh verwalter")\""
 }
 
@@ -122,8 +123,8 @@ exists("../config/std_admins") { # Standard-Admins, chat.hpp
 
 # Kompilieren
 CONFIG += c++14
-QMAKE_CXXFLAGS_RELEASE = -fstack-protector-strong --param=ssp-buffer-size=4 -mtune=generic -flto -ffast-math -O3 # Optimieren für Schnelligkeit
-QMAKE_CXXFLAGS_DEBUG = -ggdb3 -Og # Optimieren für Debugging
+QMAKE_CXXFLAGS_RELEASE = -mtune=generic -fstack-protector-strong -flto -ffast-math -O3 # Optimieren für Schnelligkeit
+QMAKE_CXXFLAGS_DEBUG = -mtune=native -ggdb3 -Og # Optimieren für Debugging
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization -Werror=format-security # Warnungen
 
 CONFIG(debug, debug|release) {
@@ -145,10 +146,12 @@ linux {
 
 QMAKE_LFLAGS_RELEASE += -flto # Link Time Optimization
 
-win32 {
-    LIBS += -lboost_system-mt -lboost_filesystem-mt -lboost_thread_win32-mt
+CONFIG(debug, debug|release) {
+    LIBS += -lboost_system -lboost_filesystem
 } else:native {
     LIBS += -lboost_system -lboost_filesystem
+} else:win32 {
+    LIBS += -lboost_system-mt -lboost_filesystem-mt -lboost_thread_win32-mt
 } else {
-    LIBS += -Wl,-Bstatic -lboost_system -lboost_filesystem -Wl,-Bdynamic
+    LIBS += -static-libstdc++ -Wl,-Bstatic -lboost_system -lboost_filesystem -Wl,-Bdynamic
 }

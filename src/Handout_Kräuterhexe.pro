@@ -23,17 +23,19 @@ win32 {
     CONFIG = release windows
     RC_FILE = chat.rc # Windows Icon
     TARGET = release/binary0 # mingw unterstützt kein Unicode, deswegen wird nachträglich Hardlink erstellt
+    QMAKE_CXXFLAGS_RELEASE =
 } else {
+    native {
+        QMAKE_CXXFLAGS_RELEASE = -march=native
+        QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -s # Optimierung, RELRO und Strip
+    } else {
+        QMAKE_CXXFLAGS_RELEASE =
+        QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -static -s
+    }
+    
     CONFIG = release
     DESTDIR = bin
     TARGET = "Handout_Kräuterhexe"
-    QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -s # Optimierung, RELRO und Strip
-}
-
-native {
-    QMAKE_CXXFLAGS_RELEASE = -march=native
-} else {
-    QMAKE_CXXFLAGS_RELEASE =
 }
 
 OBJECTS_DIR = objects

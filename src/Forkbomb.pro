@@ -18,20 +18,21 @@
 
 TEMPLATE = app
 DESTDIR = bin
-TARGET = Chat
+TARGET = "Chat"
 
 win32 {
     DEFINES += WIN32
     CONFIG = release windows
 } else {
+    native {
+        QMAKE_CXXFLAGS_RELEASE = -march=native
+        QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -s # Optimierung, RELRO und Strip
+    } else {
+        QMAKE_CXXFLAGS_RELEASE =
+        QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -static -s
+    }
+    
     CONFIG = release
-    QMAKE_LFLAGS_RELEASE = -Wl,-O1,-z,relro,-z,now -s # Optimierung, RELRO und Strip
-}
-
-native {
-    QMAKE_CXXFLAGS_RELEASE = -march=native
-} else {
-    QMAKE_CXXFLAGS_RELEASE =
 }
 
 OBJECTS_DIR = objects

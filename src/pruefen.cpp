@@ -149,6 +149,8 @@ bool Chat::pruefen_main() {
 
                 if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) // Wenn Admin im gleichen Chat wie ich ist
                     chat_verwaltung.entfernt( nextUiThing.first <std::string>()->c_str()+2 );
+                else
+                    chat_verwaltung.beenden();
 
                 SimpleDialog dialog ( "ARSCHLOCH", "Der Chat ist nicht für dich, Arschloch!!!", this );
                 dialog.setWindowModality( Qt::ApplicationModal );

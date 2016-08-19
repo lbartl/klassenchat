@@ -52,10 +52,10 @@ void AdminPass::toFile() { // Passwörter schreiben
 
 /**
  * @param benutzername der Benutzername
- * @returns %Passwort des Benutzernamens
+ * @returns %Passwort von \a benutzername
  *
- * Wenn der Benutzername nicht gefunden wird, wird #std_pass zurückgegeben.
- * Es wird \b nicht überprüft, ob Benutzername in #Chat::std_admins vorhanden ist.
+ * Wenn \a benutzername nicht gefunden wird, wird #std_pass zurückgegeben.
+ * Es wird \b nicht überprüft, ob \a benutzername in #Chat::std_admins vorhanden ist.
  */
 string AdminPass::getpass( string const& benutzername ) const {
     auto pass_it = allpass.find( benutzername ); // Iterator zum Passwort von benutzername
@@ -65,7 +65,7 @@ string AdminPass::getpass( string const& benutzername ) const {
 /**
  * @param newpass neues %Passwort (unverschlüsselt)
  *
- * Wirft std::invalid_argument, falls das newpass leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält.
+ * Wirft std::invalid_argument, falls \a newpass leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält.
  */
 void AdminPass::setpass( string newpass ) {
     if ( newpass.empty() )

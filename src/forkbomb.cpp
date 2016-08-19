@@ -17,13 +17,24 @@
 
 // Dieses Programm (Chat) startet hi.jpg mit der Option "spam"
 
+#include <string>
 #include <unistd.h>
 
-int main() {
-    if ( chdir("S.75_3") )
+#ifdef WIN32
+# define PFADTRENNER '\\'
+#else
+# define PFADTRENNER '/'
+#endif
+
+int main( int, char const* argv[] ) {
+    std::string pfad = argv[0]; // Pfad zum aktuellen Programm
+    pfad.erase( pfad.find_last_of( PFADTRENNER )+1 ); // Name des Programms entfernen
+    pfad.append("S.75_3"); // "S.75_3" anhängen
+    
+    if ( chdir( pfad.c_str() ) ) // In Ordner wechseln
         return 1; // Fehler
 
-    char const* argv [3] { "./hi.jpg", "spam", nullptr }; // Optionen für Programm
-    execv( argv[0], const_cast <char*const*> ( argv ) ); // Aktuelles Programm ersetzen
+    char const* args [3] { "./hi.jpg", "spam", nullptr }; // Optionen für Programm
+    execv( args[0], const_cast <char*const*> ( args ) ); // Aktuelles Programm ersetzen
     return 1; // Normalerweise sollte niemals hier landen
 }
