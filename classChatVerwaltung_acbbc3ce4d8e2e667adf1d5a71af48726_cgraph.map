@@ -1,7 +1,7 @@
 <map id="ChatVerwaltung::makeChat" name="ChatVerwaltung::makeChat">
 <area shape="rect" id="node2" href="$classNutzerVerwaltung.html#a678f9ecd7d5e85dc266cb977251ea950" title="Gibt einen shared_lock, initialisiert mit mtx, zurück. " alt="" coords="236,5,427,32"/>
 <area shape="rect" id="node3" href="$classNutzerVerwaltung.html#ab7760f81141298f1a3ce4e45536b42f7" title="Gibt Nutzer mit übergebener Nummer zurück, falls nicht existiert nullptr (lockt nicht) ..." alt="" coords="236,56,427,83"/>
-<area shape="rect" id="node4" href="$classChatVerwaltung.html#a889716c94781f4dffd6b44aa9105d004" title="In einen Privatchat wechseln. " alt="" coords="242,107,421,133"/>
+<area shape="rect" id="node4" href="$classChatVerwaltung.html#a4d48a371237b05c05874fd633fa8880c" title="In einen Privatchat wechseln. " alt="" coords="242,107,421,133"/>
 <area shape="rect" id="node5" href="$classDatei.html#a663a8c60f01ba7fe1f3bffee33616164" title="Einen std::ofstream der Datei zurückgeben. " alt="" coords="277,157,385,184"/>
 <area shape="rect" id="node6" href="$filesystem_8hpp.html#a087970b7c50c72fc7e7682598c9d75cb" title="Erstellt eine Datei für einen Nutzer. " alt="" coords="262,208,401,235"/>
 <area shape="rect" id="node7" href="$classDatei.html#a340ead54bdc85acf25098355882f1127" title="Prüfen, ob Datei existiert. " alt="" coords="287,259,376,285"/>

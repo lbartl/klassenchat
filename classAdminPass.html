@@ -194,8 +194,8 @@ static constexpr char const *&#160;</td><td class="memItemRight" valign="bottom"
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Rückgabe</dt><dd>Passwort des Benutzernamens</dd></dl>
-<p>Wenn der Benutzername nicht gefunden wird, wird <a class="el" href="classAdminPass.html#a3bf787cd110b0e790b4e269fb5245e72" title="Standard-Passwort. ">std_pass</a> zurückgegeben. Es wird <b>nicht</b> überprüft, ob Benutzername in <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a> vorhanden ist. </p>
+<dl class="section return"><dt>Rückgabe</dt><dd>Passwort von <em>benutzername</em> </dd></dl>
+<p>Wenn <em>benutzername</em> nicht gefunden wird, wird <a class="el" href="classAdminPass.html#a3bf787cd110b0e790b4e269fb5245e72" title="Standard-Passwort. ">std_pass</a> zurückgegeben. Es wird <b>nicht</b> überprüft, ob <em>benutzername</em> in <a class="el" href="classChat.html#a169a1caacaeeb31ff12a895c92086d16" title="Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles Passw...">Chat::std_admins</a> vorhanden ist. </p>
 
 </div>
 </div>
@@ -220,7 +220,7 @@ static constexpr char const *&#160;</td><td class="memItemRight" valign="bottom"
   </table>
   </dd>
 </dl>
-<p>Wirft std::invalid_argument, falls das newpass leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält. </p>
+<p>Wirft std::invalid_argument, falls <em>newpass</em> leer ist oder ungültige Zeichen (Newline und Null-Byte) enthält. </p>
 
 </div>
 </div>

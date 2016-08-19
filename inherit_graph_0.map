@@ -6,6 +6,7 @@
 <area shape="rect" id="node6" href="$classPasswort.html" title="Mit der Klasse Passwort kann ein Passwort&#45;Dialog erzeugt werden. " alt="" coords="133,208,211,235"/>
 <area shape="rect" id="node7" href="$classPersonalO.html" title="Mit diesem Dialog kann man einen neuen Privatchat starten. Es wird ChatVerwaltung::makeChat() mit dem..." alt="" coords="131,259,213,285"/>
 <area shape="rect" id="node8" href="$classSimpleDialog.html" title="Mit der Klasse SimpleDialog können einfache Dialoge erstellt werden. " alt="" coords="123,309,221,336"/>
-<area shape="rect" id="node9" href="$classVerboten.html" title="Dieser Dialog zeigt alle verbotenen Benutzernamen an. Er wird mit der Funktion verbotene_namen_dialog..." alt="" coords="135,360,209,387"/>
-<area shape="rect" id="node10" href="$classVerbotenPc.html" title="Dieser Dialog zeigt alle verbotenen und aktuell sich im Chat befindenden Pc&#45;Nutzernamen an..." alt="" coords="127,411,217,437"/>
+<area shape="rect" id="node10" href="$classVerboten.html" title="Dieser Dialog zeigt alle verbotenen Benutzernamen an. Er wird mit der Funktion verbotene_namen_dialog..." alt="" coords="135,360,209,387"/>
+<area shape="rect" id="node11" href="$classVerbotenPc.html" title="Dieser Dialog zeigt alle verbotenen und aktuell sich im Chat befindenden Pc&#45;Nutzernamen an..." alt="" coords="127,411,217,437"/>
+<area shape="rect" id="node9" href="$classUeber.html" title="Dieser Dialog zeigt Informationen über den Chat an. Er wird mit der Funktion ueber_dialog() erstellt..." alt="" coords="269,309,327,336"/>
 </map>
