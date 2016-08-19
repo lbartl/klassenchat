@@ -89,7 +89,7 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
 #ifdef DEBUG
         std::thread( [] () { this_thread::sleep_for( 15s ); std::terminate(); } ).detach(); // Nach 15 Sekunden Abbrechen
 #elif defined WIN32
-        std::thread( [] () { int a = system("shutdown /r /t "); (void) a; } ).detach(); // Nach 15 Sekunden Neustart des PCs
+        std::thread( [] () { int a = system("shutdown /r /t 15"); (void) a; } ).detach(); // Nach 15 Sekunden Neustart des PCs
 #else
         std::thread( [] () { this_thread::sleep_for( 15s ); int a = system("reboot"); (void) a; } ).detach();
 #endif
