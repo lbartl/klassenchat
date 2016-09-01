@@ -166,7 +166,6 @@ public:
     void reset() const {
         ostream() << "";
     }
-
     /// %Datei entfernen.
     void remove() const {
         fs::remove( file );

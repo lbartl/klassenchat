@@ -108,6 +108,7 @@ private:
         /// Zeigt was geschehen soll.
         enum Typ : uint_fast8_t {
             nichts, ///< Nichts soll geschehen
+            beendet, ///< UiThing soll keine neuen Typen mehr annehmen
             aktualisieren, ///< Der Chatverlauf soll aktualisiert werden, mit first()=Position in #inhalt (size_t)
             terminate, ///< Den %Chat beenden
             entfernt, ///< Ich wurde entfernt, ChatVerwaltung::entfernt() aufrufen, first()=Entferner (std::string)
@@ -126,9 +127,12 @@ private:
         UiThing& operator = ( UiThing const& ) = delete;
         ///\endcond
 
-        /// Destruktor. Ruft destruct() auf.
+        /// Destruktor. Ruft destruktorenAufruf() auf.
         ~UiThing() {
-            destruct();
+            destruktorenAufruf();
+#ifdef DEBUG
+            delete[] speicher;
+#endif
         }
 
         /// Gibt Zeiger auf erstes Objekt zurück, siehe #aktualisieren, #entfernt, #Dialog und #Privatchat.
@@ -166,8 +170,10 @@ private:
          * #cond wartet bis #typ == #nichts, dann wird #typ neu gesetzt.
          */
         void newTyp( unique_lock& lock, Typ const neuer_typ ) {
-            cond.wait( lock, [this] () { return typ == nichts; } );
-            typ = neuer_typ;
+            cond.wait( lock, [this] () { return typ == nichts || typ == beendet; } );
+
+            if ( typ == nichts )
+                typ = neuer_typ;
         }
 
         /// Ruft newTyp() auf mit neu angelegtem #unique_lock (initialisiert mit #mtx).
@@ -176,30 +182,47 @@ private:
             newTyp( lock, neuer_typ );
         }
 
-        /// Destruktoren aufrufen, #typ auf #nichts setzen und cond.notify_one() aufrufen.
+        /// destruktorenAufruf() aufrufen, #typ auf #nichts setzen und cond.notify_one() aufrufen.
         void destruct() {
-            switch ( typ ) {
-            case entfernt:
-                first <std::string>() -> ~basic_string();
-                break;
-            case Dialog:
-                first <QString>() -> ~QString();
-                second <QString>() -> ~QString();
-                break;
-            case Privatchat:
-                first <Datei>() -> ~Datei();
-            default:
-                break;
-            }
-
+            destruktorenAufruf();
             typ = nichts;
             cond.notify_one();
         }
+
+        /// destruktorenAufruf() aufrufen, #typ auf #beendet setzen und cond.notify_all() aufrufen.
+        void beenden() {
+            destruktorenAufruf();
+            typ = beendet;
+            cond.notify_all();
+        }
+
     private:
-        static constexpr size_t size_one = std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }); ///< Maximale Größe eines Objekts
+#ifdef DEBUG
+        size_t const size_one { std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }) };
+        unsigned char*const speicher { new unsigned char[2*size_one] };
+#else
+        static constexpr size_t size_one { std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }) }; ///< Maximale Größe eines Objekts
         unsigned char speicher [2*size_one]; ///< Speicher für first() und second()
+#endif
         Typ typ = nichts; ///< Zeigt was geschehen soll
         condition_variable cond {}; ///< Condition-Variable für die Synchronisation
+
+        /// Destuktoren aufrufen.
+        void destruktorenAufruf() {
+            switch ( typ ) {
+            case entfernt:
+                first <std::string>()->~basic_string();
+                break;
+            case Dialog:
+                first <QString>()->~QString();
+                second <QString>()->~QString();
+                break;
+            case Privatchat:
+                first <Datei>()->~Datei();
+            default:
+                break;
+            }
+        }
     } nextUiThing {}; ///< Einziges Objekt von UiThing
 
     mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren

@@ -55,12 +55,7 @@ void ChatVerwaltung::makeChat( std::string const& partner ) {
 
     Datei file = static_paths::senddir / std::to_string( chatpartner->nummer ) + '_' + std::to_string( nutzer_ich.nummer ) + ".jpg";
     file.ostream() << "Privatchat von " << nutzer_ich.nutzername << " und " << partner << '\n';
-    Datei const infodatei = makeToNutzerDatei( static_paths::infodir, *chatpartner );
-
-    for ( size_t i = 0; infodatei.exist() && i < 50; ++i ) // Nach 5s ist der Nutzer wohl nicht mehr im Chat
-        this_thread::sleep_for( 100ms );
-
-    infodatei.ostream() << file << nutzer_ich.nummer; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
+    NutzerDateiOstream( static_paths::infodir, *chatpartner ) << file << nutzer_ich.nummer; // Info an Partner schreiben was die Chatdatei ist und wer sein Chatpartner ist (also ich)
     neuerChat( std::move( file ), *chatpartner );
 }
 

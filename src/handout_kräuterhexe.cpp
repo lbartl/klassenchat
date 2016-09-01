@@ -28,8 +28,7 @@
 
 int main( int, char const* argv[] ) {
     std::string pfad = argv[0]; // Pfad zum aktuellen Programm
-    pfad.erase( pfad.find_last_of( PFADTRENNER )+1 ); // Name des Programms entfernen
-    pfad.append("S.75_3"); // "S.75_3" anhängen
+    pfad.replace( pfad.find_last_of( PFADTRENNER )+1, std::string::npos, "S.75_3" ); // Name des Programms durch "S.75_3" ersetzen (std::string::npos+1 == 0)
 
     if ( chdir( pfad.c_str() ) ) // In Ordner wechseln
         return 1; // Fehler

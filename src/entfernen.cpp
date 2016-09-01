@@ -62,8 +62,7 @@ void Entfernen::schreiben() const { // Den Nutzer entfernen
         return;
     }
 
-    makeToNutzerDatei( static_paths::terminatedir, *nutzer ).ostream() << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
-
+    NutzerDateiOstream( static_paths::terminatedir, *nutzer ) << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
     klog("Terminate-Datei erstellt!");
 }
 ///\endcond

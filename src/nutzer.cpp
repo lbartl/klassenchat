@@ -57,6 +57,7 @@ void NutzerVerwaltung::einlesen() {
                 bool x_plum = is.get() == '1';
                 std::string nutzername, pc_nutzername;
                 is >> nutzername;
+                is.ignore( 1 ); // Leerzeichen ignorieren
                 std::getline( is, pc_nutzername ); // Pc-Nutzername kann auch Leerzeichen enthalten
 
                 KLOG << "Neuer Nutzer: " << nummer << ' ' << admin << x_plum << nutzername << ' ' << pc_nutzername << endl;

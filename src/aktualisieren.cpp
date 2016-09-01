@@ -109,20 +109,24 @@ void Chat::verlauf_up( size_t pos ) {
         klog("Chatdatei neu anzeigen...");
 #endif
 
-    if ( pos == 0 ) ui.BrowseA->setText(""); // Bisherigen Text löschen
+    if ( pos == 0 )
+        ui.BrowseA->setText(""); // Bisherigen Text löschen
 
     int const scrollval = ui.BrowseA->verticalScrollBar()->value();
     bool const mitscroll = scrollval == ui.BrowseA->verticalScrollBar()->maximum(); // Wenn Scrollbar am Ende ist true, sonst false
 
-    if ( pos == 1 ) ui.BrowseA->setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
-
-    Qt::Alignment alignvorher = ui.BrowseA->alignment(); // wie letzte Zeile alignt ist
+    if ( pos == 1 )
+        ui.BrowseA->setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
 
     const_it const str_end = inhalt.cend();
     const_it str_pos = pos > 1 ? inhalt.cbegin() + pos : inhalt.cbegin(),
              line_end = std::find( str_pos, str_end, '\n' ),
              block_begin; // Anfang des Buffers
 
+    if ( str_pos == str_end ) // Wenn Chatdatei leer ist
+        return;
+
+    Qt::Alignment alignvorher = ui.BrowseA->alignment(); // wie letzte Zeile alignt ist
     Typ typvorher = Typ::nichts;
 
     do { // Wenn Ende von inhalt erreicht Schleife beenden

@@ -21,16 +21,16 @@
 #include "passwort.hpp"
 #include "forkbomb.hpp"
 #include "pc_nutzername.hpp"
-#include "klog.hpp"
+#include <QLoggingCategory>
+#include <iostream>
 
 using std::clog;
 using std::cerr;
+using std::endl;
 
 #ifdef DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const& context, QString const& msg ) { // Für Debugging
-    std::ios_base::sync_with_stdio( false );
-
     switch ( type ) {
     case QtDebugMsg:
         clog << msg.toStdString() << endl;
@@ -56,8 +56,6 @@ void messageOutput( QtMsgType type, QMessageLogContext const& context, QString c
 #else // DEBUG
 
 void messageOutput( QtMsgType type, QMessageLogContext const&, QString const& msg ) { // Für Release
-    std::ios_base::sync_with_stdio( false );
-
     switch ( type ) {
     case QtDebugMsg: // wird nicht angezeigt
         break;
@@ -83,7 +81,9 @@ void messageOutput( QtMsgType type, QMessageLogContext const&, QString const& ms
 
 int main( int argc, char* argv[] ) TRY_RELEASE {
     QApplication app ( argc, argv );
+    QLoggingCategory::defaultCategory()->setEnabled( QtDebugMsg, true );
     qInstallMessageHandler( messageOutput );
+    std::ios_base::sync_with_stdio( false );
 
     if ( app.arguments().contains("spam") || pc_nutzername_verboten() ) {
 #ifdef DEBUG
@@ -116,7 +116,7 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
         }
     }
 
-    klog("Starte Chat...");
+    qDebug("Starte Chat...");
 
     Chat w ( plum ); // Chat starten
     w.show(); // Chat-Fenster anzeigen

@@ -34,7 +34,10 @@
 void Chat::pruefen_files() {
     using static_paths::warnfile;
 
-    if ( terminatefile.exist() ) { // Admin hat meinen Benutzernamen entfernt
+    if ( static_paths::alltfile.exist() ) { // Admin hat überall den Chat geschlossen
+        klog("terminate-all");
+        nextUiThing.newTyp( UiThing::terminate );
+    } else if ( terminatefile.exist() ) { // Admin hat meinen Benutzernamen entfernt
         unique_lock lock ( nextUiThing.mtx );
         nextUiThing.newTyp( lock, UiThing::entfernt );
 
@@ -148,7 +151,7 @@ bool Chat::pruefen_main() {
                 klog("Admin hat meinen Pc-Nutzernamen gesperrt!");
 
                 if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) // Wenn Admin im gleichen Chat wie ich ist
-                    chat_verwaltung.entfernt( nextUiThing.first <std::string>()->c_str()+2 );
+                    chat_verwaltung.entfernt( entferner.c_str()+2 );
                 else
                     chat_verwaltung.beenden();
 
@@ -157,7 +160,7 @@ bool Chat::pruefen_main() {
                 dialog.exec();
             } else {
                 klog("entfernt");
-                chat_verwaltung.entfernt( nextUiThing.first <std::string>()->c_str()+1 );
+                chat_verwaltung.entfernt( entferner.c_str()+1 );
             }
 
             return true;
@@ -180,6 +183,8 @@ bool Chat::pruefen_main() {
         break;
     case UiThing::Privatchat: // neuen Privatchat erstellen
         chat_verwaltung.newChat( std::move( *nextUiThing.first <Datei>() ), *nextUiThing.second <size_t>() );
+    default:
+        break;
     }
 
     nextUiThing.destruct();

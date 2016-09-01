@@ -37,8 +37,9 @@ void Chat::start_threads() {
     klog("Threads gestartet!");
 }
 
-/// Beendet aktualisieren_thread(), nutzer_thread() und pruefen_thread()
+/// Ruft UiThing::beenden() auf und beendet dann aktualisieren_thread(), nutzer_thread() und pruefen_thread().
 void Chat::stop_threads() {
+    nextUiThing.beenden();
     ++threads_stop;
 
     while ( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
@@ -75,7 +76,7 @@ void Chat::aktualisieren_thread() {
                 unique_lock lock ( nextUiThing.mtx );
                 nextUiThing.newTyp( lock, UiThing::aktualisieren );
 
-                new ( nextUiThing.first() ) size_t { std::equal( inhalt.begin(), inhalt.end(), inhalt_new.begin() ) ? inhalt.length() : 0 };
+                new ( nextUiThing.first() ) size_t { inhalt_new.length() > inhalt.length() && std::equal( inhalt.begin(), inhalt.end(), inhalt_new.begin() ) ? inhalt.length() : 0 };
 
                 inhalt.swap( inhalt_new );
             }
@@ -136,8 +137,8 @@ namespace {
 
 /// Prüft, ob spezielle Dinge gemacht werden sollen.
 /**
- * Prüft, ob der %Chat nach einem Signal beendet werden soll oder ob ein Admin überall den %Chat geschlossen hat.
- * Wenn beides nicht zutrifft, wird pruefen_files() aufgerufen.
+ * Prüft, ob der %Chat nach einem Signal beendet werden soll.
+ * Wenn dies nicht zutrifft, wird pruefen_files() aufgerufen.
  */
 void Chat::pruefen_thread() {
 #ifndef WIN32
@@ -158,15 +159,8 @@ void Chat::pruefen_thread() {
         if ( signal_stop ) { // SIGINT oder SIGTERM
             klog("Beenden nach Signal!");
             nextUiThing.newTyp( UiThing::terminate );
-            break; // Thread beenden
         }
 #endif
-        if ( static_paths::alltfile.exist() ) { // Admin hat überall den Chat geschlossen
-            klog("terminate-all");
-            nextUiThing.newTyp( UiThing::terminate );
-            break;
-        }
-
         pruefen_files();
     }
 

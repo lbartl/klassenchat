@@ -146,7 +146,7 @@ void VerbotenPc::schreiben() { // speichern
 
             for ( Nutzer const& currnutzer : nutzer_verwaltung )
                 if ( currnutzer.pc_nutzername == text ) // Nutzer informieren
-                    makeToNutzerDatei( static_paths::terminatedir, currnutzer ).ostream() << 'x' << nutzer_ich.x_plum << nutzer_ich.nutzername << '\n';
+                    NutzerDateiOstream( static_paths::terminatedir, currnutzer ) << 'x' << nutzer_ich.x_plum << nutzer_ich.nutzername << '\n';
         }
     }
 }

@@ -72,12 +72,7 @@ void InfoOpen::schreiben() const { // Information an Nutzer schreiben
         return;
     }
 
-    Datei const infodatei = makeToNutzerDatei( static_paths::infodir, *nutzer );
-
-    for ( size_t i = 0; infodatei.exist() && i < 50; ++i ) // Nach 5s ist der Nutzer wohl nicht mehr im Chat
-        this_thread::sleep_for( 100ms );
-
-    infodatei.ostream() << 'i' << nutzer_ich.nutzername << '\n' << text;
+    NutzerDateiOstream( static_paths::infodir, *nutzer ) << 'i' << nutzer_ich.nutzername << '\n' << text;
     klog("Information gesendet!");
 }
 ///\endcond

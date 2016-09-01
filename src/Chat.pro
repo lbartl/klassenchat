@@ -100,9 +100,9 @@ FORMS   = chat.ui \
 
 # Präprozessor
 CONFIG(debug, debug|release) {
-    DEFINES += DEBUG
+    DEFINES += DEBUG _GLIBCXX_DEBUG
 } else {
-    DEFINES += _FORTIFY_SOURCE=2
+    DEFINES += _FORTIFY_SOURCE=2 QT_NO_DEBUG_OUTPUT
 }
 
 win32 {

@@ -29,12 +29,11 @@ using std::endl;
 
 /// Ausgeben eines C-Strings im Debug-Mode
 inline void klog( char const* msg ) {
-    std::ios_base::sync_with_stdio( false );
     std::clog << msg << endl;
 }
 
 /// Ausgeben eines Streams im Debug-Mode
-#define KLOG ( std::ios_base::sync_with_stdio( false ), std::clog )
+#define KLOG std::clog
 
 #else // DEBUG
 

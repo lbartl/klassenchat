@@ -63,6 +63,56 @@ struct Ordner : public fs::path {
     }
 };
 
+/// NutzerDateiOstream erstellt einen std::ofstream für eine Nutzer-Datei (siehe makeToNutzerDatei())
+class NutzerDateiOstream : public std::ofstream {
+public:
+    /// Konstruktor, erstellt #datei.
+    /**
+     * @param ordner der Ordner, in dem die Datei erstellt wird
+     * @param nummer Nummer des Nutzers
+     */
+    explicit NutzerDateiOstream( Ordner const& ordner, size_t const nummer ) :
+        std::ofstream(),
+        datei( ordner / std::to_string( nummer ) )
+    {
+        for ( size_t i = 0; datei.exist() && i < 50; ++i ) // Nach 5s ist der Nutzer wohl nicht mehr im Chat
+            this_thread::sleep_for( 100ms );
+
+        this->open( datei.getpath(), binary );
+        this->exceptions( badbit | failbit );
+    }
+
+    /// Konstruktor mit Nutzer statt Nummer.
+    explicit NutzerDateiOstream( Ordner const& ordner, Nutzer const& nutzer ) :
+        NutzerDateiOstream( ordner, nutzer.nummer )
+    {}
+
+    /// Move-Konstruktor.
+    NutzerDateiOstream( NutzerDateiOstream&& other ) :
+        std::ofstream( std::move( other ) ),
+        datei( std::move( other.datei ) )
+    {}
+
+    /// Destruktor. Ruft close() auf.
+    ~NutzerDateiOstream() {
+        close();
+    }
+
+    /// Schließt das schreiben ab und benennt #datei in die eigentliche Nutzer-Datei um.
+    void close() {
+        Datei const nutzerDatei ( datei.getpath() + ".jpg"s );
+
+        for ( size_t i = 0; nutzerDatei.exist() && i < 50; ++i ) // Nach 5s ist der Nutzer wohl nicht mehr im Chat
+            this_thread::sleep_for( 100ms );
+
+        std::ofstream::close(); // Schreiben abschließen
+        fs::rename( datei.getpath(), nutzerDatei.getpath() );
+    }
+
+private:
+    Datei datei; ///< Die Zwischen-Datei, in diese wird geschrieben
+};
+
 /// Statische Dateien und %Ordner.
 namespace static_paths { // definiert in definitions.cpp
     extern Ordner const terminatedir, senddir, infodir, checkdir;
@@ -75,10 +125,10 @@ namespace static_paths { // definiert in definitions.cpp
  * @param nummer Nummer des Nutzers
  * @returns Datei für Nutzer.
  *
- * Erstellt eine Datei in folder, die als Namen die Nummer des Nutzers hat.
+ * Erstellt eine Datei in \a folder, die als Namen die Nummer des Nutzers hat mit der Dateiendung ".jpg"
  */
 inline Datei makeToNutzerDatei( Ordner const& folder, size_t const nummer ) {
-    return folder / std::to_string( nummer );
+    return folder / std::to_string( nummer ) + ".jpg";
 }
 
 /// Erstellt eine Datei für einen Nutzer.
@@ -87,7 +137,7 @@ inline Datei makeToNutzerDatei( Ordner const& folder, size_t const nummer ) {
  * @param nutzer der Nutzer
  * @returns Datei für Nutzer.
  *
- * Erstellt eine Datei in folder, die als Namen die Nummer des Nutzers hat.
+ * Erstellt eine Datei in \a folder, die als Namen die Nummer des Nutzers hat mit der Dateiendung ".jpg"
  */
 inline Datei makeToNutzerDatei( Ordner const& folder, Nutzer const& nutzer ) {
     return makeToNutzerDatei( folder, nutzer.nummer );
