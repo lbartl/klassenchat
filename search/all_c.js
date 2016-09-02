@@ -16,6 +16,7 @@ var searchData=
   ['nutzer_5fmtx',['nutzer_mtx',['../classChat.html#ae6b8c7389628b5d5fd2784218daf2698',1,'Chat']]],
   ['nutzer_5fthread',['nutzer_thread',['../classChat.html#a07ab60adaa8e95b1e61c71d3c342b8a2',1,'Chat']]],
   ['nutzer_5fverwaltung',['nutzer_verwaltung',['../nutzer_8hpp.html#a25e5635f2751e4504d83d7194f27e207',1,'nutzer.cpp']]],
+  ['nutzerdateiostream',['NutzerDateiOstream',['../classNutzerDateiOstream.html',1,'NutzerDateiOstream'],['../classNutzerDateiOstream.html#ab74e46b68c746e28c20471ccc3cb697e',1,'NutzerDateiOstream::NutzerDateiOstream(Ordner const &amp;ordner, size_t const nummer)'],['../classNutzerDateiOstream.html#aec0dd63911274f6b3b9216f532cb9c20',1,'NutzerDateiOstream::NutzerDateiOstream(Ordner const &amp;ordner, Nutzer const &amp;nutzer)'],['../classNutzerDateiOstream.html#ab88d96b722016e5ed061539641c3a835',1,'NutzerDateiOstream::NutzerDateiOstream(NutzerDateiOstream &amp;&amp;other)']]],
   ['nutzergeloescht',['nutzerGeloescht',['../classChatVerwaltung.html#adc71317036cf22d18fbf962fa938ff2f',1,'ChatVerwaltung']]],
   ['nutzername',['nutzername',['../classNutzer.html#a58e52c0a3574e1579a58c01e1e6acca8',1,'Nutzer']]],
   ['nutzerverwaltung',['NutzerVerwaltung',['../classNutzerVerwaltung.html',1,'']]]

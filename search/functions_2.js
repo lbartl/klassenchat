@@ -4,6 +4,7 @@ var searchData=
   ['changechat',['changeChat',['../classChatVerwaltung.html#ad55404cf54a49e4b8d1ee283cbcdd14b',1,'ChatVerwaltung']]],
   ['chat',['Chat',['../classChat.html#a2cbbab14aee17b3c2fdb1fdddef50f36',1,'Chat']]],
   ['chatfile',['Chatfile',['../structChatVerwaltung_1_1Chatfile.html#a05da62ab59c8d449c1cac197f6dcfac0',1,'ChatVerwaltung::Chatfile']]],
+  ['close',['close',['../classNutzerDateiOstream.html#ae8fe4ff37e41464ed41e25d0b35ee498',1,'NutzerDateiOstream']]],
   ['closeevent',['closeEvent',['../classChat.html#a4cd03c0499bf8ff54d658e21ae5682ee',1,'Chat']]],
   ['create',['create',['../structOrdner.html#a56af0a4ee53e4ff9a8b9a67da9443d60',1,'Ordner']]],
   ['create_5fitemneu',['create_itemneu',['../classVerboten.html#ab9a4942c4c69b7023143765e632aa4ad',1,'Verboten']]],

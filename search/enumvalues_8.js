@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['std_5fadmin',['std_admin',['../classChat.html#a29632dbc516e47c3e8d9dcd0464b8783ad76f44c9236e8944be8a29767efad912',1,'Chat']]]
+  ['privatchat',['Privatchat',['../classChat_1_1UiThing.html#a9d628f5a386903b65b3b20593972f597ad43878f3d0fd265410d2c90dde41cf89',1,'Chat::UiThing']]]
 ];

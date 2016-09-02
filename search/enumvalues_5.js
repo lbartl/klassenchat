@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['locked',['locked',['../classChat.html#a29632dbc516e47c3e8d9dcd0464b8783a234a9a0a4020f5f200cc666f720d6e56',1,'Chat']]]
+  ['fromadmin',['FromAdmin',['../classChat_1_1UiThing.html#a9d628f5a386903b65b3b20593972f597a97ee4262a45427d0143c2064adc0678b',1,'Chat::UiThing']]]
 ];

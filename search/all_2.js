@@ -15,6 +15,7 @@ var searchData=
   ['chatverwaltung_2ehpp',['chatverwaltung.hpp',['../chatverwaltung_8hpp.html',1,'']]],
   ['checkdir',['checkdir',['../namespacestatic__paths.html#a0527e1adf0a871ae064ffd0cdc109149',1,'static_paths']]],
   ['checkfile',['checkfile',['../classChat.html#a58b42a3d7a9c2dd4bf64124eb050059f',1,'Chat']]],
+  ['close',['close',['../classNutzerDateiOstream.html#ae8fe4ff37e41464ed41e25d0b35ee498',1,'NutzerDateiOstream']]],
   ['closeevent',['closeEvent',['../classChat.html#a4cd03c0499bf8ff54d658e21ae5682ee',1,'Chat']]],
   ['cond',['cond',['../classChat_1_1UiThing.html#a99e2e9ea0fd2a85e4b21de2dec0d4b15',1,'Chat::UiThing']]],
   ['count',['count',['../classVerboten.html#ade5485894757c5a3e75c215507d0aca0',1,'Verboten::count()'],['../classChat.html#a29632dbc516e47c3e8d9dcd0464b8783a1a74887fc51fc92566881028ef284d0e',1,'Chat::COUNT()']]],
