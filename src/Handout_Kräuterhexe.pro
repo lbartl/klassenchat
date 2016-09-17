@@ -21,7 +21,7 @@ TEMPLATE = app
 win32 {
     DEFINES += WIN32
     CONFIG = release windows
-    RC_ICONS = icon.png
+    RC_ICONS = icon.ico
     TARGET = release/binary0 # mingw unterstützt kein Unicode, deswegen wird nachträglich Hardlink erstellt
     QMAKE_CXXFLAGS_RELEASE =
 } else {

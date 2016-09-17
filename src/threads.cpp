@@ -21,6 +21,7 @@
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "klog.hpp"
+#include <QTimer>
 
 namespace {
     std::atomic <uint_fast8_t> threads_stop;

@@ -31,7 +31,7 @@
 
 // Versions Makros
 #define VERSION "1.8.0"  // Versions-Nummer
-#define BUILD   "0082"   // Build-Nummer
+#define BUILD   "0083"   // Build-Nummer
 #define TYPE    "alpha"  // Build-Typ
 ///\endcond
 

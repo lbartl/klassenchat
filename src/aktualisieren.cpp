@@ -21,7 +21,6 @@
 #include "chatverwaltung.hpp"
 #include "klog.hpp"
 #include <QScrollBar>
-#include <QTimer>
 
 using const_it = std::string::const_iterator;
 
