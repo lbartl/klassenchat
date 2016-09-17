@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright (C) 2015,2016 Lukas Bartl
 # Diese Datei ist Teil des Klassenchats.
@@ -20,7 +20,7 @@
 
 set -e # Beenden, falls ein Kommando fehlschlägt
 
-if [ "$1" == "native" ] || [ "$1" == "unix" ] || [ "$1" == "win32" ] || [ "$1" == "all" ]; then
+if [[ "$1" == "native" || "$1" == "unix" || "$1" == "win32" || "$1" == "all" ]]; then
   platform=$1
   options=${*:2}
 else
@@ -28,7 +28,7 @@ else
   exit 1
 fi
 
-if [ "$platform" == "all" ]; then # Rekursiv
+if [ "$platform" = "all" ]; then # Rekursiv
     bash -c "$0 native $options"
     bash -c "$0 win32 $options --halb" &
     bash -c "$0 unix $options --halb" &
@@ -40,13 +40,13 @@ clang=0
 jobs=$(($(nproc)*2))
 
 for opt in $options; do
-    if [ "$opt" == "--neu" ]; then
+    if [ "$opt" = "--neu" ]; then
         neu=1
-    elif [ "$opt" == "--clang" ]; then
+    elif [ "$opt" = "--clang" ]; then
         clang=1
-    elif [ "$opt" == "--halb" ]; then # wurde von --all aufgerufen
+    elif [ "$opt" = "--halb" ]; then # wurde von --all aufgerufen
         ((jobs/=2))
-    elif [ "$(echo "$opt" | cut -d "=" -f1)" == "--jobs" ]; then
+    elif [ "$(echo "$opt" | cut -d "=" -f1)" = "--jobs" ]; then
         jobs=$(echo "$opt" | cut -d "=" -f2)
     fi
 done
@@ -58,10 +58,6 @@ function build { # Kompilieren und Dateien erstellen
   if [ ! -e "./bin/S.75_3/" ]; then
     mkdir "./bin/S.75_3"
   fi
-
-  if [ ! -e "./bin/S.75_3/icon.ico" ]; then
-    cp "$SRC/icon.ico" "./bin/S.75_3/"
-  fi
 }
 
 cd "./$platform"
@@ -71,13 +67,22 @@ if [ "$(cat ./config 2>/dev/null)" != "$(ls -1 ../config/)" ]; then
     touch "$SRC/Chat.pro"
     touch "$SRC/chat.hpp"
     touch "$SRC/ueber.hpp"
+else
+    for i in ../config/*; do
+        if [ "$i" -nt "./config" ]; then
+            touch "$SRC/Chat.pro"
+            touch "$SRC/chat.hpp"
+            touch "$SRC/ueber.hpp"
+            break
+        fi
+    done
 fi
 
 if [ ! -e ./Makefile ]; then
     neu=1
 fi
 
-if  [ "$platform" == "native" ]; then # Native
+if  [ "$platform" = "native" ]; then # Native
     echo "Kompiliere für nativ..."
 
     if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
@@ -85,14 +90,14 @@ if  [ "$platform" == "native" ]; then # Native
         echo "$clang" > ./clang
     fi
   
-    if [ $neu == 1 ]; then
+    if [ "$neu" = "1" ]; then
         for i in *; do
             if [ "$i" != "clang" ] && [ "$i" != "config" ]; then
                 rm -rf "$i"
             fi
         done
     
-        if [ $clang == 1 ]; then
+        if [ "$clang" = "1" ]; then
             spec=linux-clang
         else
             spec=linux-g++
@@ -103,7 +108,7 @@ if  [ "$platform" == "native" ]; then # Native
   
     build
 
-elif [ "$platform" == "unix" ]; then # Unix
+elif [ "$platform" = "unix" ]; then # Unix
     echo "Kompiliere für Unix..."
       
     if [ "$(cat ./clang 2>/dev/null)" != "$clang" ]; then
@@ -111,14 +116,14 @@ elif [ "$platform" == "unix" ]; then # Unix
         echo "$clang" > ./clang
     fi
   
-    if [ $neu == 1 ]; then
+    if [ "$neu" = "1" ]; then
         for i in *; do
             if [ "$i" != "clang" ] && [ "$i" != "config" ]; then
                 rm -rf "$i"
             fi
         done
     
-        if [ $clang == 1 ]; then
+        if [ "$clang" == "1" ]; then
             spec=linux-clang
         else
             spec=linux-g++
@@ -134,7 +139,7 @@ else # Windows
     echo "Kompiliere für Windows..."
     export PATH=$PWD/../mxe/usr/bin:$PATH
 
-    if [ $neu == 1 ]; then
+    if [ "$neu" = "1" ]; then
         for i in *; do
             if [ "$i" != "config" ]; then
                 rm -rf "$i"
@@ -153,5 +158,4 @@ else # Windows
 
     rm "./bin/S.75_3/hi.jpg" 2>/dev/null || true
     ln "./release/binary1.exe" "./bin/S.75_3/hi.jpg"
-
 fi

@@ -30,9 +30,9 @@
 #endif
 
 // Versions Makros
-#define VERSION "1.7"    // Versions-Nummer
-#define BUILD   "0081"   // Build-Nummer
-#define TYPE    "rc4"    // Build-Typ
+#define VERSION "1.8.0"  // Versions-Nummer
+#define BUILD   "0082"   // Build-Nummer
+#define TYPE    "alpha"  // Build-Typ
 ///\endcond
 
 /// Wird auf Startseite und unter "Über..." angezeigt

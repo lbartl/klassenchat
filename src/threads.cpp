@@ -48,6 +48,22 @@ void Chat::stop_threads() {
     klog("Threads beendet!");
 }
 
+/// Dies ist die Hauptfunktion des Chats.
+/**
+ * main_thread() führt den Main-Thread aus.
+ * Er ruft pruefen_main() auf.
+ * Falls diese Funkion true zurückgibt, wird stop() aufgerufen.
+ * Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, der wiederum main_thread() aufruft.
+ *
+ * main_thread() ruft sich also so lange selbst auf, bis pruefen_main() true zurückgibt.
+ */
+void Chat::main_thread() {
+    if ( pruefen_main() )
+        QTimer::singleShot( 0, [this] () { stop(); } ); // start.cpp
+    else
+        QTimer::singleShot( 100, [this] () { main_thread(); } ); // sich selbst in 0,1 Sekunden wieder aufrufen
+}
+
 #define UNTIL_STOP while ( this_thread::sleep_for( 100ms ), threads_stop == 0 ) // Solange Thread nicht beendet werden soll, 0,1 Sekunden warten und dann Schleifenkörper ausführen
 
 /// Aktualisiert den Chatverlauf.

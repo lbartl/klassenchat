@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright (C) 2016 Lukas Bartl
 # Diese Datei ist Teil des Klassenchats.
@@ -40,7 +40,7 @@ done
 cd mxe
 cat << EOF > settings.mk
 JOBS := $(nproc)
-MXE_TMP := /tmp
+MXE_TMP := /tmp/mxe
 MXE_TARGETS := i686-w64-mingw32.static
 MXE_PLUGIN_DIRS := plugins/gcc6
 LOCAL_PKG_LIST := boost qtbase
@@ -94,12 +94,12 @@ if [ "$1" != "no-config" ]; then
     cd ..
 fi
 
-until [ "$compile" == "j" ] || [ "$compile" == "n" ]; do
+until [[ "$compile" == "j" || "$compile" == "n" ]]; do
     echo -n "Kompilieren? (j|n) "
     read -n1 compile
     echo
 done
 
-if [ "$compile" == "j" ]; then
+if [ "$compile" = "j" ]; then
     ./compile all
 fi

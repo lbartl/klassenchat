@@ -97,9 +97,6 @@ int main( int argc, char* argv[] ) TRY_RELEASE {
         return app.exec();
     }
 
-    if ( ! Datei("./icon.ico").exist() ) // Die einzige wichtige Datei im Chat-Verzeichnis ist das Icon, alles andere wird automatisch wieder erstellt
-        qFatal("Icon nicht gefunden!");
-
     bool plum;
 
     { // Passwort-Dialog

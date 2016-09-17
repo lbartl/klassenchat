@@ -232,7 +232,6 @@ private:
 
     // aktualisieren.cpp
     void verlauf_up( size_t pos );
-    void main_thread();
 
     // dialog.cpp
     void entfernen( std::string const& name = "" );
@@ -263,6 +262,7 @@ private:
     // threads.cpp
     void start_threads();
     void stop_threads();
+    void main_thread();
     void aktualisieren_thread();
     void nutzer_thread();
     void pruefen_thread();

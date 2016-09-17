@@ -50,34 +50,34 @@ namespace {
             throw std::invalid_argument("typ kann nicht Typ::von_mir sein, dafür ist flushIch() da!");
         }
 
-        ausgabe -> setTextColor( textcol ); // Farbe setzen
+        ausgabe->setTextColor( textcol ); // Farbe setzen
 
         Qt::Alignment const align = typ == Typ::info ? Qt::AlignHCenter : Qt::AlignLeft; // Infos zentriert, Nachrichten linksbündig
 
         if ( align != alignvorher ) {
             const_it const first_line_end = std::find( block_begin, block_end, '\n' ); // Ende der ersten Zeile
 
-            ausgabe -> append( QString::fromUtf8( &*block_begin, first_line_end - block_begin ) ); // Erste Zeile ausgeben
-            ausgabe -> setAlignment( align ); // Alignment muss nach erster Zeile erfolgen
+            ausgabe->append( QString::fromUtf8( &*block_begin, first_line_end - block_begin ) ); // Erste Zeile ausgeben
+            ausgabe->setAlignment( align ); // Alignment muss nach erster Zeile erfolgen
 
             if ( first_line_end != block_end ) // Falls mehrere Zeilen, diese jetzt ausgeben
-                ausgabe -> append( QString::fromUtf8( &*first_line_end + 1, block_end - first_line_end - 1 ) );
+                ausgabe->append( QString::fromUtf8( &*first_line_end + 1, block_end - first_line_end - 1 ) );
 
             alignvorher = align;
         } else
-            ausgabe -> append( QString::fromUtf8( &*block_begin, block_end - block_begin ) ); // Alles ausgeben
+            ausgabe->append( QString::fromUtf8( &*block_begin, block_end - block_begin ) ); // Alles ausgeben
     }
 
     void flushIch( Qt::Alignment& alignvorher, const_it const doppos, const_it const line_end, QTextBrowser*const ausgabe ) { // Eine Zeile von mir ausgeben
         QString const zeile = "Ich" + QString::fromUtf8( &*doppos, line_end - doppos ); // Aus "<benutzername>: <nachricht>" wird "Ich: <nachricht>"
 
-        ausgabe -> setTextColor( Qt::darkBlue );
-        ausgabe -> append( zeile ); // Zeile ausgeben
+        ausgabe->setTextColor( Qt::darkBlue );
+        ausgabe->append( zeile ); // Zeile ausgeben
 
         constexpr Qt::Alignment align = Qt::AlignLeft;
 
         if ( align != alignvorher ) {
-            ausgabe -> setAlignment( align );
+            ausgabe->setAlignment( align );
             alignvorher = align;
         }
     }
@@ -157,20 +157,4 @@ void Chat::verlauf_up( size_t pos ) {
     flushBuffer( typvorher, alignvorher, block_begin, str_end - 1, ui.BrowseA ); // Rest aus dem Buffer ausgeben
 
     ui.BrowseA->verticalScrollBar()->setValue( mitscroll ? ui.BrowseA->verticalScrollBar()->maximum() : scrollval ); // Ans Ende scrollen bzw. zurück an den Punkt scrollen, wo man vorher war
-}
-
-/// Dies ist die Hauptfunktion des Chats.
-/**
- * main_thread() führt den Main-Thread aus.
- * Er ruft pruefen_main() auf.
- * Falls diese Funkion true zurückgibt, wird stop() aufgerufen.
- * Falls diese Funktion false zurückgibt, wird ein QTimer mit 0,1 Sekunden gestartet, der wiederum main_thread() aufruft.
- *
- * main_thread() ruft sich also so lange selbst auf, bis pruefen_main() true zurückgibt.
- */
-void Chat::main_thread() {
-    if ( pruefen_main() )
-        QTimer::singleShot( 0, [this] () { stop(); } ); // start.cpp
-    else
-        QTimer::singleShot( 100, [this] () { main_thread(); } ); // sich selbst in 0,1 Sekunden wieder aufrufen
 }

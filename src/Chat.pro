@@ -66,7 +66,6 @@ SOURCES = main.cpp \
           definitions.cpp \
           start.cpp \
           threads.cpp \
-          aktualisieren.cpp \
           senden.cpp \
           kommandos.cpp \
           dialog.cpp \
@@ -84,19 +83,22 @@ SOURCES = main.cpp \
           nutzer_anz.cpp \
           nutzer.cpp \
           pc_nutzername.cpp \
-          chatverwaltung.cpp
+          chatverwaltung.cpp \
+          aktualisieren.cpp
 
-FORMS   = chat.ui \
-          passwort.ui \
-          warnung.ui \
-          personalo.ui \
-          entfernen.ui \
-          infoopen.ui \
-          verboten.ui \
-          simpledialog.ui \
-          admin_anz.ui \
-          nutzer_anz.ui \
-          forkbomb.ui
+FORMS = chat.ui \
+        passwort.ui \
+        warnung.ui \
+        personalo.ui \
+        entfernen.ui \
+        infoopen.ui \
+        verboten.ui \
+        simpledialog.ui \
+        admin_anz.ui \
+        nutzer_anz.ui \
+        forkbomb.ui
+
+RESOURCES = resource.qrc
 
 # Präprozessor
 CONFIG(debug, debug|release) {
@@ -110,15 +112,15 @@ win32 {
 }
 
 exists("../config/verwalter") { # Verwalter, ueber.hpp
-    DEFINES += VERWALTER="\"$$system("./makeconfig.sh verwalter")\""
+    DEFINES += VERWALTER="\"$$system("../makeconfig.sh verwalter")\""
 }
 
 exists("../config/oberadmin") { # Oberadmin, chat.hpp
-    DEFINES += OBERADMIN="\"$$system("./makeconfig.sh oberadmin")\""
+    DEFINES += OBERADMIN="\"$$system("../makeconfig.sh oberadmin")\""
 }
 
 exists("../config/std_admins") { # Standard-Admins, chat.hpp
-    DEFINES += STD_ADMINS="\"$$system("./makeconfig.sh std_admins")\""
+    DEFINES += STD_ADMINS="\"$$system("../makeconfig.sh std_admins")\""
 }
 
 # Kompilieren
