@@ -19,8 +19,8 @@
 
 #include "infoopen.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
 #include <QPushButton>
+#include <QDebug>
 
 /**
  * @param an Voreingestellter Benutzername
@@ -73,6 +73,6 @@ void InfoOpen::schreiben() const { // Information an Nutzer schreiben
     }
 
     NutzerDateiOstream( static_paths::infodir, *nutzer ) << 'i' << nutzer_ich.nutzername << '\n' << text;
-    klog("Information gesendet!");
+    qDebug("Information gesendet!");
 }
 ///\endcond

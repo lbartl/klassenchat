@@ -43,8 +43,8 @@ private:
     unsigned int count {}; ///< Anzahl an Items (ohne #itemneu)
     int const& neupos { reinterpret_cast <int const&> ( count ) }; ///< Position des #itemneu
 
-    static QString const neu_text; ///< Text des #itemneu
-    static std::array <QString, Chat::std_admins.size()> std_admins; ///< Chat::std_admins mit QString
+    static inline QString const neu_text {"Neuer Eintrag..."}; ///< Text des #itemneu
+    static inline std::array <QString, Chat::std_admins.size()> std_admins {}; ///< Chat::std_admins mit QString
 
     void create_itemneu(); ///< #itemneu erstellen
 
@@ -58,8 +58,8 @@ private slots:
 
 #include "verboten.moc"
 #include "global.hpp"
-#include "klog.hpp"
 #include <QPushButton>
+#include <QDebug>
 
 /// Erstellt ein Objekt der Klasse Verboten.
 /**
@@ -98,11 +98,6 @@ bool verboten( std::string const& name ) {
     return false;
 }
 
-QString const Verboten::neu_text {"Neuer Eintrag..."};
-///\cond
-decltype( Verboten::std_admins ) Verboten::std_admins {};
-///\endcond
-
 Verboten::Verboten( QWidget* parent ) :
     QDialog( parent )
 {
@@ -111,7 +106,8 @@ Verboten::Verboten( QWidget* parent ) :
     ui.buttonBox -> button( QDialogButtonBox::Cancel ) -> setText("Abbrechen");
 
     if ( std_admins[0].isEmpty() ) // noch nicht initialisiert
-        std::copy( Chat::std_admins.begin(), Chat::std_admins.end(), std_admins.begin() );
+        for (size_t i = 0; i < std_admins.size(); ++i)
+            std_admins[i] = Chat::std_admins[i].data();
 
     this -> setWindowTitle("Verbotene Nutzernamen");
     this -> setWindowFlags( windowFlags() & ~Qt::WindowContextHelpButtonHint );
@@ -162,7 +158,7 @@ void Verboten::aktualisieren( QListWidgetItem*const item ) {
                 }
 
             if ( fail ) { // löschen
-                klog("Item ist ungültig und wird deswegen wieder gelöscht!");
+                qDebug("Item ist ungültig und wird deswegen wieder gelöscht!");
                 delete item;
                 --count;
                 return;
@@ -190,6 +186,6 @@ void Verboten::schreiben() { // speichern
     for ( unsigned int i = 0; i < count; ++i )
         verbotendatei << ui.listWidget -> item( i ) -> text().toStdString() << '\n';
 
-    klog("verbotenfile aktualisiert!");
+    qDebug("verbotenfile aktualisiert!");
 }
 ///\endcond

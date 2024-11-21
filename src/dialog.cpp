@@ -25,13 +25,14 @@
 #include "infoopen.hpp"
 #include "passwort.hpp"
 #include "chatverwaltung.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 using std::string;
+using std::string_view;
 
 /// Zeigt eine Hilfe zu Tastenkombinationen und Kommandos an.
 void Chat::hilfe_anz() {
-    klog("Hilfe anzeigen...");
+    qDebug("Hilfe anzeigen...");
 
     QString kombi_str = "Tastenkombinationen:\n"
                         "F1: Diese Hilfe aufrufen\n"
@@ -72,7 +73,7 @@ void Chat::hilfe_anz() {
 
 /// Erstellt für den #oberadmin ein Objekt der Klasse Admin_anz, für andere Admins ein Objekt der Klasse Nutzer_anz.
 void Chat::nutzer_anz() {
-    klog("Nutzer anzeigen...");
+    qDebug("Nutzer anzeigen...");
 
     QDialog* anz_nutz = flags[x_oberadmin] ? static_cast <QDialog*> ( new Admin_anz( this ) ) // für Oberadmin
                                            : static_cast <QDialog*> ( new Nutzer_anz( this ) ); // für alle anderen Admins
@@ -82,7 +83,7 @@ void Chat::nutzer_anz() {
 }
 
 /// Erstellt ein Objekt der Klasse Entfernen (Admin).
-void Chat::entfernen( string const& name ) {
+void Chat::entfernen( string_view const& name ) {
     Entfernen* entf1 = new Entfernen( name, this );
     entf1 -> setAttribute( Qt::WA_DeleteOnClose );
     entf1 -> show();

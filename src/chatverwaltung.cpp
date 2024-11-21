@@ -21,7 +21,7 @@
 #include "personalo.hpp"
 #include "global.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 ChatVerwaltung& chat_verwaltung = ChatVerwaltung::getInstance();
 
@@ -48,7 +48,7 @@ void ChatVerwaltung::makeChat( std::string const& partner ) {
                                         [chatpartner] ( Privatchat const& currchat ) { return &currchat.partner == chatpartner; } );
 
     if ( chata_it != privatchats.end() ) {
-        KLOG << "Privatchat mit " << partner << " existiert bereits! Wechsle in diesen Chat..." << endl;
+        qDebug() << "Privatchat mit " << partner.c_str() << " existiert bereits! Wechsle in diesen Chat...";
         openChat( *chata_it );
         return;
     }
@@ -91,7 +91,7 @@ void ChatVerwaltung::neuerChat( Datei chatdatei, Nutzer const& partner ) {
     QObject::connect( &chat->action, &QAction::triggered, [this, chat] () { openChat( *chat ); } );
     openChat( *chat ); // Chat öffnen
 
-    KLOG << "Neuen Privatchat mit " << partner.nutzername << " erstellt!" << endl;
+    qDebug() << "Neuen Privatchat mit " << partner.nutzername.c_str() << " erstellt!";
 }
 
 /**
@@ -106,10 +106,10 @@ void ChatVerwaltung::changeChat( std::string const& partner ) {
                                         [&partner] ( Privatchat const& currchat ) { return currchat.partner.nutzername == partner; } );
 
     if ( chata_it != privatchats.end() ) {
-        klog("Existiert schon, öffne Chat...");
+        qDebug("Existiert schon, öffne Chat...");
         openChat( *chata_it );
     } else {
-        klog("Existiert noch nicht, neuer Chat...");
+        qDebug("Existiert noch nicht, neuer Chat...");
 
         PersonalO* p1 = new PersonalO( partner, qobject_cast <QWidget*> ( menuChats->parent() ) );
         p1->setAttribute( Qt::WA_DeleteOnClose );
@@ -118,7 +118,7 @@ void ChatVerwaltung::changeChat( std::string const& partner ) {
 }
 
 void ChatVerwaltung::reset() {
-    klog("reset");
+    qDebug("reset");
 
     if ( chatfile_all ) {
         file_mtx_lock f_lock ( chatfile_all->file_mtx );

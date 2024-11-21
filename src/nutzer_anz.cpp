@@ -21,8 +21,8 @@
 #include "chat.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
-#include "klog.hpp"
 #include <QPushButton>
+#include <QDebug>
 
 /**
  * @param parent Parent
@@ -110,7 +110,7 @@ void Admin_anz::schreiben() const { // Information an Nutzer schreiben, dass sei
             continue;
 
         NutzerDateiOstream( static_paths::infodir, *currnutzer ) << to_admin;
-        KLOG << ( currnutzer->x_plum ? currnutzer->nutzername + " (Plum-Chat)" : currnutzer->nutzername ) << ( to_admin ? " zum Admin gemacht!" : " zum normalen Nutzer gemacht!" ) << endl;
+        qDebug() << ( currnutzer->x_plum ? currnutzer->nutzername + " (Plum-Chat)" : currnutzer->nutzername ).c_str() << ( to_admin ? " zum Admin gemacht!" : " zum normalen Nutzer gemacht!" );
     }
 }
 ///\endcond

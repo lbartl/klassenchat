@@ -21,7 +21,7 @@
 #include "ueber.hpp"
 #include "pc_nutzername.hpp"
 #include "chatverwaltung.hpp"
-#include "klog.hpp"
+#include <QDebug>
 #include <boost/tokenizer.hpp>
 
 using sep = boost::char_separator <char>;
@@ -93,7 +93,7 @@ void Chat::senden_pruef() {
             }
         }
     } else { // Nachricht senden
-        klog("senden");
+        qDebug("senden");
         chat_verwaltung.schreibeNachricht( nachricht );
     }
 }

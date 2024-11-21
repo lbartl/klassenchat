@@ -40,9 +40,8 @@ done
 cd mxe
 cat << EOF > settings.mk
 JOBS := $(nproc)
-MXE_TMP := /tmp/mxe
 MXE_TARGETS := i686-w64-mingw32.static
-MXE_PLUGIN_DIRS := plugins/gcc6
+MXE_PLUGIN_DIRS := plugins/gcc8
 LOCAL_PKG_LIST := boost qtbase
 .DEFAULT local-pkg-list:
 EOF

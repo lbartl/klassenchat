@@ -22,7 +22,7 @@
 #include "simpledialog.hpp"
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 /// Prüft, ob spezielle Dinge gemacht werden sollen, und schreibt diese in #nextUiThing.
 /**
@@ -35,17 +35,13 @@ void Chat::pruefen_files() {
     using static_paths::warnfile;
 
     if ( static_paths::alltfile.exist() ) { // Admin hat überall den Chat geschlossen
-        klog("terminate-all");
-        nextUiThing.newTyp( UiThing::terminate );
+        qDebug("terminate-all");
+        nextUiThing.set( UiThing::terminate );
     } else if ( terminatefile.exist() ) { // Admin hat meinen Benutzernamen entfernt
-        unique_lock lock ( nextUiThing.mtx );
-        nextUiThing.newTyp( lock, UiThing::entfernt );
-
-        new ( nextUiThing.first() ) std::string( terminatefile.readLine() ); // wer mich entfernt hat
-
+        nextUiThing.set( UiThing::entfernt, terminatefile.readLine() );
         terminatefile.remove();
     } else if ( checkfile.exist() ) { // Zeigen, dass ich noch im Chat bin, indem die Datei entfernt wird
-        klog("Lösche checkfile...");
+        qDebug("Lösche checkfile...");
         checkfile.remove();
     } else if ( ! nutzer_ich.x_plum && warnfile.exist() ) { // Warnung
         std::ifstream is = warnfile.istream();
@@ -58,8 +54,8 @@ void Chat::pruefen_files() {
             else if ( ! is ) { // noch nicht empfangen
                 is.close();
                 warnfile.ostream( true ) << nutzer_ich.nummer << ' ';
-                klog("Warnung empfangen!");
-                nextUiThing.newTyp( UiThing::Warnung );
+                qDebug("Warnung empfangen!");
+                nextUiThing.set( UiThing::Warnung );
                 break;
             }
         }
@@ -68,17 +64,17 @@ void Chat::pruefen_files() {
     if ( infofile.exist() ) { // andere Info an mich
         switch ( infofile.readChar() ) {
         case '1': // Zum Admin werden
-            klog("Werde zum Admin...");
+            qDebug("Werde zum Admin...");
             nutzer_verwaltung.flip_admin();
-            nextUiThing.newTyp( UiThing::ToAdmin );
+            nextUiThing.set( UiThing::ToAdmin );
             break;
         case '0': // Zum normalen Nutzer werden
-            klog("Werde zum normalen Nutzer...");
+            qDebug("Werde zum normalen Nutzer...");
             nutzer_verwaltung.flip_admin();
-            nextUiThing.newTyp( UiThing::FromAdmin );
+            nextUiThing.set( UiThing::FromAdmin );
             break;
         case 'i': { // Admin hat mir eine Info gesendet
-            klog("Info von Admin empfangen!");
+            qDebug("Info von Admin empfangen!");
 
             std::string const inhalt = infofile.readAll();
             size_t const line_end = inhalt.find('\n');
@@ -86,22 +82,14 @@ void Chat::pruefen_files() {
             QString text = "Der Administrator " + QString::fromUtf8( inhalt.c_str() + 1, line_end - 1 ) + " schreibt:\n\n"
                           + QString::fromUtf8( inhalt.c_str() + line_end + 1, inhalt.length() - line_end - 1 );
 
-            unique_lock lock ( nextUiThing.mtx );
-            nextUiThing.newTyp( lock, UiThing::Dialog );
-
-            new ( nextUiThing.first() ) QString("Information");
-            new ( nextUiThing.second() ) QString( std::move( text ) );
+            nextUiThing.set( UiThing::Dialog, QString("Information"), std::move(text) );
         } break;
         default: // Neuer Chat, jemand lädt mich ein
             Datei chatdatei;
             size_t partner;
             infofile.istream() >> chatdatei >> partner;
 
-            unique_lock lock ( nextUiThing.mtx );
-            nextUiThing.newTyp( lock, UiThing::Privatchat );
-
-            new ( nextUiThing.first() ) Datei( std::move( chatdatei ) );
-            new ( nextUiThing.second() ) size_t { partner };
+            nextUiThing.set(UiThing::Privatchat, std::move(chatdatei), partner);
         }
 
         infofile.remove();
@@ -118,39 +106,37 @@ void Chat::pruefen_files() {
  */
 bool Chat::pruefen_main() {
     if ( flags[x_restart] || flags[x_close] ) { // Ich beende selbst
-        klog( flags[x_restart] ? "Neustart" : "Beenden" );
+        qDebug( flags[x_restart] ? "Neustart" : "Beenden" );
         chat_verwaltung.beenden();
         return true;
+    } else if ( flags[x_reload] ) { // Chatverlauf manuell aktualisieren
+        verlauf_up( 0 );
+        flags.reset( x_reload );
+        return false;
     }
 
     // nextUiThing überprüfen (weitere Erklärungen bei der Definition von UiThing, chat.hpp)
-    lock_guard lock ( nextUiThing.mtx );
+    auto [typ, first, second] = nextUiThing.get();
 
-    switch ( nextUiThing.getTyp() ) {
-    case UiThing::nichts: // Nichts tun
-        if ( flags[x_reload] ) { // Chatverlauf manuell aktualisieren
-            verlauf_up( 0 );
-            flags.reset( x_reload );
-        }
-        return false;
+    switch ( typ ) {
     case UiThing::aktualisieren: // Chatverlauf aktualisieren
-        verlauf_up( *nextUiThing.first <size_t>() );
-        break;
+        verlauf_up( std::any_cast<size_t>(first) );
+        return false;
     case UiThing::terminate: // Chat beenden
         chat_verwaltung.beenden();
         return true;
     case UiThing::entfernt: // Ich wurde entfernt
         if ( flags[locked] ) { // Kann nicht entfernt werden, stattdessen diesen Benutzer entfernen
-            klog("Jemand wollte mich entfernen, diesen Nutzer in den Entfernen-Dialog stellen...");
-            entfernen( nextUiThing.first <std::string>()->erase( 0, 1 ) );
-            break;
+            qDebug("Jemand wollte mich entfernen, diesen Nutzer in den Entfernen-Dialog stellen...");
+            entfernen(std::any_cast<std::string&>(first).erase(0, 1));
+            return false;
         } else {
-            std::string const& entferner = *nextUiThing.first <std::string>();
+            std::string const& entferner = std::any_cast<std::string const&>(first);
 
             if ( entferner[0] == 'x' ) { // Pc-Nutzername gesperrt statt einfach nur entfernt
-                klog("Admin hat meinen Pc-Nutzernamen gesperrt!");
+                qDebug("Admin hat meinen Pc-Nutzernamen gesperrt!");
 
-                if ( ( entferner[1] == '1' ) == nutzer_ich.x_plum ) // Wenn Admin im gleichen Chat wie ich ist
+                if ( (entferner[1] == '1') == nutzer_ich.x_plum ) // Wenn Admin im gleichen Chat wie ich ist
                     chat_verwaltung.entfernt( entferner.c_str()+2 );
                 else
                     chat_verwaltung.beenden();
@@ -159,7 +145,7 @@ bool Chat::pruefen_main() {
                 dialog.setWindowModality( Qt::ApplicationModal );
                 dialog.exec();
             } else {
-                klog("entfernt");
+                qDebug("entfernt");
                 chat_verwaltung.entfernt( entferner.c_str()+1 );
             }
 
@@ -169,24 +155,26 @@ bool Chat::pruefen_main() {
         Warnung*const warn = new Warnung( this );
         warn->setAttribute( Qt::WA_DeleteOnClose );
         warn->show();
-    } break;
+    } return false;
     case UiThing::ToAdmin: // Admin werden
         ui.menuAdmin->setEnabled( chat_verwaltung.imKlassenchat() ); // Nur im Klassenchat anzeigen
         ui.action_berall_den_Chat_beenden->setEnabled( true );
-        break;
+        return false;
     case UiThing::FromAdmin: // normaler Nutzer werden
         ui.menuAdmin->setEnabled( false );
         ui.action_berall_den_Chat_beenden->setEnabled( false );
-        break;
-    case UiThing::Dialog: // Dialog anzeigen
-        createDialog( *nextUiThing.first <QString>(), *nextUiThing.second <QString>(), this );
-        break;
-    case UiThing::Privatchat: // neuen Privatchat erstellen
-        chat_verwaltung.newChat( std::move( *nextUiThing.first <Datei>() ), *nextUiThing.second <size_t>() );
-    default:
-        break;
+        return false;
+    case UiThing::Dialog: { // Dialog anzeigen
+        QString const& titel = std::any_cast<QString const&>(first);
+        QString const& text = std::any_cast<QString const&>(second);
+        createDialog( titel, text, this );
+    } return false;
+    case UiThing::Privatchat: {// neuen Privatchat erstellen
+        Datei& chatdatei = std::any_cast<Datei&>(first);
+        size_t const partnernummer = std::any_cast<size_t>(second);
+        chat_verwaltung.newChat( std::move(chatdatei), partnernummer );
+    } return false;
+    default: // Nichts tun
+        return false;
     }
-
-    nextUiThing.destruct();
-    return false;
 }

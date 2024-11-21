@@ -18,7 +18,7 @@
 // Diese Datei definiert das Singleton AdminPass
 
 #include "adminpass.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 using std::string;
 
@@ -84,5 +84,5 @@ void AdminPass::setpass( string newpass ) {
 
     toFile();
 
-    klog("Neues Passwort gesetzt!");
+    qDebug("Neues Passwort gesetzt!");
 }

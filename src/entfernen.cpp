@@ -19,14 +19,14 @@
 
 #include "entfernen.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
 #include <QPushButton>
+#include <QDebug>
 
 /**
  * @param ter_name Voreingestellter Benutzername
  * @param parent Parent
  */
-Entfernen::Entfernen( std::string const& ter_name, QWidget* parent ) :
+Entfernen::Entfernen( std::string_view const& ter_name, QWidget* parent ) :
     QDialog( parent )
 {
     ui.setupUi( this );
@@ -63,6 +63,6 @@ void Entfernen::schreiben() const { // Den Nutzer entfernen
     }
 
     NutzerDateiOstream( static_paths::terminatedir, *nutzer ) << ' ' << nutzer_ich.nutzername << '\n'; // Schreibe hinein, wer ihn entfernt hat
-    klog("Terminate-Datei erstellt!");
+    qDebug("Terminate-Datei erstellt!");
 }
 ///\endcond

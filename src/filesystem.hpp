@@ -114,9 +114,14 @@ private:
 };
 
 /// Statische Dateien und %Ordner.
-namespace static_paths { // definiert in definitions.cpp
-    extern Ordner const terminatedir, senddir, infodir, checkdir;
-    extern Datei const alltfile, warnfile;
+namespace static_paths {
+    inline Ordner const terminatedir = "./wichtig",  ///< Ordner, in dem Dateien zum %Entfernen von Nutzern gespeichert sind
+                        senddir      = "./personal", ///< Ordner, in dem Privatchats gespeichert sind
+                        infodir      = "./infos",    ///< Ordner, in dem Infos an %Nutzer gespeichert sind
+                        checkdir     =  "./check";   ///< Ordner, in dem Dateien zum Überprüfen, ob ein %Nutzer noch im %Chat ist, sind
+
+    inline Datei const alltfile      = "./all-terminate", ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der %Chat geschlossen werden soll
+                       warnfile      = "./warning";       ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine %Warnung erscheinen soll
 }
 
 /// Erstellt eine Datei für einen Nutzer.

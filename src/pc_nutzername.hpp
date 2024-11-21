@@ -33,7 +33,7 @@ class QWidget;
 inline std::string get_pc_nutzername() {
     wchar_t name [UNLEN+1];
     DWORD size = UNLEN+1;
-    return GetUserNameW( name, &size ) ? std::wstring_convert <std::codecvt_utf8 <wchar_t>>().to_bytes( name ) : "";
+    return GetUserNameW( name, &size ) ? std::wstring_convert <std::codecvt_utf8_utf16 <wchar_t>>().to_bytes( name ) : "";
 }
 #else
 # include <pwd.h>

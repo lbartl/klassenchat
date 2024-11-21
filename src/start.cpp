@@ -22,7 +22,7 @@
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
 #include "global.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 using namespace static_paths;
 
@@ -57,7 +57,7 @@ void Chat::start() {
     }
 
     if ( verboten( nutzername ) ) { // Prüfen ob Benutzername verboten ist
-        klog("Nutername verboten!");
+        qDebug("Nutername verboten!");
         createDialog( "Fehler", "Ein Admin hat diesen Benutzernamen verboten!\nBitte einen anderen Benutzernamen wählen!", this, true );
         ui.NutzernameA->setFocus();
         return;
@@ -94,7 +94,7 @@ void Chat::start() {
                 file_mtx_lock f_lock ( lockfile_mtx );
                 lockfile->remove();
             } else {
-                klog("Nutzername vergeben!");
+                qDebug("Nutzername vergeben!");
                 createDialog( "Fehler", "Es ist bereits jemand mit diesem Benutzernamen angemeldet!\nBitte einen anderen Benutzernamen wählen!", this, true );
                 ui.NutzernameA->setFocus();
                 return;
@@ -103,7 +103,7 @@ void Chat::start() {
     }
 
     if ( flags[std_admin] ) {
-        klog("Admin, öffne Passwortfeld...");
+        qDebug("Admin, öffne Passwortfeld...");
 
         ui.Label2->setText( QString::fromStdString( "Passwort für " + nutzername + ": " ) );
         ui.LineStackedWidget->setCurrentIndex( 1 ); // Passwort

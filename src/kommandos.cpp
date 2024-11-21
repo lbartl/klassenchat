@@ -21,13 +21,13 @@
 #include "simpledialog.hpp"
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 using namespace static_paths;
 
 /// Überall den %Chat beenden (Admin).
 void Chat::allt() {
-    klog("++terminate-all++");
+    qDebug("++terminate-all++");
     alltfile.touch();
 }
 
@@ -36,7 +36,7 @@ void Chat::warnung_send() {
     if ( nutzer_ich.x_plum ) // vom Plum-Chat aus können keine Warnungen gesendet oder empfangen werden
         return;
 
-    klog("Warnung senden..");
+    qDebug("Warnung senden..");
     lock_guard lock ( pruefen_mtx ); // Damit ich nicht selbst die Warnung bekomme
 
     warnfile.touch();

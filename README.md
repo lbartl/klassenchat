@@ -1,10 +1,10 @@
 # Klassenchat
 
-[Quellcode](https://github.com/hanswurst862/klassenchat)
+[Quellcode](https://github.com/lbartl/klassenchat)
 
-[Dokumentation](https://hanswurst862.github.io/klassenchat)
+[Dokumentation](https://lbartl.github.io/klassenchat)
 
-[Releases](https://github.com/hanswurst862/klassenchat/releases)
+[Releases](https://github.com/lbartl/klassenchat/releases)
 
 ## Kompilieren
 Herunterladen des Quellcodes:

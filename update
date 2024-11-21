@@ -19,4 +19,5 @@
 # Dieses Skript steuert das Aktualisieren des Quellcodes
 
 git pull
+git submodule update
 ./configure no-config

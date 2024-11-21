@@ -1,4 +1,4 @@
-/* Copyright (C) 2015,2016 Lukas Bartl
+/* Copyright (C) 2015,2016,2018 Lukas Bartl
  * Diese Datei ist Teil des Klassenchats.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,13 @@
 #ifndef CHAT_HPP
 #define CHAT_HPP
 
+#include <QVariant>
 #include "ui_chat.h"
 #include "adminpass.hpp"
 #include <bitset>
+#include <tuple>
+#include <string_view>
+#include <any>
 
 /// Wichtigste Klasse des Chats.
 /**
@@ -52,12 +56,12 @@ public:
      *
      * Wenn die %Datei nicht existiert, wird "LukasB" als Oberadmin genommen.
      */
-    static constexpr char const (&oberadmin)[sizeof(OBERADMIN)] { OBERADMIN }; // Referenz des Arrays und kein Zeiger, damit std::end() in aktualisieren.cpp funktioniert
+    static constexpr std::string_view oberadmin { OBERADMIN }; // Referenz des Arrays und kein Zeiger, damit std::end() in aktualisieren.cpp funktioniert
 
 #ifndef STD_ADMINS
 # define STD_ADMINS { oberadmin, "Oberlusche", "Patiboy", "Jaguar" }
 #endif
-#define STD_ADMINS_COUNT std::initializer_list <char const*> ( STD_ADMINS ).size() // Wie viele Standard-Admins es gibt
+#define STD_ADMINS_COUNT std::initializer_list <std::string_view> ( STD_ADMINS ).size() // Wie viele Standard-Admins es gibt
     /// Standard-Administratoren. Sie sind automatisch beim Anmelden Admins und haben ein individuelles %Passwort, siehe AdminPass.
     /**
       * Der #oberadmin ist automatisch ein Standard-Admin.
@@ -65,7 +69,7 @@ public:
       *
       * Wenn die %Datei nicht existiert, werden "Oberlusche", "Patiboy" und "Jaguar" als Standard-Admins genommen.
       */
-    static constexpr std::array <char const*, STD_ADMINS_COUNT> std_admins { STD_ADMINS };
+    static constexpr std::array <std::string_view, STD_ADMINS_COUNT> std_admins { STD_ADMINS };
 #undef STD_ADMINS_COUNT
 #undef STD_ADMINS
 
@@ -74,7 +78,8 @@ protected:
     void closeEvent( QCloseEvent* event ) override final; // chat.cpp
 
 private:
-    static Datei const lockfile_norm, lockfile_plum; // chat.cpp
+    static inline Datei const lockfile_norm {"./lock"}, ///< %Datei, die existiert, wenn jemand im normalen %Chat ist
+                              lockfile_plum {"./baum"}; ///< %Datei, die existiert, wenn jemand im Plum-Chat ist
 
     bool const x_plum_anfang; ///< x_plum beim Öffnen des Chats (je nach %Passwort)
 
@@ -106,7 +111,7 @@ private:
     class UiThing {
     public:
         /// Zeigt was geschehen soll.
-        enum Typ : uint_fast8_t {
+        enum Typ {
             nichts, ///< Nichts soll geschehen
             beendet, ///< UiThing soll keine neuen Typen mehr annehmen
             aktualisieren, ///< Der Chatverlauf soll aktualisiert werden, mit first()=Position in #inhalt (size_t)
@@ -119,114 +124,73 @@ private:
             Privatchat ///< ChatVerwaltung::newChat() soll aufgerufen werden, mit first()=Chatdatei (Datei) und second()=Chatpartner (size_t)
         };
 
-        mutex mtx {}; ///< Mutex für die Synchronisation
-
         ///\cond
         UiThing() = default;
         UiThing( UiThing const& ) = delete;
         UiThing& operator = ( UiThing const& ) = delete;
         ///\endcond
 
-        /// Destruktor. Ruft destruktorenAufruf() auf.
-        ~UiThing() {
-            destruktorenAufruf();
-#ifdef DEBUG
-            delete[] speicher;
-#endif
+        auto get() {
+            lock_guard lock (mtx);
+            std::tuple tup {typ, std::move(first), std::move(second)};
+            typ = nichts;
+            cond.notify_one();
+            return tup;
         }
 
-        /// Gibt Zeiger auf erstes Objekt zurück, siehe #aktualisieren, #entfernt, #Dialog und #Privatchat.
-        /**
-         * \code
-         * return reinterpret_cast <T*> ( speicher );
-         * \endcode
-         */
-        template <typename T = void>
-        T* first() {
-            return reinterpret_cast <T*> ( speicher );
-        }
-
-        /// Gibt Zeiger auf zweites Objekt zurück, siehe #Dialog und #Privatchat.
-        /**
-         * \code
-         * return reinterpret_cast <T*> ( speicher + size_one );
-         * \endcode
-         */
-        template <typename T = void>
-        T* second() {
-            return reinterpret_cast <T*> ( speicher + size_one );
-        }
-
-        /// Gibt #typ zurück.
-        Typ getTyp() {
-            return typ;
-        }
-
-        /// Setzte #typ neu.
-        /**
-         * @param lock Lock für #cond
-         * @param neuer_typ Der neue #Typ
-         *
-         * #cond wartet bis #typ == #nichts, dann wird #typ neu gesetzt.
-         */
-        void newTyp( unique_lock& lock, Typ const neuer_typ ) {
+        template <typename T1, typename T2>
+        void set(Typ const neuer_typ, T1 erstes, T2 zweites) {
+            unique_lock lock (mtx);
             cond.wait( lock, [this] () { return typ == nichts || typ == beendet; } );
 
-            if ( typ == nichts )
+            if (typ == nichts) {
+                typ = neuer_typ;
+                first = std::move(erstes);
+                second = std::move(zweites);
+            }
+        }
+
+        template <typename T>
+        void set(Typ const neuer_typ, T erstes) {
+            unique_lock lock (mtx);
+            cond.wait( lock, [this] () { return typ == nichts || typ == beendet; } );
+
+            if (typ == nichts) {
+                typ = neuer_typ;
+                first = std::move(erstes);
+            }
+        }
+
+        void set(Typ const neuer_typ) {
+            unique_lock lock (mtx);
+            cond.wait( lock, [this] () { return typ == nichts || typ == beendet; } );
+
+            if (typ == nichts)
                 typ = neuer_typ;
         }
 
-        /// Ruft newTyp() auf mit neu angelegtem #unique_lock (initialisiert mit #mtx).
-        void newTyp( Typ const neuer_typ ) {
-            unique_lock lock ( mtx );
-            newTyp( lock, neuer_typ );
-        }
-
-        /// destruktorenAufruf() aufrufen, #typ auf #nichts setzen und cond.notify_one() aufrufen.
-        void destruct() {
-            destruktorenAufruf();
+        void start() {
             typ = nichts;
-            cond.notify_one();
         }
 
-        /// destruktorenAufruf() aufrufen, #typ auf #beendet setzen und cond.notify_all() aufrufen.
+        /// #typ auf #beendet setzen und cond.notify_all() aufrufen.
         void beenden() {
-            destruktorenAufruf();
             typ = beendet;
             cond.notify_all();
         }
 
     private:
-#ifdef DEBUG
-        size_t const size_one { std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }) };
-        unsigned char*const speicher { new unsigned char[2*size_one] };
-#else
-        static constexpr size_t size_one { std::max({ sizeof(QString), sizeof(std::string), sizeof(Datei), sizeof(size_t) }) }; ///< Maximale Größe eines Objekts
-        unsigned char speicher [2*size_one]; ///< Speicher für first() und second()
-#endif
         Typ typ = nichts; ///< Zeigt was geschehen soll
+        std::any first {}, ///< Erstes Objekt
+                 second {}; ///< Zweites Objekt
+        mutex mtx {}; ///< Mutex für die Synchronisation
         condition_variable cond {}; ///< Condition-Variable für die Synchronisation
 
-        /// Destuktoren aufrufen.
-        void destruktorenAufruf() {
-            switch ( typ ) {
-            case entfernt:
-                first <std::string>()->~basic_string();
-                break;
-            case Dialog:
-                first <QString>()->~QString();
-                second <QString>()->~QString();
-                break;
-            case Privatchat:
-                first <Datei>()->~Datei();
-            default:
-                break;
-            }
-        }
     } nextUiThing {}; ///< Einziges Objekt von UiThing
 
     mutex nutzer_mtx {}, ///< Mutex, die nutzer_thread(), plum_chat() und in bestimmten Situationen pruefen_thread() sperren
-          pruefen_mtx {}; ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
+          pruefen_mtx {}, ///< Mutex, die pruefen_thread(), plum_chat() und warnung_send() sperren
+          inhalt_mtx {}; ///< Mutex für #inhalt
 
     Datei_Mutex lockfile_mtx { *lockfile }; ///< Datei_Mutex, die das Schreiben von #lockfile kontrolliert
 
@@ -234,7 +198,7 @@ private:
     void verlauf_up( size_t pos );
 
     // dialog.cpp
-    void entfernen( std::string const& name = "" );
+    void entfernen( std::string_view const& name = "" );
     void hilfe_anz();
     void nutzer_anz();
     void personal_op( std::string const& partner = "" );

@@ -118,7 +118,7 @@ VerbotenPc::VerbotenPc( QWidget* parent ) :
 
             text += ")";
             QListWidgetItem* curri = new QListWidgetItem( text, ui.listWidget );
-            curri->setFlags( text.contains( Chat::oberadmin ) ? Qt::ItemIsUserCheckable : Qt::ItemIsUserCheckable | Qt::ItemIsEnabled ); // Bei Oberadmin ausgegraut
+            curri->setFlags( text.contains( Chat::oberadmin.data() ) ? Qt::ItemIsUserCheckable : Qt::ItemIsUserCheckable | Qt::ItemIsEnabled ); // Bei Oberadmin ausgegraut
             curri->setCheckState( Qt::Unchecked );
         }
 

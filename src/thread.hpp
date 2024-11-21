@@ -27,7 +27,6 @@
 # include "mingw-threads/mingw.thread.h"
 # include <boost/thread/shared_mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
-# include <atomic>
 
 using boost::mutex;
 using unique_lock = boost::unique_lock <mutex>;
@@ -35,13 +34,13 @@ using boost::condition_variable;
 using boost::shared_mutex;
 #else
 # include <thread>
-# include <atomic>
 
 using std::mutex;
 using unique_lock = std::unique_lock <mutex>; ///< meistens wird std::unique_lock mit mutex genutzt
 using std::condition_variable;
 using shared_mutex = std::shared_timed_mutex; ///< Unter Windows boost::shared_mutex, unter Unix std::shared_timed_mutex
 #endif
+#include <atomic>
 
 using lock_guard = std::lock_guard <mutex> const; ///< meistens wird std::lock_guard mit mutex genutzt
 using shared_lock = std::shared_lock <shared_mutex>; ///< meistens wird std::shared_lock mit #shared_mutex genutzt

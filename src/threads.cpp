@@ -20,8 +20,8 @@
 #include "chat.hpp"
 #include "chatverwaltung.hpp"
 #include "filesystem.hpp"
-#include "klog.hpp"
 #include <QTimer>
+#include <QDebug>
 
 namespace {
     std::atomic <uint_fast8_t> threads_stop;
@@ -29,13 +29,14 @@ namespace {
 
 /// Startet nutzer_thread() und pruefen_thread() jeweils in einem eigenen Thread.
 void Chat::start_threads() {
+    nextUiThing.start();
     threads_stop = 0;
 
     std::thread( [this] () { aktualisieren_thread(); } ).detach();
     std::thread( [this] () { nutzer_thread(); } ).detach();
     std::thread( [this] () { pruefen_thread(); } ).detach();
 
-    klog("Threads gestartet!");
+    qDebug("Threads gestartet!");
 }
 
 /// Ruft UiThing::beenden() auf und beendet dann aktualisieren_thread(), nutzer_thread() und pruefen_thread().
@@ -46,7 +47,7 @@ void Chat::stop_threads() {
     while ( threads_stop != 4 ) // warten bis sich alle Threads beendet haben
         this_thread::sleep_for( 100ms );
 
-    klog("Threads beendet!");
+    qDebug("Threads beendet!");
 }
 
 /// Dies ist die Hauptfunktion des Chats.
@@ -80,21 +81,16 @@ void Chat::aktualisieren_thread() {
 
     UNTIL_STOP
         if ( ++i == 1000 ) {
-            unique_lock lock ( nextUiThing.mtx );
-            nextUiThing.newTyp( lock, UiThing::aktualisieren );
-
-            new ( nextUiThing.first() ) size_t { 1 };
-
+            nextUiThing.set<size_t>(UiThing::aktualisieren, 1);
             i = 0;
         } else {
             std::string inhalt_new = chat_verwaltung.einlesen(); // Datei einlesen
 
+            lock_guard inhalt_lock (inhalt_mtx);
+
             if ( inhalt_new != inhalt ) { // Chatverlauf hat sich verändert
-                unique_lock lock ( nextUiThing.mtx );
-                nextUiThing.newTyp( lock, UiThing::aktualisieren );
-
-                new ( nextUiThing.first() ) size_t { inhalt_new.length() > inhalt.length() && std::equal( inhalt.begin(), inhalt.end(), inhalt_new.begin() ) ? inhalt.length() : 0 };
-
+                size_t pos = inhalt_new.length() > inhalt.length() && std::equal( inhalt.begin(), inhalt.end(), inhalt_new.begin() ) ? inhalt.length() : 0;
+                nextUiThing.set(UiThing::aktualisieren, pos);
                 inhalt.swap( inhalt_new );
             }
         }
@@ -127,11 +123,7 @@ void Chat::nutzer_thread() {
             QString*const text = chat_verwaltung.getText();
 
             if ( text ) { // Ein Privatchat wurde gelöscht
-                unique_lock lock ( nextUiThing.mtx );
-                nextUiThing.newTyp( lock, UiThing::Dialog );
-
-                new ( nextUiThing.first() ) QString("Privatchat gelöscht");
-                new ( nextUiThing.second() ) QString( std::move( *text ) );
+                nextUiThing.set(UiThing::Dialog, QString("Privatchat gelöscht"), std::move(*text));
             }
         }
     }
@@ -174,8 +166,8 @@ void Chat::pruefen_thread() {
 
 #ifndef WIN32
         if ( signal_stop ) { // SIGINT oder SIGTERM
-            klog("Beenden nach Signal!");
-            nextUiThing.newTyp( UiThing::terminate );
+            qDebug("Beenden nach Signal!");
+            nextUiThing.set( UiThing::terminate );
         }
 #endif
         pruefen_files();

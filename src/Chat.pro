@@ -52,7 +52,6 @@ HEADERS = datei.hpp \
           personalo.hpp \
           entfernen.hpp \
           infoopen.hpp \
-          klog.hpp \
           simpledialog.hpp \
           filesystem.hpp \
           nutzer_anz.hpp \
@@ -102,10 +101,12 @@ RESOURCES = resource.qrc
 
 # Präprozessor
 CONFIG(debug, debug|release) {
-    DEFINES += DEBUG _GLIBCXX_DEBUG
+    DEFINES += DEBUG _GLIBCXX_DEBUG QT_DEPRECATED_WARNINGS
 } else {
     DEFINES += _FORTIFY_SOURCE=2 QT_NO_DEBUG_OUTPUT
 }
+
+INCLUDEPATH += $$system("realpath /usr/include/c++/*") /usr/include/ # Für Qt Creator
 
 win32 {
     DEFINES += WIN32
@@ -124,9 +125,9 @@ exists("../config/std_admins") { # Standard-Admins, chat.hpp
 }
 
 # Kompilieren
-CONFIG += c++14
+QMAKE_CXXFLAGS += -std=c++1z # C++17
 QMAKE_CXXFLAGS_RELEASE = -mtune=generic -fstack-protector-strong -flto -ffast-math -O3 # Optimieren für Schnelligkeit
-QMAKE_CXXFLAGS_DEBUG = -mtune=native -ggdb3 -Og # Optimieren für Debugging
+QMAKE_CXXFLAGS_DEBUG = -mtune=native -fstack-protector-all -ggdb3 -Og # Optimieren für Debugging
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wextra -Wpedantic -Wdisabled-optimization -Werror=format-security # Warnungen
 
 CONFIG(debug, debug|release) {

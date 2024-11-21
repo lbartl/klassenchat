@@ -18,8 +18,6 @@
 // Diese Datei definiert die Memberfunktion Datei::readAll(), die Konstanten von filesystem.hpp und die globalen Variablen von global.hpp
 
 #include "filesystem.hpp"
-#include "global.hpp"
-#include "klog.hpp"
 
 /**
  * @returns Inhalt der %Datei.
@@ -39,15 +37,3 @@ std::string Datei::readAll() const try {
     ifstreamExcAusgabe( exc, *this );
     return ""; // leerer String für die meisten Fälle gut
 }
-
-namespace static_paths {
-    extern Ordner const terminatedir = "./wichtig",  ///< Ordner, in dem Dateien zum %Entfernen von Nutzern gespeichert sind
-                        senddir      = "./personal", ///< Ordner, in dem Privatchats gespeichert sind
-                        infodir      = "./infos",    ///< Ordner, in dem Infos an %Nutzer gespeichert sind
-                        checkdir     =  "./check";   ///< Ordner, in dem Dateien zum Überprüfen, ob ein %Nutzer noch im %Chat ist, sind
-
-    extern Datei const alltfile      = "./all-terminate", ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall der %Chat geschlossen werden soll
-                       warnfile      = "./warning";       ///< Datei, die, wenn sie vorhanden ist, anzeigt, dass überall eine %Warnung erscheinen soll
-}
-
-extern QRegExp const regex_nutzername ("[\\wÄäÖöÜüß_]+"); // global.hpp

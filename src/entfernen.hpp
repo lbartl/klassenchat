@@ -28,7 +28,7 @@ class Entfernen : public QDialog
     Q_OBJECT
 
 public:
-    explicit Entfernen( std::string const& ter_name = "", QWidget* parent = nullptr ); ///< Konstruktor.
+    explicit Entfernen( std::string_view const& ter_name = "", QWidget* parent = nullptr ); ///< Konstruktor.
 
 private:
     Ui::Entfernen ui {}; ///< UI des Dialogs

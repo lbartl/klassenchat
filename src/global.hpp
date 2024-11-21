@@ -69,6 +69,6 @@ struct caseInsEqualFunc {
     }
 };
 
-extern const QRegExp regex_nutzername; ///< Legt fest, wie ein Benutzername aussehen soll
+inline QRegExp const regex_nutzername ("[\\wÄäÖöÜüß_]+"); ///< Legt fest, wie ein Benutzername aussehen soll
 
 #endif // FUNCTIONS_HPP

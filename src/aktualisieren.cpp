@@ -19,12 +19,12 @@
 
 #include "chat.hpp"
 #include "chatverwaltung.hpp"
-#include "klog.hpp"
 #include <QScrollBar>
+#include <QDebug>
 
 using const_it = std::string::const_iterator;
 
-enum class Typ : uint_fast8_t {
+enum class Typ {
     nichts,
     info,
     von_mir,
@@ -103,9 +103,9 @@ inline bool toNextLine( const_it& str_pos, const_it& line_end, const_it const st
 void Chat::verlauf_up( size_t pos ) {
 #ifdef DEBUG
     if ( pos > 1 )
-        klog("Veränderungen anzeigen...");
+        qDebug("Veränderungen anzeigen...");
     else
-        klog("Chatdatei neu anzeigen...");
+        qDebug("Chatdatei neu anzeigen...");
 #endif
 
     if ( pos == 0 )
@@ -116,6 +116,8 @@ void Chat::verlauf_up( size_t pos ) {
 
     if ( pos == 1 )
         ui.BrowseA->setText(""); // Erst jetzt löschen, da es nicht mitscrollen sollte
+
+    lock_guard inhalt_lock ( inhalt_mtx ); // Lock für inhalt
 
     const_it const str_end = inhalt.cend();
     const_it str_pos = pos > 1 ? inhalt.cbegin() + pos : inhalt.cbegin(),

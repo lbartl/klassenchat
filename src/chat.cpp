@@ -24,14 +24,6 @@
 #include "global.hpp"
 #include <QCloseEvent>
 
-// statische Member definieren
-///\cond
-constexpr decltype( Chat::std_admins ) Chat::std_admins;
-///\endcond
-
-Datei const Chat::lockfile_norm {"./lock"}, ///< %Datei, die existiert, wenn jemand im normalen %Chat ist
-            Chat::lockfile_plum {"./baum"}; ///< %Datei, die existiert, wenn jemand im Plum-Chat ist
-
 /**
  * @param x_plum ob ich im Plum-Chat bin
  * @param parent Eltern-Objekt

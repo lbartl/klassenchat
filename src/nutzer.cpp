@@ -21,7 +21,7 @@
 #include "chatverwaltung.hpp"
 #include "pc_nutzername.hpp"
 #include "global.hpp"
-#include "klog.hpp"
+#include <QDebug>
 
 NutzerVerwaltung& nutzer_verwaltung = NutzerVerwaltung::getInstance();
 
@@ -40,7 +40,7 @@ void NutzerVerwaltung::einlesen() {
             next_nummer = nummer;
 
             while ( it != end() ) {
-                KLOG << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername << ' ' << it->pc_nutzername << endl;
+                qDebug() << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername.c_str() << ' ' << it->pc_nutzername.c_str();
                 chat_verwaltung.nutzerGeloescht( *it );
                 it = alle_nutzer.erase( it );
             }
@@ -60,10 +60,10 @@ void NutzerVerwaltung::einlesen() {
                 is.ignore( 1 ); // Leerzeichen ignorieren
                 std::getline( is, pc_nutzername ); // Pc-Nutzername kann auch Leerzeichen enthalten
 
-                KLOG << "Neuer Nutzer: " << nummer << ' ' << admin << x_plum << nutzername << ' ' << pc_nutzername << endl;
+                qDebug() << "Neuer Nutzer: " << nummer << ' ' << admin << x_plum << nutzername.c_str() << ' ' << pc_nutzername.c_str();
                 it = alle_nutzer.emplace_hint( it, admin, x_plum, std::move( nutzername ), std::move( pc_nutzername ), nummer ); // Hinzufügen
             } else if ( *it < nummer ) { // Nutzer gelöscht
-                KLOG << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername << ' ' << it->pc_nutzername << endl;
+                qDebug() << "Nutzer gelöscht: " << it->nummer << ' ' << it->admin << it->x_plum << it->nutzername.c_str() << ' ' << it->pc_nutzername.c_str();
                 chat_verwaltung.nutzerGeloescht( *it ); // Falls der Nutzer einen Privatchat mit mir hatte, wird dieser gelöscht
                 it = alle_nutzer.erase( it ); // Aktuelles Element löschen
                 vorher_geloescht = true;
